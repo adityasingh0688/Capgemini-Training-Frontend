@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Promises</h1>
+    <script>
+
+        //function without callBack
+            function getFilledArray(){
+                user.push("A");
+                setTimeout(()=>{
+                    user.push("B");
+
+                },2000)
+                user.push("C");
+            }
+            let user=[];
+            getFilledArray();
+            console.log(user);
+
+        //function with callBack
+            function getFilled(callback){
+                user2.push("P");
+                setTimeout(()=>{
+                     user2.push("Q");
+                    callback(user2);
+                },2000)
+                user2.push("S");
+            }
+            let user2=[];
+            getFilled((user)=>{
+                user.push(10);
+                console.log(user2);
+            });
+    
+        //call back hell
+            function getPreSum(a,callback){
+                setTimeout(()=>{
+                    let preSum=a+10;
+                    callback(preSum);
+                },2000)
+            }
+
+            function getInSum(b, callback){
+                setTimeout(()=>{
+                let inSum = b + 20;
+                callback(inSum);
+                },1000);
+            }
+
+            function getFinalSum(c, callback){
+                setTimeout(()=>{
+                let finalSum = c + 30;
+                callback(finalSum);
+                },1000);
+            }
+
+            getPreSum(10,((result1)=>{
+                console.log(result1);
+                getInSum(result1,((result2)=>{
+                    console.log(result2);
+                    getFinalSum(result2,((result3)=>{
+                        console.log(result3);
+                    }))
+                }))
+            }))
+            // Readability	Nested pyramid structure
+            // Error Handling	Too many repeated error checks
+            // Maintenance	Hard to scale and modify
+
+        //promise
+         function getPreSum(a){
+            return new Promise((resolve,reject)=>{
+                setTimeout(()=>{
+                    let preSum=a+10;
+                    resolve(preSum);
+                },1000);
+            });
+         }
+         function getInSum(b){
+            return new Promise((resolve,reject)=>{
+                setTimeout(()=>{
+                    let inSum=b+20;
+                    resolve(inSum);
+                },2000);
+            });
+         }
+         function getPostSum(c){
+            return new Promise((resolve,reject)=>{
+                setTimeout(()=>{
+                    let postSum=c+30;
+                    resolve(postSum);
+                },2000);
+            });
+         }
+
+    getPreSum(10)
+    .then((result1)=>{
+        return getInSum(result1);
+    })
+
+    .then((result2)=>{
+    return getPostSum(result2);
+    })
+    .then((result3)=>{
+    console.log("Answer:", result3);    
+    })                     
+    .catch((error)=>{
+    console.log(error);
+    });
+    //promise all and promise race
+    let p1 = new Promise((resolve,reject)=>{
+
+    setTimeout(()=>{
+        resolve("First Promise");
+       },1000);
+    });
+
+    let p2 = new Promise((resolve,reject)=>{
+    setTimeout(()=>{
+        resolve("Second Promise");
+    },2000);
+    });
+
+    let p3 = new Promise((resolve,reject)=>{
+    setTimeout(()=>{
+        resolve("Third Promise");
+    },3000);
+});
+
+    Promise.all([p1,p2,p3])
+    .then((result)=>{
+    console.log(result);
+    })
+    .catch((error)=>{
+    console.log(error);
+    });
+    </script>
+
+</body>
+</html>

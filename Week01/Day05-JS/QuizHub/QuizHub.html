@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Knowledge Hub Quiz</title>
+    <link rel="stylesheet" href="QuizHub.css">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>Knowledge Hub Quiz</h1>
+            <h3>JavaScript Basics Quiz</h3>
+            <div class="timer">Time Left : <span id="timer">60</span>s</div>
+        </header>
+
+
+        <section class="progress-section">
+            <h3>Quiz Progress</h3>
+            <div class="progress-bar-container">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+
+            <p id="progressText">0% Completed</p>
+
+            <div class="question-status" id="questionStatus"></div>
+        </section>
+
+
+        <section class="quiz-container" id="quizContainer">
+             <h2 id="questionNumber"></h2>
+             <p id="questionText"></p>
+
+             <div class="options">
+                <button class="option-btn" id="option0"></button>
+                <button class="option-btn" id="option1"></button>
+                <button class="option-btn" id="option2"></button>
+                <button class="option-btn" id="option3"></button>
+             </div>
+
+             
+            <div class="navigation">
+                <button id="prevBtn">Previous</button>
+                <button id="nextBtn">Next</button>
+                <button id="submitBtn">Submit Quiz</button>
+            </div>
+        </section>
+
+        <section class="result-container" id="resultContainer">
+
+            <h2>Quiz Results</h2>
+            <h3 id="scoreDisplay"></h3>
+            <h3 id="percentageDisplay"></h3>
+            <h3 id="passFailMessage"></h3>
+            <div id="reviewContainer"></div>
+            <button id="restartBtn">Restart Quiz</button>
+
+        </section>
+    </div>
+
+    <script src="QuizHub.js"></script>
+</body>
+</html>

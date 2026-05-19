@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Student Performance Analysis System</title>
+    <link rel="stylesheet" href="Assignment.css">
+</head>
+<body>
+    <header>
+        <h1>Student Performance Analysis System</h1>
+    </header>
+    <main class="container">
+
+        <section class="form-section">
+            <h2>Add Student</h2>
+            <div class="form-grid">
+                <div class="input-group">
+                    <label>Student Name</label>
+                    <input type="text" id="studentName" placeholder="Enter Name">
+                </div>
+
+                <div class="input-group">
+                    <label>Student ID</label>
+                    <input type="number" id="studentId" placeholder="Enter ID">
+                </div>
+
+                <div class="input-group">
+                    <label>Age</label>
+                    <input type="number" id="studentAge" placeholder="Enter Age">
+                </div>
+
+                <div class="input-group">
+                    <label>Subject 1</label>
+                    <select class="subject">
+                        <option value="">Select Subject</option>
+                        <option value="Math">Math</option>
+                        <option value="Physics">Physics</option>
+                        <option value="Chemistry">Chemistry</option>
+                        <option value="Biology">Biology</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label>Score 1</label>
+                    <input type="number" class="score" placeholder="Enter Score">
+                </div>
+
+                <div class="input-group">
+                    <label>Subject 2</label>
+                    <select class="subject">
+                        <option value="">Select Subject</option>
+                        <option value="Math">Math</option>
+                        <option value="Physics">Physics</option>
+                        <option value="Chemistry">Chemistry</option>
+                        <option value="Biology">Biology</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label>Score 2</label>
+                    <input type="number" class="score" placeholder="Enter Score">
+                </div>
+
+                <div class="input-group">
+                    <label>Subject 3</label>
+                    <select class="subject">
+                        <option value="">Select Subject</option>
+                        <option value="Math">Math</option>
+                        <option value="Physics">Physics</option>
+                        <option value="Chemistry">Chemistry</option>
+                        <option value="Biology">Biology</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label>Score 3</label>
+                    <input type="number" class="score" placeholder="Enter Score">
+                </div>
+
+            </div>
+
+            <button id="addStudentBtn">Add Student</button>
+
+        </section>
+
+        <section class="filter-section">
+            <h2>Search & Filter</h2>
+            <div class="filter-grid">
+
+                <input type="text" id="searchInput" placeholder="Search By Name">
+
+                <select id="gradeFilter">
+                    <option value="All">All Grades</option>
+                    <option value="A">Grade A</option>
+                    <option value="B">Grade B</option>
+                    <option value="C">Grade C</option>
+                    <option value="D">Grade D</option>
+                    <option value="F">Grade F</option>
+                </select>
+
+                <select id="subjectFilter">
+                    <option value="All">All Subjects</option>
+                    <option value="Math">Math</option>
+                    <option value="Physics">Physics</option>
+                    <option value="Chemistry">Chemistry</option>
+                    <option value="Biology">Biology</option>
+                </select>
+            </div>
+        </section>
+
+        <section class="dashboard">
+            <h2>Dashboard</h2>
+
+            <div class="card">
+                <h3>Total Students</h3>
+                <p id="totalStudents">0</p>
+            </div>
+
+            <div class="card">
+                <h3>Class Average</h3>
+                <p id="classAverage">0</p>
+            </div>
+
+            <div class="card">
+                <h3>Top Grade</h3>
+                <p id="topGrade">A</p>
+            </div>
+
+            <div class="card">
+                <h3>Total Subjects</h3>
+                <p id="totalSubjects">0</p>
+            </div>
+
+        </section>
+
+        <section class="table-section">
+
+            <h2>Student Records</h2>
+
+            <div class="table-container">
+
+                <table>
+
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Name</th>
+                            <th>ID</th>
+                            <th>Age</th>
+                            <th>Subjects</th>
+                            <th>Average</th>
+                            <th>Grade</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="studentTableBody"> </tbody>
+
+                </table>
+            </div>
+        </section>
+
+        <section class="analysis-section">
+            <h2>Subject Performance</h2>
+            <div id="subjectAnalysis"></div>
+        </section>
+
+    </main>
+
+    <script src="Assignment.js"></script>
+
+</body>
+</html>

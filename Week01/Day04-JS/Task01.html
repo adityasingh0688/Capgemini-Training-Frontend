@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Basic Java Operations</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+        <h2>Student Result Management System</h2>
+        <form>
+<fieldset>
+    <legend>Student Information</legend>
+    <label for="name">Name:</label>
+        <input type="text" id="name" placeholder="Enter Student Name" required><br></br>
+        <label for="roll">Roll Number:</label>
+        <input type="number" id="roll" placeholder="Enter Roll Number" required><br></br>
+        <label for="sub1">Subject 1 Marks:</label>
+        <input type="number" id="sub1" placeholder="Enter Subject 1 Marks" required><br></br>
+        <label for="sub2">Subject 2 Marks:</label>
+        <input type="number" id="sub2" placeholder="Enter Subject 2 Marks" required><br></br>
+        <label for="sub3">Subject 3 Marks:</label>
+        <input type="number" id="sub3" placeholder="Enter Subject 3 Marks" required><br></br>
+</fieldset>
+
+<fieldset>
+    <legend>Result</legend>
+    <button type="button" onclick="generateResult()">Generate Result</button>
+    <button type="reset">Reset</button>
+    <div id="result"></div>
+</fieldset>
+
+</form>
+        
+    <script src="Task01.js"></script>
+</body>
+</html>

@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Academic_PerformanceTracker</title>
+    <link rel="stylesheet" href="style.css" >
+</head>
+<body>
+
+    <!--Part-1-->
+    <header>
+         <h1>Student Grade Calculator</h1>
+        
+         <div>
+         <label for="firstName">Student Name: </label>
+         <input id="firstName"  type="text" required minlength="2" placeholder="Enter First Name: ">
+        
+         <label for="lastName">Last Name: </label>
+         <input id="lastName" type="text" required minlength="2" placeholder="Enter Last Name: ">
+
+         <label for="stu_id">Student ID: </label>
+         <input id="stu_id" type="text" pattern="[0-9]{11}" placeholder="Enter Student ID: ">
+
+         <label for="course_name">Enter Course Name: </label>
+         <select id="course_name" name="course">
+            <option value=""selected>Select Course</option>
+            <optgroup label="Engineering">
+                <option value="CSE">CSE</option>
+                <option value="EC">Electrical</option>
+                <option value="CIVIL">Civil</option>
+                <option value="MECH">Mechanical</option>
+            </optgroup>
+            <optgroup label="Management">
+                <option value="BBA">BBA</option>
+                <option value="BBA-MBA">BBA-MBA Integrated</option>
+                <option value="MBA">MBA</option>
+            </optgroup>
+         </select>
+         </div>
+         
+    </header>
+
+    <!--Part-2-->
+
+    <main>
+        
+        <section id="assess-input-sec">
+        <h3>Assessment Input Section </h3>
+        <div class="table-container">
+        <table id="assess-input-section">
+            <tr>
+                <th>Assessment Type</th>
+                <th>Assessment Name</th>
+                <th>Maximum Marks</th>
+                <th>Marks Obtained</th>
+                <th>Weight Percentage</th>
+                <th>Actions</th>
+            </tr>
+
+            <tr>
+                <td> 
+                    <select name="AssessType">
+                            <option value="">Select Type</option>
+                            <option>Quiz</option>
+                            <option>Assignment</option>
+                            <option>Mid-Term</option>
+                            <option>Final</option>
+                            <option>Project</option>
+                            <option>Lab</option>
+                    </select> 
+                </td>
+                <td>
+                    <input type="text" placeholder="Enter Assesment Name: " name="ass_name">
+                </td>
+                <td>
+                    <input type="number" placeholder="Enter Maximum Number: " name="maxi_marks">
+                </td>
+                <td>
+                    <input type="number" placeholder="Marks Obtained: " name="marks_obt">
+                </td>
+                <td>
+                    <input type="number" placeholder="Exam Weightage: " name="exam_weig">
+                </td>
+                <td>
+                      <button type="button" id="add-row">Add row</button>
+                      <button type="button" id="rem-row">Remove row</button>
+                </td>
+            </tr>
+            
+            <tr>
+                <td> 
+                    <select name="AssessType">
+                            <option value="">Select Type</option>
+                            <option>Quiz</option>
+                            <option>Assignment</option>
+                            <option>Mid-Term</option>
+                            <option>Final</option>
+                            <option>Project</option>
+                            <option>Lab</option>
+                    </select> 
+                </td>
+                <td>
+                    <input type="text" placeholder="Enter Assesment Name: " name="ass_name">
+                </td>
+                <td>
+                    <input type="number" placeholder="Enter Maximum Number: " name="maxi_marks">
+                </td>
+                <td>
+                    <input type="number" placeholder="Marks Obtained: " name="marks_obt">
+                </td>
+                <td>
+                    <input type="number" placeholder="Exam Weightage: " name="exam_weig">
+                </td>
+            </tr>
+        </table>
+         </div>
+        </section>
+      
+
+        <!--Calculation Section-->
+        <section id="calc-sec">
+            <h3>Evaluate</h3>
+            <div>
+            <div><button type="button" id="cal-btn" class="calc-btn">Calculate</button></div>
+            <div><button type="button" id="res-btn" class="calc-btn">Reset</button></div>
+            <div><button type="button" id="rep-btn" class="calc-btn">Report</button></div>
+            </div>
+        </section>
+
+        <!--Result Display Section-->
+        
+        <section id="result-disp-sec">
+            <h3>Result</h3>
+            <P id="weighted-avg-score"></P>
+            <p id="letter-grade"></p>
+            <p id="status"></p>
+            <div class="res-container">
+            <table id="grade-distribution">
+                <tr>
+                    <th>Assessment Type</th>
+                    <th>Total Marks</th>
+                    <th>Obtained Marks</th>
+                    <th>percentage</th>
+                    <th>Grades</th>
+                </tr>
+            </table>
+             </div>
+            <p id="performance-analysis"></p>
+        </section>
+       
+
+        <!--Statistics Section-->
+        <section id="statistical-sec">
+            <h3>Statics Section</h3>
+            <p id="high-sco-ass"></p>
+            <p id="low-sco-ass"></p>
+            <p id="avg-sco"></p>
+            <p id="total-ass"></p>
+            <p id="fail-ass"></p>
+            <table id="subject-wise-perf">
+                <tr>
+                    <th>Subject</th>
+                    <th>Performance</th>
+                </tr>
+            </table>
+        </section>
+        
+
+        <!-- Grade History Section-->
+         <section id="grade-his-sec">
+            <h3>Grade History</h3>
+            <table id="history-table">
+                <tr>
+                    <th>Student Name</th>
+                    <th>Course</th>
+                    <th>Overall Score</th>
+                    <th>Grade</th>
+                    <th>Date & Time</th>
+                </tr>
+            </table>
+            <button type="button" id="history-btn">Clear</button>
+         </section>
+
+         <!-- Grade Scale Reference-->
+          <section id="grad-scale-sec">
+            <table id="grade-scale-reference">
+                <tr>
+                    <th>Grades</th>
+                    <th>Percentage</th>
+                    <th>GPA</th>
+                    <th>Pas/Fail Indicators</th>
+                </tr>
+                <tr>
+                    <td>O</td>
+                    <td>90-100</td>
+                    <td>10.0</td>
+                    <td class="pass">PASS</td>
+                </tr>
+                <tr>
+                    <td>A+</td>
+                    <td>80-90</td>
+                    <td>9</td>
+                    <td class="pass">PASS</td>
+                </tr>
+                <tr>
+                    <td>B+</td>
+                    <td>70-80</td>
+                    <td>8</td>
+                    <td class="pass">PASS</td>
+                </tr>
+                <tr>
+                    <td>B</td>
+                    <td>60-70</td>
+                    <td>7</td>
+                    <td class="pass">PASS</td>
+                </tr>
+                <tr>
+                    <td>C</td>
+                    <td>40-60</td>
+                    <td>6</td>
+                    <td class="pass">PASS</td>
+                </tr>
+                <tr>
+                    <td>D</td>
+                    <td>40</td>
+                    <td>4</td>
+                    <td class="fail">Fail</td>
+                </tr>
+            </table>
+        </section>
+    </main>
+   
+    <script src="script.js"></script>
+</body>
+</html>

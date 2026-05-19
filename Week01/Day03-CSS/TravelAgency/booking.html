@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+    <nav class="navbar">
+        <span class="logo">
+            <i>Travel With Us</i>
+        </span>
+        <span class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="booking.html">Booking</a>
+            <a href="gallery.html">Gallery</a>
+        </span>
+    </nav>
+    <h1 class="main-heading">Laxmi Travel Agency</h1>
+</header>
+
+<main>
+    <h2>Registration Form</h2>
+    <form>
+        <fieldset>
+            <legend>Personal Information</legend>
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required minlength="3"><br><br>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required><br><br>
+
+            <label for="phone">Phone Number:</label>
+            <input type="tel" id="phone" name="phone" required><br><br>
+
+        </fieldset>
+
+        <fieldset>
+            <legend>Travel Details</legend>
+
+            <label for="travelers">Number of Travelers:</label>
+            <input type="number" id="travelers" name="travelers" required min="1"><br><br>
+
+            <label for="destination">Destination:</label>
+            <select id="destination" name="destination" required>
+                <option value="">Select a destination</option>
+                <option value="Rishikesh">Rishikesh</option>
+                <option value="Jaipur">Jaipur</option>
+                <option value="Goa">Goa</option>
+                <option value="Manali">Manali</option>
+            </select><br><br>
+
+            <label for="travel-class">Travel Class:</label>
+            <input type="radio" id="economy" name="travel-class" value="Economy" required>
+            <label for="economy">Economy</label>
+            <input type="radio" id="business" name="travel-class" value="Business" required>
+            <label for="business">Business</label>
+            <input type="radio" id="first-class" name="travel-class" value="First Class" required>
+            <label for="first-class">First Class</label><br><br>
+
+            <label for="Additional-services">Additional Services:</label>
+            <input type="checkbox" id="meal" name="additional-services" value="Meal">
+            <label for="meal">Meal</label>
+            <input type="checkbox" id="extra-luggage" name="additional-services" value="Extra Luggage">
+            <label for="extra-luggage">Extra Luggage</label>
+            <input type="checkbox" id="airport-pickup" name="additional-services" value="Airport Pickup">
+            <label for="airport-pickup">Airport Pickup</label>
+            <br><br>
+
+            <label for="travel-date">Travel Date:</label>
+            <input type="date" id="travel-date" name="travel-date" required><br><br>
+
+        </fieldset>
+
+        <fieldset>
+            <legend>Additional Information</legend>
+            <label for="specialRequests">Special Requests:</label>
+            <textarea id="specialRequests" name="specialRequests" rows="4" cols="50"></textarea><br><br>
+        </fieldset>
+
+        <fieldset>
+            <legend>Terms and Conditions</legend>
+            <input type="checkbox" id="terms" name="terms" required>
+            <label for="terms">I agree to the terms and conditions.</label><br><br>
+        </fieldset>
+
+       <span><button id="form_button">Book Now</button></span>
+       <span><button type="reset" id="form_button">Reset</button></span>
+    </form>
+</main>
+
+<footer class="footer"> 
+    <p>&copy; 2026 Laxmi Travel Agency. All rights reserved.</p>
+    <p>📍  Address:Galgotias College, Greater Noida, Uttar Pradesh</p> 
+     <p>📞 Contact: <a href="tel:+919026911656">90269-11656</a></p>
+    <p>📩 Email:<a href="mailto:useradityasingh8@gmail.com"> useradityasingh8@gmail.com</a></p> 
+    <p>🌐 Follow us: <a href="https://www.facebook.com/aditya.singh.649746" target="_blank">📘 Facebook</a> |
+         <a href="https://www.instagram.com/adityasingh0688" target="_blank">📸 Instagram</a> |
+    </p>
+ </footer>
+</body>
+</html>

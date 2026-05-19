@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>EduLearn Academy Registration</title>
+    <link rel="stylesheet" href="Assignment.css">
+</head>
+
+<body>
+
+<h1 style="text-align:center;">EduLearn Academy - Student Registration Form</h1>
+
+<form action="welcome.html" method="post" autocomplete="on" enctype="multipart/form-data">
+
+    <!-- Personal Info -->
+    <fieldset>
+        <legend>Personal Information</legend>
+
+        <label for="firstname">First Name:</label>
+        <input type="text" id="firstname" name="firstname" required minlength="2"><br><br>
+
+        <label for="middlename">Middle Name:</label>
+        <input type="text" id="middlename" name="middlename"><br><br>
+
+        <label for="lastname">Last Name:</label>
+        <input type="text" id="lastname" name="lastname" required><br><br>
+
+        <label for="dob">Date of Birth:</label>
+        <input type="date" id="dob" name="dob" min="1965-01-01" max="2010-01-01" required><br><br>
+
+        <label>Gender:</label>
+        <input type="radio" id="male" name="gender" value="male" required>
+        <label for="male">Male</label>
+
+        <input type="radio" id="female" name="gender" value="female">
+        <label for="female">Female</label>
+
+        <input type="radio" id="others" name="gender" value="others">
+        <label for="others">Others</label><br>
+
+        <label for="profile">Profile Picture:</label>
+        <input type="file" id="profile" name="profile" accept="image/*"><br>
+
+        <label for="color">Favorite Color:</label>
+        <input type="color" id="color" name="color"><br>
+    </fieldset>
+
+    <!-- Contact -->
+    <fieldset>
+        <legend>Contact Details</legend>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required><br><br>
+
+        <label for="phone">Phone:</label>
+        <input type="tel" id="phone" name="phone" pattern="[0-9]{10}" title="Enter 10 digit number" required><br><br>
+
+        <label for="website">Website:</label>
+        <input type="url" id="website" name="website"><br><br>
+
+        <label for="country">Country:</label>
+        <select id="country" name="country" required>
+            <optgroup label="India">
+                <option value="jk">Jammu & Kashmir</option>
+                <option value="delhi" selected>Delhi</option>
+                <option value="punjab">Punjab</option>
+            </optgroup>
+            <optgroup label="USA">
+                <option value="washington">Washington</option>
+                <option value="whitestreet">WhiteStreet</option>
+            </optgroup>
+        </select><br><br>
+
+        <label for="address">Address:</label><br>
+        <textarea id="address" name="address" rows="3" required></textarea><br><br>
+    </fieldset>
+
+    <!-- Account -->
+    <fieldset>
+        <legend>Account Setup</legend>
+
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" pattern="[a-zA-Z0-9]{5,20}" required><br><br>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" minlength="6" required><br><br>
+
+        <label for="confirm">Confirm Password:</label>
+        <input type="password" id="confirm" name="confirm" required><br><br>
+
+        <label for="security">Security Question:</label>
+        <select id="security" name="security">
+            <option>Pet Name?</option>
+            <option>Birth City?</option>
+        </select><br><br>
+
+        <label for="answer">Answer:</label>
+        <input type="text" id="answer" name="answer"><br><br>
+    </fieldset>
+
+    <!-- Education -->
+    <fieldset>
+        <legend>Education & Skills</legend>
+
+        <label for="education">Education:</label>
+        <select id="education" name="education">
+            <option value="highschool">High School</option>
+            <option value="bachelor">Bachelor</option>
+            <option value="master">Master</option>
+        </select><br><br>
+
+        <label for="experience">Experience:</label>
+        <input type="range" id="experience" name="experience" min="0" max="40" oninput="expVal.value=this.value">
+        <output id="expVal">0</output><br><br>
+
+        <label for="skill">Skill:</label>
+        <input list="skills" id="skill" name="skill">
+        <datalist id="skills">
+            <option value="Java">
+            <option value="Python">
+            <option value="Angular">
+        </datalist><br><br>
+
+        <label for="search">Search Course:</label>
+        <input type="search" id="search"><br><br>
+
+        <label for="month">Course Start Month:</label>
+        <input type="month" id="month"><br><br>
+
+        <label for="week">Preferred Week:</label>
+        <input type="week" id="week"><br><br>
+
+        <label for="time">Preferred Time:</label>
+        <input type="time" id="time" name="time"><br><br>
+
+        <label for="session">Session:</label>
+        <input type="datetime-local" id="session"><br><br>
+    </fieldset>
+
+    <!-- Terms -->
+    <fieldset>
+        <legend>Terms</legend>
+        <input type="checkbox" name="terms" value="accepted" required>
+        I agree to terms<br><br>
+    </fieldset>
+
+    <!-- Buttons -->
+    <button type="submit">Submit</button>
+    <button type="reset">Reset</button>
+    <button type="button" onclick="alert('Form Ready!')">Click Me</button>
+
+</form>
+
+</body>
+</html>

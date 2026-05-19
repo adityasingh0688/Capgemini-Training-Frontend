@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript Array Demo</title>
+</head>
+<body>
+    <h1>JavaScript Array Demo</h1>
+    <p id="demo"></p>
+ 
+    <script>
+       
+        //Array is javascript are objects that can store multiple values in a single variable.
+        // They are used to store a list of items and can be accessed by their index.
+        //  Arrays can hold any type of data, including numbers, strings, and even other arrays.
+        // They are a fundamental part of JavaScript and are widely used in web development for tasks
+        // such as storing data, manipulating lists, and creating dynamic content.
+        //Arrays are resizable, meaning you can add or remove elements from them as needed.
+        //array are zero index based
+ 
+        //Shallow copy vs Deep copy
+        //A shallow copy of an array creates a new array that references the same elements as the
+        // original array. This means that if you modify an element in the shallow copy, it will also affect the original array.
+        //A deep copy of an array creates a new array with new elements that are copies of
+        // the original elements. This means that if you modify an element in the deep copy,
+        // it will not affect the original array.
+ 
+        //array using literal syntax
+        const fruits = ["Apple", "Banana", "Cherry", "Date", "Elderberry", "Fig", "Grape", "Honeydew", "Kiwi", "Lemon"];
+        document.getElementById("demo").innerHTML = fruits.join(", ");
+ 
+        console.log("Original array:", fruits);
+        //length of array
+        console.log("Length of array:", fruits.length);
+ 
+        //Accessing array elements
+        console.log("First element:", fruits[0]);
+        console.log("Last element:", fruits[fruits.length - 1]);
+ 
+        //accessing array elements using for loop
+        console.log("Accessing array elements using for loop:");
+        for (let i = 0; i < fruits.length; i++) {
+            console.log(fruits[i]);
+        }
+ 
+        //using forEach method to access array elements
+        console.log("Accessing array elements using forEach method:");
+        fruits.forEach(function(fruit) {
+            console.log(fruit);
+        });
+ 
+ 
+        //using constructor syntax
+        const numbers = new Array(1, 2, 3, 4, 5);
+        console.log("Numbers array:", numbers);
+ 
+        console.log(`Type of fruits: ${typeof fruits}`);
+        console.log(`Type of numbers: ${typeof numbers}`);
+ 
+        //at(0) method to access first element
+        //sort method to sort the array
+        fruits.sort();
+        console.log("Sorted fruits array:", fruits);
+ 
+ 
+        //to sort numeric array we need to pass a compare function to the sort method
+        numbers.sort(function(a, b) {
+                return a - b;
+            });
+        console.log("Sorted numbers array:", numbers);
+ 
+        //to reverse the array
+        fruits.reverse();
+ 
+        //toSorted method to sort the array without modifying the original array
+        const sortedFruits = fruits.toSorted();
+        console.log("Original fruits array after reverse:", fruits);
+        console.log("Sorted fruits array using toSorted method:", sortedFruits);
+ 
+        //toReversed method to reverse the array without modifying the original array
+        const reversedFruits = fruits.toReversed();
+        console.log("Original fruits array after reverse:", fruits);
+        console.log("Reversed fruits array using toReversed method:", reversedFruits);
+ 
+        //indexOf method to find the index of an element in the array
+        const index = fruits.indexOf("Cherry");
+        console.log("Index of Cherry:", index);
+ 
+        //lastIndexOf method to find the last index of an element in the array
+        const lastIndex = fruits.lastIndexOf("Cherry");
+        console.log("Last index of Cherry:", lastIndex);
+ 
+ 
+        //shift method to remove the first element of the array
+        const firstFruit = fruits.shift();
+        console.log("First fruit removed:", firstFruit);    
+        console.log("Fruits array after shift:", fruits);
+ 
+        //unshift method to add an element to the beginning of the array
+        fruits.unshift("Mango");
+        console.log("Fruits array after unshift:", fruits);
+ 
+        //pop method to remove the last element of the array
+        const lastFruit = fruits.pop();
+        console.log("Last fruit removed:", lastFruit);
+        console.log("Fruits array after pop:", fruits);
+ 
+        //push method to add an element to the end of the array
+        fruits.push("Pineapple");
+        console.log("Fruits array after push:", fruits);
+ 
+        //splice method to add or remove elements from the array
+        //to remove elements from the array
+        fruits.splice(2, 1); // removes 1 element at index 2
+        console.log("Fruits array after splice (removal):", fruits);
+        //to add elements to the array
+        fruits.splice(2, 0, "Strawberry"); // adds "Strawberry" at index 2 without removing any element
+        console.log("Fruits array after splice (addition):", fruits);
+ 
+        //with() method change value of given index  and returns a new array
+        const x=[1,2,3,4,5];
+        const newX = x.with(2, 10); // changes the value at index 2 to 10 and returns a new array
+        console.log("Original array x:", x);    
+        console.log("New array newX:", newX);
+ 
+        //slice method to create a new array by slicing the original array
+        const slicedFruits = fruits.slice(1, 4); // creates a new array with elements from index 1 to 3
+        console.log("Sliced fruits array:", slicedFruits);
+ 
+        //join method to join the elements of the array into a string
+        const fruitsString = fruits.join(", ");
+        console.log("Fruits array joined into a string:", fruitsString);
+ 
+        //concat method to merge two or more arrays
+        const moreFruits = ["Watermelon", "Papaya"];
+        const allFruits = fruits.concat(moreFruits);
+        console.log("All fruits array after concat:", allFruits);
+ 
+        //flat method to create a new array with all sub-array elements concatenated into it recursively up to the specified depth
+        const nestedArray = [1, 2, [3, 4], [5, 6]];
+        const flatArray = nestedArray.flat(); // flattens the array by one level
+        console.log("Flat array:", flatArray);
+ 
+        //map method to create a new array by applying a function to each element of the original array
+        //in short to transform the array
+        const upperCaseFruits = fruits.map(function(fruit) {
+            return fruit.toUpperCase().concat(" ###");
+        });
+        console.log("Fruits array after map (toUpperCase) and ###:", upperCaseFruits);
+ 
+        //reduce method to reduce the array to a single value by applying a function to each element of the array
+        //reduce takes a callback function and an optional initial value as arguments.
+        // The callback function takes four arguments:
+        //accumulator: the accumulated value previously returned in the last invocation of the callback,
+        //currentValue: the current elem    ent being processed in the array,
+ 
+        const sum = numbers.reduce(function(accumulator, currentValue) {
+            return accumulator + currentValue;
+        }, 0); // 0 is the initial value for the accumulator
+ 
+ 
+        //filter method to create a new array with all elements that pass the test implemented by the provided function
+        const longFruits = fruits.filter(function(fruit) {
+            return fruit.length > 5; // returns true for fruits with length greater than 5
+        });
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+    </script>
+</body>
+ 
+</html>
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Set in JavaScript</title>
+    <style>
+        body{
+            margin: 10px;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Set in JavaScript</h1>
+    <p>A Set is a collection of unique values. It can store any type of value, whether primitive or object references.</p>
+    <p> Added in ES6 (ECMAScript 2015)</p>
+    <script>
+        // Create a new Set
+        const mySet = new Set();
+ 
+        // Add some values to the Set
+        mySet.add(1);
+        mySet.add(5);
+        mySet.add('some text');
+        mySet.add({ name: 'John' });
+        mySet.add(1); // This will not be added as it's a duplicate
+        mySet.add(4).add(5); // mutliple add in one line, 5 will not be added as it's a duplicate
+        // Display the contents of the Set
+        console.log(mySet); // Output: Set(4) { 1, 5, 'some text', { name: 'John' } }
+ 
+        // Check if a value exists in the Set
+        console.log(mySet.has(5)); // Output: true
+        console.log(mySet.has(3)); // Output: false
+ 
+        // Get the size of the Set
+        console.log(mySet.size); // Output: 4
+ 
+        // Remove a value from the Set
+        mySet.delete(5);
+        console.log(mySet); // Output: Set(3) { 1, 'some text', { name: 'John' } }
+ 
+        // Clear all values from the Set
+        mySet.clear();
+        console.log(mySet); // Output: Set(0) {}
+ 
+ 
+        const mySet2 = new Set([1, 2, 3, 4, 5,2,3,4]); // Initialize a Set with an array (duplicates will be ignored)
+        console.log(mySet2); // Output: Set(5) { 1, 2, 3, 4, 5 }
+ 
+        const arrayNum=[101,102,103,104,105,101,102]; // Array with duplicate values
+        const mySet3 = new Set(arrayNum); // Initialize a Set with an array
+        console.log(mySet3); // Output: Set(5) { 101, 102, 103, 104, 105 }
+ 
+        //add string in set
+        const mySet4 = new Set('Hello World'); // Initialize a Set with a string
+        console.log(mySet4); // Output: Set(8) { 'H', 'e', 'l', 'o', ' ', 'W', 'r', 'd' }
+ 
+        //has method
+        console.log(mySet4.has('H')); // Output: true
+        console.log(mySet4.has('h')); // Output: false (case-sensitive)
+ 
+        //iterate over a Set using for...of loop
+        for (const item of mySet2)
+        {
+            console.log(item); // Output: 1, 2, 3, 4, 5 (each on a new line)
+        }
+ 
+        //iterate over a Set using forEach method
+        mySet2.forEach(item => {
+            console.log(item); // Output: 1, 2, 3, 4, 5 (each on a new line)
+        });
+ 
+        //set to array
+        const mySet5 = new Set([1, 2, 3, 4, 5]);
+        const arrayFromSet = Array.from(mySet5); // Convert Set to Array    
+        console.log(arrayFromSet); // Output: [1, 2, 3, 4, 5]
+ 
+        //using spread operator to convert Set to Array
+        const arrayFromSet2 = [...mySet5]; // Convert Set to Array using spread operator
+        console.log(arrayFromSet2); // Output: [1, 2, 3, 4, 5]
+ 
+ 
+        //weakset
+        const weekSet = new WeakSet(); // Initialize a WeakSet with an array of objects
+        const obj1 = { name: 'John' };
+        const obj2 = { name: 'Jane' };
+        weekSet.add(obj1); // Add objects to the WeakSet
+        weekSet.add(obj2);
+        console.log(weekSet); // Output: WeakSet { <items unknown> }
+        console.log(weekSet.has(obj1)); // Output: true
+       
+ 
+ 
+    </script>
+   
+</body>
+</html>
+ 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Map in JavaScript</title>
+    <body>
+        <h1>Map in JavaScript</h1>
+        <script>
+            //Map is a collection of keyed data items, just like an Object.
+            // But the main difference is that Map allows keys of any type.
+ 
+            //Creating a Map
+            let myMap = new Map();
+ 
+            //set() method is used to add key-value pairs to the Map
+            myMap.set('name', 'John');
+            myMap.set('age', 30);  
+            myMap.set('city', 'New York');
+ 
+            console.log(myMap);
+ 
+            //get() method is used to retrieve the value associated with a specific key
+            console.log(myMap.get('name')); // Output: John
+            console.log(myMap.get('age')); // Output: 30
+            console.log(myMap.get('city')); // Output: New York
+ 
+            console.log(myMap.get('country')); // Output: undefined (key does not exist)
+ 
+            //has() method is used to check if a specific key exists in the Map
+            console.log(myMap.has('name')); // Output: true
+ 
+            //delete() method is used to remove a key-value pair from the Map
+            myMap.delete('age');
+            console.log(myMap); // Output: Map(2) { 'name' => 'John', 'city' => 'New York' }
+ 
+            //size property is used to get the number of key-value pairs in the Map
+            console.log(myMap.size); // Output: 2
+             
+            myMap["state"] = "California";
+            console.log(myMap); // Output: Map(2) { 'name' => 'John', 'city' => 'New York' } state: "California"
+            console.log(myMap["state"]); // Output: California
+ 
+            //iterate over the Map using for...of loop
+            for (let [key, value] of myMap)
+            {
+                console.log(`${key}: ${value}`);
+            }
+ 
+            //map to array
+            let myArray = Array.from(myMap);
+            console.log(myArray); // Output: [ [ 'name', 'John' ], [ 'city', 'New York' ] ]
+ 
+            //map to array  using spread operator
+            let myArray2 = [...myMap];
+            console.log(myArray2); // Output: [ [ 'name', 'John' ], [ 'city', 'New York' ] ]
+ 
+            let productMap = new Map();
+            productMap.set('product1', { name: 'Laptop', price: 1000 });
+            productMap.set('product2', { name: 'Phone', price: 500 });
+            productMap.set('product3', { name: 'Tablet', price: 300 });
+            productMap.set('product4', { name: 'Monitor', price: 200 });
+ 
+ 
+            //iterate over keys using keys() method
+            for (let key of productMap.keys())
+            {
+                console.log(key); // Output: product1, product2, product3, product4
+            }
+ 
+            //iterate over values using values() method
+            for (let value of productMap.values())
+            {
+                console.log(value); // Output: { name: 'Laptop', price: 1000 }, { name: 'Phone', price: 500 }, { name: 'Tablet', price: 300 }, { name: 'Monitor', price: 200 }
+            }
+ 
+            //iterate over entries using entries() method
+            for (let entry of productMap.entries())
+            {
+                console.log(entry); // Output: [ 'product1', { name: 'Laptop', price: 1000 } ], [ 'product2', { name: 'Phone', price: 500 } ], [ 'product3', { name: 'Tablet', price: 300 } ], [ 'product4', { name: 'Monitor', price: 200 } ]
+            }
+ 
+            const inventory = [
+                { name: "Laptop", type: "Electronics", price: 1000, quantity: 10 },
+                { name: "Phone", type: "Electronics", price: 500, quantity: 20 },
+                { name: "Tablet", type: "Electronics", price: 300, quantity: 15 },
+                { name: "Monitor", type: "Electronics", price: 200, quantity: 5 },
+                { name: "Chair", type: "Furniture", price: 100, quantity: 50 },
+                { name: "Sofa", type: "Furniture", price: 500, quantity: 10 },
+                { name: "Shirt", type: "Clothing", price: 50, quantity: 100 },
+                { name: "Pants", type: "Clothing", price: 80, quantity: 70 },                
+                { name: "Shoes", type: "Footwear", price: 120, quantity: 40 }
+            ]
+ 
+           //Map.groupBy() static method is used to group the elements of an array based on a specified key
+            const groupedByType = Map.groupBy(inventory, item => item.type);
+            console.log(groupedByType);
+ 
+ 
+            //clear() method is used to remove all key-value pairs from the Map
+            //myMap.clear();
+        </script>
+    </body>
+ 
+</html>
+ 
+
+
+
+===============================================================================
+PROBLEM DESCRIPTION
+===============================================================================
+ 
+Build a Student Performance Analysis System that analyzes student data across
+multiple subjects. You will work with student records, calculate statistics,
+identify patterns, and generate insights using JavaScript's built-in data
+structures: Arrays, Maps, and Sets.
+ 
+===============================================================================
+SAMPLE DATA STRUCTURE
+===============================================================================
+ 
+const students = [
+    { id: 101, name: "Alice Johnson", age: 20, 
+      subjects: ["Math", "Physics", "Chemistry"], 
+      scores: [85, 90, 78] },
+    { id: 102, name: "Bob Smith", age: 21, 
+      subjects: ["Math", "Physics", "Chemistry"], 
+      scores: [92, 88, 95] },
+    { id: 103, name: "Charlie Brown", age: 19, 
+      subjects: ["Math", "Physics", "Biology"], 
+      scores: [78, 82, 85] },
+    { id: 104, name: "Diana Prince", age: 20, 
+      subjects: ["Math", "Chemistry", "Biology"], 
+      scores: [95, 92, 89] },
+    { id: 105, name: "Eve Davis", age: 22, 
+      subjects: ["Physics", "Chemistry", "Biology"], 
+      scores: [88, 85, 90] }
+];
+ 
+===============================================================================
+PART 1: ARRAY OPERATIONS (20 points)
+===============================================================================
+ 
+Task 1.1: Filter and Sort (5 points)
+-------------------------------------
+- Filter students who scored above 85 in ALL subjects
+- Sort students by their average score (descending order)
+- Find students aged between 19-21
+- Get list of students who study "Physics"
+ 
+Task 1.2: Array Transformations (5 points)
+-------------------------------------------
+- Create new array with only student names and their average scores
+- Use map() to add "grade" property based on average:
+  * A: 90-100
+  * B: 80-89
+  * C: 70-79
+  * D: 60-69
+  * F: below 60
+- Flatten all subjects into a single array (including duplicates)
+ 
+Task 1.3: Array Aggregations (5 points)
+----------------------------------------
+- Calculate the overall class average across all subjects
+- Find the highest score in each subject
+- Count total number of students enrolled in each subject
+- Use reduce() to find the student with highest overall average
+ 
+Task 1.4: Array Search Operations (5 points)
+---------------------------------------------
+- Find a student by ID using find()
+- Check if any student scored below 70 using some()
+- Check if all students passed (scored >= 60) using every()
+- Get index of a specific student by name using findIndex()
+ 
+===============================================================================
+PART 2: MAP OPERATIONS (20 points)
+===============================================================================
+ 
+Task 2.1: Create Subject-Score Map (5 points)
+----------------------------------------------
+Create a Map where keys are subject names and values are arrays of all 
+scores in that subject.
+Example: Map { "Math" => [85, 92, 78, 95], "Physics" => [...], ... }
+ 
+Task 2.2: Student Performance Map (5 points)
+---------------------------------------------
+Create a Map with student ID as key and student object as value.
+Add methods to:
+- Get student by ID
+- Update student scores
+- Delete a student record
+- Check if student exists
+ 
+Task 2.3: Grade Distribution Map (5 points)
+--------------------------------------------
+Create a Map showing count of students in each grade (A, B, C, D, F).
+Example: Map { "A" => 2, "B" => 3, "C" => 1, ... }
+ 
+Task 2.4: Subject Statistics Map (5 points)
+--------------------------------------------
+Create a Map for each subject containing:
+- Average score
+- Highest score
+- Lowest score
+- Number of students enrolled
+Example: Map { "Math" => { avg: 87.5, high: 95, low: 78, count: 4 }, ... }
+ 
+===============================================================================
+PART 3: SET OPERATIONS (20 points)
+===============================================================================
+ 
+Task 3.1: Unique Values (5 points)
+-----------------------------------
+- Create a Set of all unique subjects offered
+- Create a Set of all unique ages
+- Create a Set of all unique scores (across all students and subjects)
+ 
+Task 3.2: Set Operations - Union, Intersection, Difference (10 points)
+-----------------------------------------------------------------------
+Given students' subject enrollments, implement:
+ 
+- UNION: Find all subjects taken by either Student A OR Student B
+- INTERSECTION: Find common subjects between Student A AND Student B
+- DIFFERENCE: Find subjects taken by Student A but NOT by Student B
+- SYMMETRIC DIFFERENCE: Subjects taken by either A or B but not both
+ 
+Example Implementation Required:
+function getUnion(set1, set2) { /* your code */ }
+function getIntersection(set1, set2) { /* your code */ }
+function getDifference(set1, set2) { /* your code */ }
+function getSymmetricDifference(set1, set2) { /* your code */ }
+ 
+Task 3.3: Data Validation with Sets (5 points)
+-----------------------------------------------
+- Create a Set of valid subject names
+- Validate if a student's subjects are all valid
+- Remove duplicate subjects if any student is enrolled in same subject twice
+- Find students with unique subject combinations
+ 
+===============================================================================
+PART 4: COMBINED OPERATIONS (20 points)
+===============================================================================
+ 
+Task 4.1: Leaderboard Generation (5 points)
+--------------------------------------------
+Create a leaderboard using Arrays, Maps, and Sets:
+- Rank students by average score
+- Handle ties (students with same average get same rank)
+- Display: Rank, Name, Average Score, Grade
+- Use Map to store ranks and Set to track unique average scores
+ 
+Task 4.2: Subject Performance Analysis (5 points)
+--------------------------------------------------
+For each subject, generate a report containing:
+- Top 3 performers (use Array methods)
+- Average score (use reduce)
+- Number of students above average (use filter)
+- Store results in a Map with subject as key
+ 
+Task 4.3: Student Grouping (5 points)
+--------------------------------------
+Group students using Maps:
+- Group by grade (A, B, C, etc.)
+- Group by age
+- Group by number of subjects enrolled
+- Each group should contain array of student objects
+ 
+Task 4.4: Data Deduplication and Merging (5 points)
+----------------------------------------------------
+- Given two arrays of student records, merge them removing duplicates
+  (based on student ID)
+- Use Set to track seen IDs
+- Return merged array with unique students
+- If duplicate found, keep the record with higher average score
+ 
+===============================================================================
+PART 5: UI IMPLEMENTATION (20 points)
+===============================================================================
+
+HTML Structure Requirements (8 points)
+---------------------------------------
+- Input section to add new student records
+- Display section showing all students in a table
+- Filter/Search controls:
+  * Search by name
+  * Filter by grade
+  * Filter by subject
+- Statistics dashboard showing:
+  * Total students
+  * Class average
+  * Grade distribution
+  * Subject-wise performance
+ 
+CSS Styling Requirements (7 points)
+------------------------------------
+- Responsive layout (works on mobile and desktop)
+- Styled table with alternating row colors
+- Color-coded grades (A=Green, B=Blue, C=Yellow, D=Orange, F=Red)
+- Styled input forms and buttons
+- Visual statistics section with cards or panels
+ 
+JavaScript Functionality (5 points)
+------------------------------------
+- Add new student dynamically
+- Delete student from list
+- Search/Filter functionality that updates display in real-time
+- Calculate and display statistics dynamically
+- All data operations must use Arrays, Maps, or Sets appropriately
+ 
+===============================================================================
+CONSTRAINTS
+===============================================================================
+ 
+- Student IDs should be unique (use Set to validate)
+- Scores must be between 0-100
+- Minimum 1 subject, maximum 5 subjects per student
+- Subject names should be validated against a Set of valid subjects
+- Age must be between 18-30
+ 
+===============================================================================
+TEST CASES
+===============================================================================
+ 
+Test Case 1: Array Operations
+------------------------------
+Input: Filter students with average > 85
+Expected Output: Bob Smith (91.67), Diana Prince (92)
+ 
+Test Case 2: Map Operations
+----------------------------
+Input: Get subject statistics for "Math"
+Expected Output: { avg: 87.5, high: 95, low: 78, count: 4 }
+ 
+Test Case 3: Set Operations
+----------------------------
+Input: Union of subjects for Alice and Bob
+Expected Output: Set { "Math", "Physics", "Chemistry" }
+ 
+Test Case 4: Combined Operations
+---------------------------------
+Input: Generate leaderboard
+Expected Output: 
+Rank 1: Diana Prince (92.00) - Grade A
+Rank 2: Bob Smith (91.67) - Grade A
+Rank 3: Eve Davis (87.67) - Grade B
+Rank 4: Alice Johnson (84.33) - Grade B
+Rank 5: Charlie Brown (81.67) - Grade B
+ 
+Test Case 5: Deduplication
+---------------------------
+Input: 
+array1 = [{ id: 101, name: "Alice", scores: [85, 90] }]
+array2 = [{ id: 101, name: "Alice", scores: [90, 95] }, 
+          { id: 106, name: "Frank", scores: [80, 85] }]
+Expected Output: Merged array with 2 students (Alice with higher scores, Frank)
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Promises in JavaScript</title>
+</head>
+<body>
+<h1>Promises in JavaScript</h1>
+<script>
+    // function getUsers()
+    // {
+    //     let users = [];
+    //     //delay simulating an asynchronous operation
+    //     setTimeout(() => {
+    //         console.log("Users fetched");
+    //         users = [{name: "John", age: 30}, {name: "Jane", age: 25}];
+    //     }, 1000);
+    //     return users;
+    // }
+ 
+    // function getUserByName(name)
+    // {
+    //    const users = getUsers();
+    //    const user = users.find(user => user.name === name);
+    // return user;        
+    // }
+    //console.log(getUserByName("John")); // {name: "John", age: 30}
+ 
+    //using callback
+    function getUsers(callback)
+    {
+        //delay simulating an asynchronous operation
+        setTimeout(() => {
+            callback([
+                {name: "John", age: 30}, {name: "Jane", age: 25}
+            ]);
+        }, 1000);
+    }
+ 
+    function getUserByName(name, callback)
+    {
+       getUsers(users => {
+           const user = users.find(user => user.name === name);
+           callback(user);
+       });
+    }
+ 
+    getUserByName("John", user => {
+        console.log(user); // {name: "John", age: 30}
+    });
+ 
+ 
+ 
+    //this callback resolves the issue of asynchronous operations but it can lead to
+    //  callback hell when there are multiple nested callbacks.
+    // To avoid this, we can use Promises.
+ 
+    //Promise is an object that encapsulates the result of an asynchronous operation.
+    //  It can be in one of three states: pending, fulfilled, or rejected.
+ 
+    //to create a promise, we can use the Promise constructor which takes a function as an argument.
+ 
+    const myPromise = new Promise((resolve, reject) => {
+        //simulating an asynchronous operation
+        setTimeout(() => {
+            const success = true; // change to false to simulate an error
+            if(success) {
+                resolve("Operation successful");
+            } else {
+                reject("Operation failed");
+            }
+        }, 1000);
+    });
+ 
+ 
+    //to consume a promise, we can use the then() method which
+    // takes two arguments: a callback for when the promise is fulfilled
+    // and a callback for when the promise is rejected.
+ 
+    myPromise.then(
+        result => {
+            console.log(result); // "Operation successful"
+        },
+        error => {
+            console.log(error); // "Operation failed"
+        }
+    );
+ 
+ 
+    let success = true; // change to false to simulate an error
+    function getUsersPromise()
+    {
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
+                if(success) {
+                    resolve([
+                        {name: "John", age: 30}, {name: "Jane", age: 25}
+                    ]);
+                } else {
+                    reject("Failed to fetch users");
+                }
+            }, 1000);
+        });
+ 
+    }
+ 
+    // function onFulfilled(users) {
+    //     console.log(users); // [{name: "John", age: 30}, {name: "Jane", age: 25}]
+    // }
+ 
+    // function onRejected(error) {
+    //     console.log(error); // "Failed to fetch users"
+    // }
+    //  getUsersPromise().then(onFulfilled, onRejected);
+ 
+    //using arrow functions for onFulfilled and onRejected
+    const promise2=getUsersPromise().then(
+        users => {
+            console.log(users); // [{name: "John", age: 30}, {name: "Jane", age: 25}]
+        },
+        error => {
+            console.log(error); // "Failed to fetch users"
+        }
+    );
+ 
+ 
+    //catch() method is used to handle errors in promises.
+    // It takes a callback as an argument which is called when the promise is rejected.
+  let success2 = true; // change to false to simulate an error
+    function getUsersPromiseCatch()
+    {
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
+                if(success2) {
+                    resolve([
+                        {name: "John", age: 30}, {name: "Jane", age: 25}
+                    ]);
+                } else {
+                    reject("Failed to fetch users");
+                }
+            }, 1000);
+        });
+    }
+ 
+const promise3=getUsersPromiseCatch()
+    .then(users => {
+        console.log(users); // [{name: "John", age: 30}, {name: "Jane", age: 25}]
+    }).then(() => {
+        console.log("This will always be called"); // "This will always be called"
+    })
+    .catch(error => {
+        console.log(error); // "Failed to fetch users"
+    }).finally(() => { //finally() method is used to execute code after the promise is settled (either fulfilled or rejected).
+        console.log("finally called - Operation completed"); // "Operation completed"
+    });
+ 
+ 
+    //simple example of promise chaining
+    function getUserByNamePromise(name)
+    {
+        return getUsersPromise().then(users => {
+            const user = users.find(user => user.name === name);
+            if(user) {
+                return user;
+            } else {
+                throw new Error("User not found");
+            }
+        });
+    }
+ 
+    getUserByNamePromise("John2")
+        .then(user => {
+            console.log(user); // {name: "John", age: 30}
+            return user;
+        })
+        .then((user) => {
+            //transforming the user
+            const upperCaseName = user.name.toUpperCase();
+            console.log(upperCaseName); // "JOHN"
+        })
+        .catch(error => {
+            console.log(error); // "User not found"
+        }).finally(() => {
+            console.log("Operation completed finally"); // "Operation completed"
+        });
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+   
+ 
+</script>
+</body>
+</html>
+ 

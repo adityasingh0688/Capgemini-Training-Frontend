@@ -1,0 +1,28 @@
+LibraryManagementSystem/
+│
+├── types/
+│   └── types.ts
+│
+├── interfaces/
+│   ├── IBorrowable.ts
+│   ├── IReservable.ts
+│   └── IRenewable.ts
+│
+├── abstract/
+│   └── LibraryItem.ts
+│
+├── classes/
+│   ├── Book.ts
+│   ├── Magazine.ts
+│   ├── DigitalMedia.ts
+│   └── Member.ts
+│
+├── utils/
+│   ├── lateFee.ts
+│   ├── priorityQueue.ts
+│   ├── renewal.ts
+│   ├── availability.ts
+│   └── upgrade.ts
+│
+├── main.ts
+└── tsconfig.json

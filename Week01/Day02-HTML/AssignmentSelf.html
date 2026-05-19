@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Form</title>
+    <style>
+        p{
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+        }
+        h1{
+            font-family: 'Times New Roman', Times, serif;
+        }
+        body{
+            background-color: #f0f0f0;
+        }
+        form{
+            width: 60%;
+            margin: auto;
+            border: 1px solid black;
+            padding: 20px;
+            background-color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center;">EduLearn Academy Registration Form</h1>
+
+    <form method="post" action="welcome.html" target="_blank" enctype="multipart/form-data" autocomplete="on">
+
+        <!-- Personal Information -->
+        <fieldset>
+            <legend><h3>Personal Information</h3></legend>
+            <p>
+                <label for="fname">First Name:</label>
+                <input type="text" id="fname" name="firstName" required minlength="2" placeholder="first name"><br><br>
+
+                <label for="mname">Middle Name:</label>
+                <input type="text" id="mname" name="middleName" placeholder="middle name"><br><br>
+
+                <label for="lname">Last Name:</label>
+                <input type="text" id="lname" name="lastName" required minlength="2" placeholder="last name"><br><br>
+            
+                <label for="dob">Date Of Birth:</label>
+                <input type="date" id="dob" name="dob" required min="1996-05-05" max="2008-05-05"><br><br>
+           
+                <label for="gender">Gender:</label>
+                <input type="radio"id="male" name="gender" value="male" required>
+                <label for="male">Male</label>
+                <input type="radio"id="female" name="gender" value="female">
+                <label for="female">Female</label>
+                <input type="radio"id="other" name="gender" value="other">
+                <label for="other">Other</label><br><br>
+            
+           
+                <label for="profilePic">Profile Picture: </label>
+                <input type="file" id="profilePic" required name="profilePic" accept="image/*">
+            </p>
+        </fieldset>
+
+        <!-- Contact Details -->
+         <fieldset>
+            <legend><h3>Contact Details</h3></legend>
+            <p>
+                <label for="email">Email:</label>
+                <input type="email"required id="email" name="email" placeholder="xyz@gmail.com"><br><br>
+
+                <label for="phone">Phone:</label>
+                <input type="tel" id="phone" name="phone" pattern="[0-9]{10}" required placeholder="Enter a mobile number"><br><br>
+
+                <label for="website">Website:</label>
+                <input type="url" id="website" name="website" placeholder="https://example.com"><br><br>
+
+                <label for="Country">Country:</label>
+                <select id="Country" name="Country" required>
+                    <optgroup label="India" >
+                    <option value="j&k" >Jammu and Kashmir</option>
+                    <option value="Up" selected>Uttar Pradesh</option>
+                    <option value="Assam">Assam</option>
+                    <option value="Ap">Arunachal Pradesh</option>
+                    <option value="Del">Delhi</option>
+                    </optgroup>
+                    <optgroup label="USA">
+                    <option value="california">California</option>
+                    <option value="texas">Texas</option>
+                    <option value="florida">Florida</option>
+                    </optgroup>
+                </select><br><br>
+
+                <div style="display:flex; align-items: center; gap: 10px;">
+                <label for="address">Address:</label>
+                <textarea id="address" name="address" rows="4" cols="50"></textarea>
+                </div>
+            </p>
+         </fieldset>
+
+         <!-- Account Setup -->
+         <fieldset>
+            <legend><h3>Account Setup</h3></legend>
+            <p>
+                <label for="username">Username:</label>
+                <input type="text" name="username" id="username" pattern="[A-Za-z0-9]{5,20}"  required placeholder="Enter username"><br><br>
+
+                <label for="password">Password:</label>
+                <input type="password" name="password" id="password" required placeholder="Enter password"><br><br>
+
+                <label for="confirmPassword">Confirm Password:</label>
+                <input type="password" name="confirmPassword" id="confirmPassword" required placeholder="Confirm password"><br><br>
+
+                <label for="Security">Security Question:</label>
+                <select id="Security" name="Security" required>
+                    <option value="">Select a question</option>
+                    <option value="pet">What is the name of your first pet?</option>
+                    <option value="school">What is the name of your first school?</option>
+                    <option value="mother">What is the name of your mother?</option>
+                </select><br><br>
+
+                <div style="display:flex; align-items: center; gap: 10px;">
+                <label for="securityAnswer">Answer:</label>
+                <textarea id="securityAnswer" name="securityAnswer" required placeholder=""></textarea>
+            </p>
+         </fieldset>
+
+         <!--Education & Professional Details-->
+         <fieldset>
+            <legend><h3>Education & Professional Details</h3></legend>
+            <p>
+                <label for="highestQualification">Highest Education Level:</label>
+                <select id="highestQualification" name="highestQualification" required>
+                    <option value="">Select Qualification</option>
+                    <option value="highSchool">High School</option>
+                    <option value="bachelors">Bachelor's Degree</option>
+                    <option value="masters">Master's Degree</option>
+                    <option value="phd">PhD</option>
+                </select><br><br>
+
+                <label for="field">Field Of Study:</label>
+                <select id="field" name="subject" required>
+                    <option value="">Select Field</option>
+                    <option value="computerScience">Computer Science</option>
+                    <option value="business">Business</option>
+                    <option value="arts">Arts</option>
+                    <option value="science">Science</option>
+                </select><br><br>
+
+                <label for="experiance">Years Of Experience:</label>
+                <input type="range"  id="experiance" name="experiance" min="0" max="40" required oninput="exp.value = this.value">
+                <output id="exp">20</output><br><br>
+                
+
+                <label for="skills">Skills:</label>
+                <input list="skillsList" id="skills" name="skills" required>
+                <datalist id="skillsList" >
+                    <option >Frontend Development</option>
+                    <option >Backend Development</option>
+                    <option >Full-Stack Development</option>
+                </datalist>
+                
+            </p>
+         </fieldset>
+
+          <button type="submit" style="margin:5px;">Submit</button>
+          <button type="reset" style="margin: 5px;">Reset</button>
+          <button type="button" style="margin: 5px;" onclick="alert('Please fill all the fields before submitting')">Click Me</button>
+
+    </form>
+</body>
+</html>
