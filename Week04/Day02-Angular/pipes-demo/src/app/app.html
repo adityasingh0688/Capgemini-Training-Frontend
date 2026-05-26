@@ -1,0 +1,92 @@
+<h1>Angular Pipes Demo</h1>
+
+<hr>
+
+<h2>UpperCase Pipe</h2>
+
+<p>{{name | uppercase}}</p>
+
+<hr>
+
+<h2>LowerCase Pipe</h2>
+
+<p>{{name | lowercase}}</p>
+
+<hr>
+
+<h2>TitleCase Pipe</h2>
+
+<p>{{name | titlecase}}</p>
+
+<hr>
+
+<h2>JSON Pipe</h2>
+
+<p>{{employee | json}}</p>
+
+<hr>
+
+<h2>KeyValue Pipe</h2>
+
+<ul>
+
+@for(item of employee | keyvalue; track item.key)
+{
+   <li>
+
+      {{item.key}} : {{item.value}}
+
+   </li>
+}
+
+</ul>
+
+<hr>
+
+<h2>Date Pipe</h2>
+
+<p>{{currentDate}}</p>
+
+<p>{{currentDate | date}}</p>
+
+<p>{{currentDate | date:'fullDate'}}</p>
+
+<p>{{currentDate | date:'shortDate'}}</p>
+
+<p>{{currentDate | date:'dd/MM/yyyy'}}</p>
+
+<hr>
+
+<h2>Decimal Pipe</h2>
+
+<p>{{price}}</p>
+
+<p>{{price | number}}</p>
+
+<p>{{price | number:'1.2-2'}}</p>
+
+<hr>
+
+<h2>Percent Pipe</h2>
+
+<p>{{discount}}</p>
+
+<p>{{discount | percent}}</p>
+
+<hr>
+
+<h2>Currency Pipe</h2>
+
+<p>{{employee.salary | currency}}</p>
+
+<p>{{employee.salary | currency:'INR'}}</p>
+
+<p>{{employee.salary | currency:'USD'}}</p>
+
+<hr>
+
+<h2>Slice Pipe</h2>
+
+<p>{{message | slice:0:7}}</p>
+
+<p>{{cities | slice:0:2}}</p>
