@@ -4,19 +4,19 @@
 
 <h2>UpperCase Pipe</h2>
 
-<p>{{name | uppercase}}</p>
+<p>{{name () | uppercase}}</p>
 
 <hr>
 
 <h2>LowerCase Pipe</h2>
 
-<p>{{name | lowercase}}</p>
+<p>{{name () | lowercase}}</p>
 
 <hr>
 
 <h2>TitleCase Pipe</h2>
 
-<p>{{name | titlecase}}</p>
+<p>{{name () | titlecase}}</p>
 
 <hr>
 
@@ -63,7 +63,6 @@
 
 <p>{{price | number}}</p>
 
-<p>{{price | number:'1.2-2'}}</p>
 
 <hr>
 
@@ -87,6 +86,6 @@
 
 <h2>Slice Pipe</h2>
 
-<p>{{message | slice:0:7}}</p>
+<p>{{message | slice:0:5}}</p>
 
 <p>{{cities | slice:0:2}}</p>

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal, WritableSignal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -10,17 +10,11 @@ import { CommonModule } from '@angular/common';
 
 export class App {
 
-  name:string = "angular pipes demo";
+  name:WritableSignal<string> = signal("angular pipes demo");
 
-  cities:string[] = [
-    "delhi",
-    "mumbai",
-    "bangalore",
-    "pune"
-  ];
+  cities:string[] = ["delhi","mumbai","bangalore","pune"];
 
   employee = {
-
     id:101,
     name:"Aditya",
     department:"IT",

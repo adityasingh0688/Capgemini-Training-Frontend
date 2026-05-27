@@ -1,0 +1,181 @@
+import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+// for @if directive no need to import CommonModule as it is already imported in the app.module.ts file and it is available globally in the application.
+//import { CommonModule } from '@angular/common';
+ 
+@Component({
+  selector: 'app-demo-directives',
+  imports: [FormsModule],
+  templateUrl: './demo-directives.html',
+  styleUrl: './demo-directives.css',
+})
+export class DemoDirectives {
+ cities: string[] = ['Mumbai', 'Pune', 'Delhi', 'Bangalore', 'Chennai', 'Hyderabad', 'Kolkata', 'Ahmedabad', 'Surat', 'Jaipur'];
+ 
+ choice="Mumbai";
+}
+ 
+ 
+<p>demo-directives works!</p>
+<p>Structural Directives:</p>
+<p> If Directive</p>
+ 
+@if(cities[0] === 'Mumbai')
+{
+<p>City is Mumbai</p>
+}
+@else if(cities[0] === 'Pune')
+{
+<p>City is Pune</p>
+}
+@else
+{
+<p>City is not Mumbai</p>
+}
+ 
+<hr>
+<p>For Directive</p>
+<p> Names of Cities with length greater than 5</p>
+@for ( city of cities; track $index )
+{
+  @if(city.length > 5)
+  {
+    <p> Index is {{$index}} and City is {{city}} </p>
+  }
+ 
+}
+ 
+ 
+<hr>
+<p>Switch Directive</p>
+<select [(ngModel)]="choice">
+    <option value="Mumbai" selected>Mumbai</option>
+    @for (item of cities; track $index)
+    {
+        <option value="{{item}}">{{item}}</option>
+    }
+</select>
+ 
+<p>Selected City is {{choice}}</p>
+<div>
+    @switch(choice)
+    {
+        @case('Mumbai')
+            {
+                <p>City is Mumbai</p>
+            }
+         
+        @case('Pune')
+            {
+                <p>City is Pune</p>
+            }
+        @case ('Delhi')
+        {
+            <p>City is Delhi</p>
+        }  
+        @default
+            {
+                <p>City is not Mumbai, Pune, or Delhi</p>
+            }
+    }
+ 
+</div>
+
+<hr>
+    <p>Attribute Directives</p>
+    <p>ngClass Directive</p>
+    <p>Apply class 'red' to cities with length greater than 5 and 'green' to cities with length less than or equal to 5</p>
+    @for ( city of cities; track $index )
+    {
+        <p [ngClass]="city.length > 5 ? 'orange' : 'green'"> Index is {{$index}} and City is {{city}} </p>
+    }
+ 
+    <hr>
+    <p>ngStyle Directive</p>
+    <p>Apply style for all cities in this ul element</p>
+    <ul>
+        @for ( city of cities; track $index )
+        {
+            <li [ngStyle]="{'color': city.length > 5 ? 'orange' : 'green', 'font-weight': city.length > 5 ? 'bold' : 'italic'}">
+                 Index is {{$index}} and City is {{city}}
+            </li>
+ 
+        }
+    </ul>
+<p [ngStyle]="{'color': 'blue', 'font-weight': 'bold', 'margin': '10px', 'padding': '5px'}">Trying the NgStyle Directive for paragraph</p>
+<p [ngStyle]="cssObject">Applying ngStyle Directive for paragraph using object syntax</p>
+ 
+<hr>
+ 
+<p> using ng-template</p>
+<ng-template #cityTemplate let-city>
+    <p>City is {{city}}</p>
+</ng-template>
+<p *ngFor="let city of cities; track $index">
+    <ng-container *ngTemplateOutlet="cityTemplate; context: {$implicit: city}"></ng-container>
+</p>
+ 
+ 
+</div>
+
+
+//task
+# Part 3: Structural Directives Challenge
+ 
+## Problem Statement - Directive Mastery
+ 
+Enhance the Smart Shopping Cart System with **conditional rendering, loops, and custom directives** using Angular's new control flow syntax (@if, @for, @switch) and traditional structural directives. You'll also create custom attribute directives to add special behaviors.
+ 
+---
+ 
+## Angular 21 Control Flow Syntax (NEW)
+ 
+### Component: OrderHistoryComponent
+ 
+Create a new component to display customer order history with advanced conditional rendering.
+ 
+#### **1. @if Directive - Conditional Rendering**
+ 
+**Scenarios to Implement:**
+- Display loading state when isLoading is true
+- Show orders container when orders array has items
+- Display checkout button only for authenticated users
+- Show premium banner for Premium membership level
+- Display stock availability when product.stock > 0
+- Implement nested conditions for cart discount eligibility
+ 
+#### **2. @else Directive - Alternative Rendering**
+ 
+**Scenarios to Implement:**
+- Display orders list when available, otherwise show empty state with "Start shopping" button
+- Show user dashboard for authenticated users, otherwise show login prompt
+- Display "Add to Cart" button when in stock, otherwise show "Out of Stock" with notify option
+- Show payment status: "Paid" badge or "Payment Pending" with pay button
+ 
+#### **3. @else if - Multiple Conditions**
+ 
+**Scenarios to Implement:**
+- **Order status display**: Show different messages for delivered, shipped, processing, cancelled, or pending
+- **Membership level benefits**: Display different benefit messages for Premium, Gold, Silver, or regular members
+- **Cart total discount tiers**: Show discount messages based on cart total ($500+, $200+, $100+, or below)
+- **Product rating display**: Show rating labels (Excellent 5 stars, Good 4 stars, Average 3 stars, Poor 2 stars, or Needs Improvement 1 star)
+ 
+#### **4. @for Directive - Iteration**
+ 
+**Scenarios to Implement:**
+- **Basic loop**: Iterate through orders with track by order.id
+- **Empty state**: Display orders or show "no orders" message with @empty
+- **Loop with index and count**: Show product position (e.g., "1 of 10")
+- **Loop with first, last, even, odd**: Apply different styles to first, last, even, and odd items
+- **Nested loops**: Iterate through categories and their products
+- **Complex loop**: Combine loops with conditional rendering (show "Latest" badge on first order, discount percentages, conditional action buttons)
+ 
+#### **5. @switch Directive - Multiple Choice Rendering**
+ 
+**Scenarios to Implement:**
+- **Payment method display**: Show different content for credit-card, debit-card, paypal, cash-on-delivery, with default for unknown methods
+- **Shipping method**: Display different content for express, standard, overnight, pickup, with tracking info and estimated delivery
+- **Order status actions**: Show different action buttons based on status (pending: cancel/modify, processing: contact support, shipped: track/update address, delivered: rate/reorder/return, cancelled: refund status)
+- **Product category badges**: Display category-specific labels for Electronics, Accessories, Audio, Computers, with fallback for other categories
+ 
+---
