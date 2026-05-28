@@ -1,0 +1,2134 @@
+import { Pipe, PipeTransform } from "@angular/core";
+ 
+ 
+@Pipe({
+    name: 'customPipe1'
+})
+export class CustomPipe1 implements PipeTransform
+{
+    transform(city: string, ...args: string[]): string {
+        // Implement your transformation logic here
+        if (city.length %2 === 0)
+            {
+            return city.toUpperCase();
+        } else {
+            return city.toLowerCase();
+        }
+    }
+}
+ 
+<p>Async Pipe</p>
+<p>Data from Promise without async pipe:{{dataPromise}}</p>
+<p> Data from Promise with async pipe: {{dataPromise | async}}</p>
+ 
+<p> Custom Pipe1</p>
+<ul>
+    @for(city of cities; track $index)
+    {
+        <li>{{city | customPipe1}}</li>,
+    }
+</ul>
+ 
+ 
+  //async pipe
+  dataPromise: Promise<string> = new Promise((resolve) => {
+    setTimeout(() => {
+      resolve('Data loaded asynchronously!');
+    }, 2000);
+  });
+ 
+import { Pipe, PipeTransform } from '@angular/core';
+ 
+@Pipe({
+  name: 'customPipe2',
+})
+export class CustomPipe2Pipe implements PipeTransform
+{
+  transform(cities: string[], ...args: string[]): any
+  {
+    //sort the cities in ascending order of length of the city name
+    return cities.sort((a, b) => a.length - b.length);
+  }
+}
+ 
+ 
+ 
+<p> Custom Pipe2- : Sorted cities based on length of the city name</p>
+<p> Cities: {{cities}}</p>
+<p> Cities with CustomPipe2: {{cities | customPipe2}}</p>
+ 
+
+
+
+ //sevice 
+ export class BankAccount {
+  private balance: number;
+  private accountNumber: string;
+ 
+  constructor(accountNumber: string, initialBalance: number = 0) {
+    this.accountNumber = accountNumber;
+    this.balance = initialBalance;
+  }
+ 
+  getBalance(): number {
+    return this.balance;
+  }
+ 
+  getAccountNumber(): string {
+    return this.accountNumber;
+  }
+}
+ 
+import { Injectable } from '@angular/core';
+import { BankAccount } from './BankAccount';
+@Injectable({
+  //providedIn: 'root' means that the service will be available across application and
+  // there will be a single instance of the service (singleton) throughout the application.
+  providedIn: 'root',
+})
+export class BankService
+{
+ 
+  constructor() {
+ 
+  }
+ 
+  private accounts: BankAccount[] = [];
+ 
+  getAccounts(): BankAccount[] {
+    return this.accounts;
+  }
+ 
+  createAccount(accountNumber: string, initialBalance: number = 1000): BankAccount {
+    const account = new BankAccount(accountNumber, initialBalance);
+    this.accounts.push(account);
+    return account;
+  }
+ 
+  getAccount(accountNumber: string): BankAccount | undefined {
+    return this.accounts.find(account => account['accountNumber'] === accountNumber);
+  }
+ 
+  withdraw(accountNumber: string, amount: number): boolean {
+    const account = this.getAccount(accountNumber);
+    if (account && account['balance'] >= amount) {
+      account['balance'] -= amount;
+      return true;
+    }
+    return false;
+  }
+ 
+  deposit(accountNumber: string, amount: number): boolean {
+    const account = this.getAccount(accountNumber);
+    if (account) {
+      account['balance'] += amount;
+      return true;
+    }
+    return false;
+  }
+ 
+  getBalance(accountNumber: string): number | undefined {
+    const account = this.getAccount(accountNumber);
+    return account ? account['balance'] : undefined;
+  }
+ 
+  transfer(fromAccountNumber: string, toAccountNumber: string, amount: number): boolean {
+    const fromAccount = this.getAccount(fromAccountNumber);
+    const toAccount = this.getAccount(toAccountNumber);
+    if (fromAccount && toAccount && fromAccount['balance'] >= amount) {
+      fromAccount['balance'] -= amount;
+      toAccount['balance'] += amount;
+      return true;
+    }
+    return false;
+  }
+ 
+}
+ 
+ 
+import { Component, inject } from '@angular/core';
+import { BankService } from '../bank-service';
+import { Inject } from '@angular/core';
+import { BankAccount } from '../BankAccount';
+import { FormsModule } from '@angular/forms';
+ 
+@Component({
+  selector: 'app-bank-service-consumer',
+  imports: [FormsModule ],
+  templateUrl: './bank-service-consumer.html',
+  styleUrl: './bank-service-consumer.css',
+})
+export class BankServiceConsumer {
+ 
+  //inject the BankService into the component's constructor
+  //constructor(private bankService: BankService)  {}
+ 
+  //or you can also inject the service using the @Inject decorator
+  //constructor(@Inject(BankService) private bankService: BankService)  {}
+ 
+  //or using inject function
+  private bankService = inject(BankService);
+ 
+  // Now you can use the bankService instance to call methods and access properties of the BankService.
+ 
+  //use the bankService to create a new account
+  accounts: BankAccount[] = this.bankService.getAccounts();
+ 
+  accountNumber: string = '';
+  initialBalance: number = 0;
+ 
+  addAccount() {
+    const newAccount = this.bankService.createAccount(this.accountNumber, this.initialBalance);    
+  }
+ 
+  withdrawAccountNumber: string = '';
+  withdrawAmount: number = 0;
+ 
+  withdraw() {
+    this.bankService.withdraw(this.withdrawAccountNumber, this.withdrawAmount);
+  }
+ 
+  depositAccountNumber: string = '';
+  depositAmount: number = 0;
+ 
+  deposit() {
+    this.bankService.deposit(this.depositAccountNumber, this.depositAmount);
+  }
+ 
+  transferFromAccountNumber: string = '';
+  transferToAccountNumber: string = '';
+  transferAmount: number = 0;
+ 
+  transfer() {
+    this.bankService.transfer(this.transferFromAccountNumber, this.transferToAccountNumber, this.transferAmount);
+  }
+ 
+ 
+}
+ 
+ 
+<p>bank-service-consumer works!</p>
+ 
+<p>
+    Add a ccount using the form below:
+</p>
+<form >
+    <label for="accountNumber">Account Number:</label>
+    <input type="text" id="accountNumber" name="accountNumber" [(ngModel)]="accountNumber">
+    <br>
+    <label for="initialBalance">Initial Balance:</label>
+    <input type="number" id="initialBalance" name="initialBalance" [(ngModel)]="initialBalance">
+    <br>
+    <button (click)="addAccount()">Create Account</button>
+</form>
+ 
+<div>
+    <input type="text" placeholder="Account Number" [(ngModel)]="withdrawAccountNumber">
+    <input type="number" placeholder="Amount" [(ngModel)]="withdrawAmount">
+    <button (click)="withdraw()">Withdraw</button>
+</div>
+ 
+<div>
+    <input type="text" placeholder="Account Number" [(ngModel)]="depositAccountNumber">
+    <input type="number" placeholder="Amount" [(ngModel)]="depositAmount">
+    <button (click)="deposit()">Deposit</button>
+</div>
+ 
+<div>
+    <input type="text" placeholder="From Account Number" [(ngModel)]="transferFromAccountNumber">
+    <input type="text" placeholder="To Account Number" [(ngModel)]="transferToAccountNumber">
+    <input type="number" placeholder="Amount" [(ngModel)]="transferAmount">
+    <button (click)="transfer()">Transfer</button>
+</div>
+ 
+<table>
+  <tr>
+    <th> Sr No</th>
+    <th>Account Number</th>
+    <th>Balance</th>
+  </tr>
+ @for (account of accounts; track $index)
+ {
+    <tr>
+        <td>{{ $index + 1 }}</td>
+        <td>{{account.getAccountNumber()}}</td>
+        <td>{{account.getBalance()}}</td>
+    </tr>
+ }
+</table>
+ 
+ 
+/* bank-service-consumer.component.css for table */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+th, td {
+  border: 1px solid black;
+  padding: 8px;
+  text-align: left;
+}
+*
+{
+  margin: 10px;
+  padding: 10px;
+}
+ 
+form, div
+{
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 25px;
+  padding: 20px;
+}
+ 
+ 
+ # Part 5: Services and Dependency Injection Challenge
+ 
+## Problem Statement - Service Architecture Basics
+ 
+Build a service layer for the Smart Shopping Cart System that demonstrates Angular's Dependency Injection (DI) system, service creation, and how components consume services. You will create multiple services with different scopes and understand how to share data and functionality across components using services.
+ 
+---
+ 
+## Service Architecture Overview
+ 
+```
+Services Layer:
+├── ProductService (Root-level - Singleton)
+├── CartService (Root-level - Singleton)
+├── OrderService (Root-level - Singleton)
+├── NotificationService (Root-level - Singleton)
+├── LocalStorageService (Root-level - Singleton)
+├── LoggerService (Component-level - Multiple instances)
+└── CalculatorService (Root-level - Singleton)
+ 
+Component Service Consumers:
+├── AppComponent → NotificationService
+├── ShoppingCartComponent → CartService, LoggerService, NotificationService
+├── ProductListComponent → ProductService, LoggerService
+├── OrderHistoryComponent → OrderService
+└── ProductItemComponent → CartService
+```
+ 
+---
+ 
+## Service Requirements
+ 
+### Service 1: ProductService
+ 
+**Purpose**: Manage product data and inventory operations.
+ 
+**Provider Level**: `providedIn: 'root'` (Singleton)
+ 
+**Properties:**
+- Private products: Product[] array
+- Private categories: string[] array
+ 
+**Methods to Implement:**
+ 
+1. **getAllProducts(): Product[]**
+   - Returns array of all products
+   - Should return copy of products array to prevent direct mutation
+ 
+2. **getProductById(id: number): Product | undefined**
+   - Returns single product by ID
+   - Returns undefined if not found
+ 
+3. **getProductsByCategory(category: string): Product[]**
+   - Filters products by category
+   - Returns matching products array
+ 
+4. **searchProducts(query: string): Product[]**
+   - Searches products by name or description
+   - Case-insensitive search
+   - Returns matching products
+ 
+5. **updateProductStock(productId: number, quantity: number): boolean**
+   - Updates product stock quantity
+   - Returns true if successful, false if product not found
+   - Logs stock change to console
+ 
+6. **addProduct(product: Product): boolean**
+   - Adds new product to the list
+   - Validates product has all required fields
+   - Returns true if added successfully
+ 
+7. **deleteProduct(productId: number): boolean**
+   - Removes product from list
+   - Returns true if deleted, false if not found
+ 
+8. **getFeaturedProducts(): Product[]**
+   - Returns products with rating > 4.5
+   - Limited to first 5 products
+ 
+9. **getLowStockProducts(): Product[]**
+   - Returns products with stock < 5
+   - Useful for inventory management
+ 
+10. **getCategories(): string[]**
+    - Returns array of unique categories
+    - Extracted from products
+ 
+---
+ 
+### Service 2: CartService
+ 
+**Purpose**: Manage shopping cart state and operations.
+ 
+**Provider Level**: `providedIn: 'root'` (Singleton)
+ 
+**Dependencies**: Inject ProductService, NotificationService
+ 
+**Properties:**
+- Private cartItems: CartItem[] array
+- Private discountPercentage: number (default 0)
+ 
+**Methods to Implement:**
+ 
+1. **addToCart(product: Product, quantity: number = 1): boolean**
+   - Checks product stock availability using ProductService
+   - If item exists in cart, increases quantity
+   - If new item, adds to cart
+   - Updates stock in ProductService
+   - Shows notification via NotificationService
+   - Returns true if successful
+ 
+2. **removeFromCart(productId: number): boolean**
+   - Removes item from cart completely
+   - Restores stock in ProductService
+   - Shows notification
+   - Returns true if item was found and removed
+ 
+3. **updateQuantity(productId: number, quantity: number): boolean**
+   - Updates item quantity in cart
+   - Validates against available stock
+   - Shows error notification if quantity exceeds stock
+   - Returns true if updated successfully
+ 
+4. **clearCart(): void**
+   - Removes all items from cart
+   - Restores all stock quantities to ProductService
+   - Resets discount to 0
+   - Shows confirmation notification
+ 
+5. **getCartItems(): CartItem[]**
+   - Returns copy of cart items array
+ 
+6. **getCartCount(): number**
+   - Returns total number of items in cart (sum of all quantities)
+ 
+7. **getCartItem(productId: number): CartItem | undefined**
+   - Returns specific cart item by product ID
+ 
+8. **isInCart(productId: number): boolean**
+   - Checks if product is already in cart
+ 
+9. **applyDiscount(code: string): boolean**
+   - Validates discount code
+   - Valid codes: "SAVE10" (10%), "SAVE20" (20%), "SAVE25" (25%)
+   - Updates discountPercentage if valid
+   - Returns true if code is valid
+ 
+10. **getDiscount(): number**
+    - Returns current discount percentage
+ 
+11. **calculateSubtotal(): number**
+    - Calculates cart subtotal (sum of all item prices × quantities)
+ 
+12. **calculateTax(): number**
+    - Calculates 8% tax on subtotal
+ 
+13. **calculateTotal(): number**
+    - Calculates final total (subtotal - discount + tax)
+ 
+14. **getCartSummary(): CartSummary**
+    - Returns complete cart summary object with all calculations
+ 
+---
+ 
+### Service 3: OrderService
+ 
+**Purpose**: Manage order creation and history.
+ 
+**Provider Level**: `providedIn: 'root'` (Singleton)
+ 
+**Dependencies**: Inject CartService, NotificationService
+ 
+**Properties:**
+- Private orders: Order[] array
+- Private nextOrderId: number (for generating unique IDs)
+ 
+**Methods to Implement:**
+ 
+1. **createOrder(shippingInfo: ShippingInfo): Order | null**
+   - Gets current cart from CartService
+   - Validates cart is not empty
+   - Creates order object with unique ID and timestamp
+   - Adds order to orders array
+   - Clears cart via CartService
+   - Shows success notification
+   - Returns created order, or null if cart is empty
+ 
+2. **getOrderById(orderId: number): Order | undefined**
+   - Fetches specific order by ID
+ 
+3. **getAllOrders(): Order[]**
+   - Returns all orders
+   - Sorted by date (newest first)
+ 
+4. **cancelOrder(orderId: number): boolean**
+   - Cancels order (only if status is 'pending')
+   - Updates order status to 'cancelled'
+   - Returns true if cancelled, false if order not found or already shipped
+ 
+5. **getOrdersByStatus(status: string): Order[]**
+   - Filters orders by status (pending, processing, shipped, delivered, cancelled)
+ 
+6. **getTotalOrdersCount(): number**
+   - Returns total number of orders
+ 
+7. **getTotalSpent(): number**
+   - Calculates sum of all order totals
+ 
+8. **getAverageOrderValue(): number**
+   - Calculates average order amount
+ 
+---
+ 
+### Service 4: NotificationService
+ 
+**Purpose**: Display notifications and messages to users.
+ 
+**Provider Level**: `providedIn: 'root'` (Singleton)
+ 
+**Properties:**
+- Private notifications: Notification[] array
+- Private nextNotificationId: number
+ 
+**Methods to Implement:**
+ 
+1. **showSuccess(message: string): void**
+   - Creates success notification
+   - Adds to notifications array
+   - Logs to console
+ 
+2. **showError(message: string): void**
+   - Creates error notification
+   - Adds to notifications array
+   - Logs to console with error styling
+ 
+3. **showWarning(message: string): void**
+   - Creates warning notification
+ 
+4. **showInfo(message: string): void**
+   - Creates info notification
+ 
+5. **getNotifications(): Notification[]**
+   - Returns all notifications
+ 
+6. **clearNotifications(): void**
+   - Clears all notifications
+ 
+7. **removeNotification(id: number): void**
+   - Removes specific notification by ID
+ 
+---
+ 
+### Service 5: LocalStorageService
+ 
+**Purpose**: Handle browser LocalStorage operations safely.
+ 
+**Provider Level**: `providedIn: 'root'` (Singleton)
+ 
+**Methods to Implement:**
+ 
+1. **setItem(key: string, value: any): boolean**
+   - Stores data in LocalStorage
+   - Automatically stringifies objects using JSON.stringify
+   - Handles errors gracefully
+   - Returns true if successful
+ 
+2. **getItem<T>(key: string): T | null**
+   - Retrieves and parses data from LocalStorage
+   - Returns typed data or null if not found
+   - Handles JSON parse errors
+ 
+3. **removeItem(key: string): void**
+   - Removes specific item from LocalStorage
+ 
+4. **clear(): void**
+   - Clears all LocalStorage data
+ 
+5. **exists(key: string): boolean**
+   - Checks if key exists in LocalStorage
+ 
+6. **getAllKeys(): string[]**
+   - Returns array of all keys in LocalStorage
+ 
+---
+ 
+### Service 6: LoggerService
+ 
+**Purpose**: Provide logging functionality for debugging (component-level service to demonstrate multiple instances).
+ 
+**Provider Level**: `providedIn: null` (Must be provided in component's providers array)
+ 
+**Properties:**
+- componentName: string
+- Private logs: LogEntry[] array
+ 
+**Methods to Implement:**
+ 
+1. **setComponentName(name: string): void**
+   - Sets the component name for this logger instance
+ 
+2. **log(message: string): void**
+   - Logs info message with timestamp and component name
+   - Stores in logs array
+   - Outputs to console
+ 
+3. **error(message: string): void**
+   - Logs error message with red color in console
+   - Stores in logs array
+ 
+4. **warn(message: string): void**
+   - Logs warning message with yellow color
+   - Stores in logs array
+ 
+5. **getLogs(): LogEntry[]**
+   - Returns all logs for this component instance
+ 
+6. **clearLogs(): void**
+   - Clears all logs for this instance
+ 
+---
+ 
+### Service 7: CalculatorService
+ 
+**Purpose**: Provide calculation utilities for the shopping cart.
+ 
+**Provider Level**: `providedIn: 'root'` (Singleton)
+ 
+**Methods to Implement:**
+ 
+1. **calculatePercentage(amount: number, percentage: number): number**
+   - Calculates percentage of a given amount
+   - Returns rounded to 2 decimal places
+ 
+2. **calculateDiscount(price: number, discountPercent: number): number**
+   - Calculates discounted price
+   - Returns price after discount applied
+ 
+3. **formatCurrency(amount: number): string**
+   - Formats number as currency string ($1,234.56)
+ 
+4. **calculateTax(amount: number, taxRate: number): number**
+   - Calculates tax amount
+   - Default tax rate is 8%
+ 
+5. **roundToTwoDecimals(num: number): number**
+   - Rounds number to 2 decimal places
+ 
+---
+ 
+---
+ 
+## Component Consumer Requirements
+ 
+### Component 1: ProductListComponent (Service Consumer)
+ 
+**Services to Inject:**
+- ProductService
+- CartService
+- LoggerService (component-level - provide in component)
+- NotificationService
+ 
+**Implementation Requirements:**
+ 
+1. **OnInit**:
+   - Call ProductService.getAllProducts() to load products
+   - Store products in component property
+   - Display products in template using *ngFor
+   - Log component initialization via LoggerService
+ 
+2. **Search Functionality**:
+   - Add search input field in template
+   - On input change, call ProductService.searchProducts(query)
+   - Update displayed products with search results
+ 
+3. **Add to Cart**:
+   - Call CartService.addToCart(product, quantity) when button clicked
+   - CartService will show notification automatically
+   - Log action via LoggerService
+   - Update button state based on stock
+ 
+4. **Category Filter**:
+   - Get categories from ProductService.getCategories()
+   - Display as filter buttons
+   - On category click, call ProductService.getProductsByCategory()
+   - Update displayed products
+ 
+5. **Display Featured Products**:
+   - Add button to show featured products
+   - Call ProductService.getFeaturedProducts()
+   - Display in separate section
+ 
+**Component Provider Configuration:**
+```typescript
+@Component({
+  providers: [LoggerService]  // Component-level service
+})
+```
+ 
+---
+ 
+### Component 2: ShoppingCartComponent (Service Consumer)
+ 
+**Services to Inject:**
+- CartService
+- OrderService
+- NotificationService
+- LoggerService (component-level)
+ 
+**Implementation Requirements:**
+ 
+1. **Cart Display**:
+   - Call CartService.getCartItems() to get current cart
+   - Display cart items in template
+   - Show item count using CartService.getCartCount()
+ 
+2. **Cart Summary**:
+   - Display subtotal from CartService.calculateSubtotal()
+   - Display tax from CartService.calculateTax()
+   - Display total from CartService.calculateTotal()
+   - Update summary when cart changes
+ 
+3. **Remove Item**:
+   - Add remove button for each item
+   - Call CartService.removeFromCart(productId)
+   - Refresh cart display
+   - Log removal action via LoggerService
+ 
+4. **Update Quantity**:
+   - Add quantity input for each item
+   - On change, call CartService.updateQuantity(productId, newQuantity)
+   - Handle validation errors (shows notification automatically)
+   - Refresh cart if successful
+ 
+5. **Clear Cart**:
+   - Add "Clear Cart" button
+   - Confirm with user using window.confirm()
+   - Call CartService.clearCart()
+   - Refresh display
+ 
+6. **Checkout**:
+   - Add checkout button
+   - Create form for shipping information
+   - Validate cart is not empty
+   - Call OrderService.createOrder(shippingInfo)
+   - If successful, show order confirmation
+   - Navigate to order history
+ 
+7. **Apply Discount**:
+   - Add input field for discount code
+   - Call CartService.applyDiscount(code)
+   - Show success/error message based on return value
+   - Update cart summary to show discount
+ 
+**Component Provider Configuration:**
+```typescript
+@Component({
+  providers: [LoggerService]
+})
+```
+ 
+---
+ 
+### Component 3: OrderHistoryComponent (Service Consumer)
+ 
+**Services to Inject:**
+- OrderService
+- NotificationService
+ 
+**Implementation Requirements:**
+ 
+1. **Load Orders**:
+   - In OnInit, call OrderService.getAllOrders()
+   - Store orders in component property
+   - Display in template using *ngFor
+   - Show "No orders yet" message if empty
+ 
+2. **Display Order Details**:
+   - Show order ID, date, total, status for each order
+   - Format date using date pipe
+   - Format currency using currency pipe
+ 
+3. **Cancel Order**:
+   - Add "Cancel" button for pending orders
+   - Confirm with user before canceling
+   - Call OrderService.cancelOrder(orderId)
+   - Show success/error notification
+   - Refresh order list
+ 
+4. **Filter by Status**:
+   - Add status filter dropdown
+   - On selection, call OrderService.getOrdersByStatus(status)
+   - Update displayed orders
+ 
+5. **Order Statistics**:
+   - Display total orders count using OrderService.getTotalOrdersCount()
+   - Display total spent using OrderService.getTotalSpent()
+   - Display average order value using OrderService.getAverageOrderValue()
+   - Format using currency pipe
+ 
+---
+ 
+### Component 4: NotificationComponent (Service Consumer)
+ 
+**Purpose**: Display notifications from NotificationService
+ 
+**Services to Inject:**
+- NotificationService
+ 
+**Implementation Requirements:**
+ 
+1. **Display Notifications**:
+   - Call NotificationService.getNotifications() periodically or on events
+   - Display each notification in UI
+   - Use *ngFor to iterate through notifications
+ 
+2. **Notification Styling**:
+   - Apply different CSS classes based on notification type
+   - success: green background
+   - error: red background
+   - warning: orange background
+   - info: blue background
+ 
+3. **Auto-Dismiss**:
+   - Implement setTimeout to auto-remove notifications
+   - Call NotificationService.removeNotification(id) after delay
+ 
+4. **Manual Dismiss**:
+   - Add close button for each notification
+   - Call NotificationService.removeNotification(id) on click
+ 
+**Template Example:**
+```html
+<div class="notifications-container">
+  <div *ngFor="let notification of notifications"
+       [class]="'notification ' + notification.type">
+    <span>{{ notification.message }}</span>
+    <button (click)="dismiss(notification.id)">×</button>
+  </div>
+</div>
+```
+# Part 5: Services and Dependency Injection Challenge
+ 
+## Problem Statement - Service Architecture Basics
+ 
+Build a service layer for the Smart Shopping Cart System that demonstrates Angular's Dependency Injection (DI) system, service creation, and how components consume services. You will create multiple services with different scopes and understand how to share data and functionality across components using services.
+ 
+---
+ 
+## Service Architecture Overview
+ 
+```
+Services Layer:
+├── ProductService (Root-level - Singleton)
+├── CartService (Root-level - Singleton)
+├── OrderService (Root-level - Singleton)
+├── NotificationService (Root-level - Singleton)
+├── LocalStorageService (Root-level - Singleton)
+├── LoggerService (Component-level - Multiple instances)
+└── CalculatorService (Root-level - Singleton)
+ 
+Component Service Consumers:
+├── AppComponent → NotificationService
+├── ShoppingCartComponent → CartService, LoggerService, NotificationService
+├── ProductListComponent → ProductService, LoggerService
+├── OrderHistoryComponent → OrderService
+└── ProductItemComponent → CartService
+```
+ 
+---
+ 
+## Service Requirements
+ 
+### Service 1: ProductService
+ 
+**Purpose**: Manage product data and inventory operations.
+ 
+**Provider Level**: `providedIn: 'root'` (Singleton)
+ 
+**Properties:**
+- Private products: Product[] array
+- Private categories: string[] array
+ 
+**Methods to Implement:**
+ 
+1. **getAllProducts(): Product[]**
+   - Returns array of all products
+   - Should return copy of products array to prevent direct mutation
+ 
+2. **getProductById(id: number): Product | undefined**
+   - Returns single product by ID
+   - Returns undefined if not found
+ 
+3. **getProductsByCategory(category: string): Product[]**
+   - Filters products by category
+   - Returns matching products array
+ 
+4. **searchProducts(query: string): Product[]**
+   - Searches products by name or description
+   - Case-insensitive search
+   - Returns matching products
+ 
+5. **updateProductStock(productId: number, quantity: number): boolean**
+   - Updates product stock quantity
+   - Returns true if successful, false if product not found
+   - Logs stock change to console
+ 
+6. **addProduct(product: Product): boolean**
+   - Adds new product to the list
+   - Validates product has all required fields
+   - Returns true if added successfully
+ 
+7. **deleteProduct(productId: number): boolean**
+   - Removes product from list
+   - Returns true if deleted, false if not found
+ 
+8. **getFeaturedProducts(): Product[]**
+   - Returns products with rating > 4.5
+   - Limited to first 5 products
+ 
+9. **getLowStockProducts(): Product[]**
+   - Returns products with stock < 5
+   - Useful for inventory management
+ 
+10. **getCategories(): string[]**
+    - Returns array of unique categories
+    - Extracted from products
+ 
+---
+ 
+### Service 2: CartService
+ 
+**Purpose**: Manage shopping cart state and operations.
+ 
+**Provider Level**: `providedIn: 'root'` (Singleton)
+ 
+**Dependencies**: Inject ProductService, NotificationService
+ 
+**Properties:**
+- Private cartItems: CartItem[] array
+- Private discountPercentage: number (default 0)
+ 
+**Methods to Implement:**
+ 
+1. **addToCart(product: Product, quantity: number = 1): boolean**
+   - Checks product stock availability using ProductService
+   - If item exists in cart, increases quantity
+   - If new item, adds to cart
+   - Updates stock in ProductService
+   - Shows notification via NotificationService
+   - Returns true if successful
+ 
+2. **removeFromCart(productId: number): boolean**
+   - Removes item from cart completely
+   - Restores stock in ProductService
+   - Shows notification
+   - Returns true if item was found and removed
+ 
+3. **updateQuantity(productId: number, quantity: number): boolean**
+   - Updates item quantity in cart
+   - Validates against available stock
+   - Shows error notification if quantity exceeds stock
+   - Returns true if updated successfully
+ 
+4. **clearCart(): void**
+   - Removes all items from cart
+   - Restores all stock quantities to ProductService
+   - Resets discount to 0
+   - Shows confirmation notification
+ 
+5. **getCartItems(): CartItem[]**
+   - Returns copy of cart items array
+ 
+6. **getCartCount(): number**
+   - Returns total number of items in cart (sum of all quantities)
+ 
+7. **getCartItem(productId: number): CartItem | undefined**
+   - Returns specific cart item by product ID
+ 
+8. **isInCart(productId: number): boolean**
+   - Checks if product is already in cart
+ 
+9. **applyDiscount(code: string): boolean**
+   - Validates discount code
+   - Valid codes: "SAVE10" (10%), "SAVE20" (20%), "SAVE25" (25%)
+   - Updates discountPercentage if valid
+   - Returns true if code is valid
+ 
+10. **getDiscount(): number**
+    - Returns current discount percentage
+ 
+11. **calculateSubtotal(): number**
+    - Calculates cart subtotal (sum of all item prices × quantities)
+ 
+12. **calculateTax(): number**
+    - Calculates 8% tax on subtotal
+ 
+13. **calculateTotal(): number**
+    - Calculates final total (subtotal - discount + tax)
+ 
+14. **getCartSummary(): CartSummary**
+    - Returns complete cart summary object with all calculations
+ 
+---
+ 
+### Service 3: OrderService
+ 
+**Purpose**: Manage order creation and history.
+ 
+**Provider Level**: `providedIn: 'root'` (Singleton)
+ 
+**Dependencies**: Inject CartService, NotificationService
+ 
+**Properties:**
+- Private orders: Order[] array
+- Private nextOrderId: number (for generating unique IDs)
+ 
+**Methods to Implement:**
+ 
+1. **createOrder(shippingInfo: ShippingInfo): Order | null**
+   - Gets current cart from CartService
+   - Validates cart is not empty
+   - Creates order object with unique ID and timestamp
+   - Adds order to orders array
+   - Clears cart via CartService
+   - Shows success notification
+   - Returns created order, or null if cart is empty
+ 
+2. **getOrderById(orderId: number): Order | undefined**
+   - Fetches specific order by ID
+ 
+3. **getAllOrders(): Order[]**
+   - Returns all orders
+   - Sorted by date (newest first)
+ 
+4. **cancelOrder(orderId: number): boolean**
+   - Cancels order (only if status is 'pending')
+   - Updates order status to 'cancelled'
+   - Returns true if cancelled, false if order not found or already shipped
+ 
+5. **getOrdersByStatus(status: string): Order[]**
+   - Filters orders by status (pending, processing, shipped, delivered, cancelled)
+ 
+6. **getTotalOrdersCount(): number**
+   - Returns total number of orders
+ 
+7. **getTotalSpent(): number**
+   - Calculates sum of all order totals
+ 
+8. **getAverageOrderValue(): number**
+   - Calculates average order amount
+ 
+---
+ 
+### Service 4: NotificationService
+ 
+**Purpose**: Display notifications and messages to users.
+ 
+**Provider Level**: `providedIn: 'root'` (Singleton)
+ 
+**Properties:**
+- Private notifications: Notification[] array
+- Private nextNotificationId: number
+ 
+**Methods to Implement:**
+ 
+1. **showSuccess(message: string): void**
+   - Creates success notification
+   - Adds to notifications array
+   - Logs to console
+ 
+2. **showError(message: string): void**
+   - Creates error notification
+   - Adds to notifications array
+   - Logs to console with error styling
+ 
+3. **showWarning(message: string): void**
+   - Creates warning notification
+ 
+4. **showInfo(message: string): void**
+   - Creates info notification
+ 
+5. **getNotifications(): Notification[]**
+   - Returns all notifications
+ 
+6. **clearNotifications(): void**
+   - Clears all notifications
+ 
+7. **removeNotification(id: number): void**
+   - Removes specific notification by ID
+ 
+---
+ 
+### Service 5: LocalStorageService
+ 
+**Purpose**: Handle browser LocalStorage operations safely.
+ 
+**Provider Level**: `providedIn: 'root'` (Singleton)
+ 
+**Methods to Implement:**
+ 
+1. **setItem(key: string, value: any): boolean**
+   - Stores data in LocalStorage
+   - Automatically stringifies objects using JSON.stringify
+   - Handles errors gracefully
+   - Returns true if successful
+ 
+2. **getItem<T>(key: string): T | null**
+   - Retrieves and parses data from LocalStorage
+   - Returns typed data or null if not found
+   - Handles JSON parse errors
+ 
+3. **removeItem(key: string): void**
+   - Removes specific item from LocalStorage
+ 
+4. **clear(): void**
+   - Clears all LocalStorage data
+ 
+5. **exists(key: string): boolean**
+   - Checks if key exists in LocalStorage
+ 
+6. **getAllKeys(): string[]**
+   - Returns array of all keys in LocalStorage
+ 
+---
+ 
+### Service 6: LoggerService
+ 
+**Purpose**: Provide logging functionality for debugging (component-level service to demonstrate multiple instances).
+ 
+**Provider Level**: `providedIn: null` (Must be provided in component's providers array)
+ 
+**Properties:**
+- componentName: string
+- Private logs: LogEntry[] array
+ 
+**Methods to Implement:**
+ 
+1. **setComponentName(name: string): void**
+   - Sets the component name for this logger instance
+ 
+2. **log(message: string): void**
+   - Logs info message with timestamp and component name
+   - Stores in logs array
+   - Outputs to console
+ 
+3. **error(message: string): void**
+   - Logs error message with red color in console
+   - Stores in logs array
+ 
+4. **warn(message: string): void**
+   - Logs warning message with yellow color
+   - Stores in logs array
+ 
+5. **getLogs(): LogEntry[]**
+   - Returns all logs for this component instance
+ 
+6. **clearLogs(): void**
+   - Clears all logs for this instance
+ 
+---
+ 
+### Service 7: CalculatorService
+ 
+**Purpose**: Provide calculation utilities for the shopping cart.
+ 
+**Provider Level**: `providedIn: 'root'` (Singleton)
+ 
+**Methods to Implement:**
+ 
+1. **calculatePercentage(amount: number, percentage: number): number**
+   - Calculates percentage of a given amount
+   - Returns rounded to 2 decimal places
+ 
+2. **calculateDiscount(price: number, discountPercent: number): number**
+   - Calculates discounted price
+   - Returns price after discount applied
+ 
+3. **formatCurrency(amount: number): string**
+   - Formats number as currency string ($1,234.56)
+ 
+4. **calculateTax(amount: number, taxRate: number): number**
+   - Calculates tax amount
+   - Default tax rate is 8%
+ 
+5. **roundToTwoDecimals(num: number): number**
+   - Rounds number to 2 decimal places
+ 
+---
+ 
+---
+ 
+## Component Consumer Requirements
+ 
+### Component 1: ProductListComponent (Service Consumer)
+ 
+**Services to Inject:**
+- ProductService
+- CartService
+- LoggerService (component-level - provide in component)
+- NotificationService
+ 
+**Implementation Requirements:**
+ 
+1. **OnInit**:
+   - Call ProductService.getAllProducts() to load products
+   - Store products in component property
+   - Display products in template using *ngFor
+   - Log component initialization via LoggerService
+ 
+2. **Search Functionality**:
+   - Add search input field in template
+   - On input change, call ProductService.searchProducts(query)
+   - Update displayed products with search results
+ 
+3. **Add to Cart**:
+   - Call CartService.addToCart(product, quantity) when button clicked
+   - CartService will show notification automatically
+   - Log action via LoggerService
+   - Update button state based on stock
+ 
+4. **Category Filter**:
+   - Get categories from ProductService.getCategories()
+   - Display as filter buttons
+   - On category click, call ProductService.getProductsByCategory()
+   - Update displayed products
+ 
+5. **Display Featured Products**:
+   - Add button to show featured products
+   - Call ProductService.getFeaturedProducts()
+   - Display in separate section
+ 
+**Component Provider Configuration:**
+```typescript
+@Component({
+  providers: [LoggerService]  // Component-level service
+})
+```
+ 
+---
+ 
+### Component 2: ShoppingCartComponent (Service Consumer)
+ 
+**Services to Inject:**
+- CartService
+- OrderService
+- NotificationService
+- LoggerService (component-level)
+ 
+**Implementation Requirements:**
+ 
+1. **Cart Display**:
+   - Call CartService.getCartItems() to get current cart
+   - Display cart items in template
+   - Show item count using CartService.getCartCount()
+ 
+2. **Cart Summary**:
+   - Display subtotal from CartService.calculateSubtotal()
+   - Display tax from CartService.calculateTax()
+   - Display total from CartService.calculateTotal()
+   - Update summary when cart changes
+ 
+3. **Remove Item**:
+   - Add remove button for each item
+   - Call CartService.removeFromCart(productId)
+   - Refresh cart display
+   - Log removal action via LoggerService
+ 
+4. **Update Quantity**:
+   - Add quantity input for each item
+   - On change, call CartService.updateQuantity(productId, newQuantity)
+   - Handle validation errors (shows notification automatically)
+   - Refresh cart if successful
+ 
+5. **Clear Cart**:
+   - Add "Clear Cart" button
+   - Confirm with user using window.confirm()
+   - Call CartService.clearCart()
+   - Refresh display
+ 
+6. **Checkout**:
+   - Add checkout button
+   - Create form for shipping information
+   - Validate cart is not empty
+   - Call OrderService.createOrder(shippingInfo)
+   - If successful, show order confirmation
+   - Navigate to order history
+ 
+7. **Apply Discount**:
+   - Add input field for discount code
+   - Call CartService.applyDiscount(code)
+   - Show success/error message based on return value
+   - Update cart summary to show discount
+ 
+**Component Provider Configuration:**
+```typescript
+@Component({
+  providers: [LoggerService]
+})
+```
+ 
+---
+ 
+### Component 3: OrderHistoryComponent (Service Consumer)
+ 
+**Services to Inject:**
+- OrderService
+- NotificationService
+ 
+**Implementation Requirements:**
+ 
+1. **Load Orders**:
+   - In OnInit, call OrderService.getAllOrders()
+   - Store orders in component property
+   - Display in template using *ngFor
+   - Show "No orders yet" message if empty
+ 
+2. **Display Order Details**:
+   - Show order ID, date, total, status for each order
+   - Format date using date pipe
+   - Format currency using currency pipe
+ 
+3. **Cancel Order**:
+   - Add "Cancel" button for pending orders
+   - Confirm with user before canceling
+   - Call OrderService.cancelOrder(orderId)
+   - Show success/error notification
+   - Refresh order list
+ 
+4. **Filter by Status**:
+   - Add status filter dropdown
+   - On selection, call OrderService.getOrdersByStatus(status)
+   - Update displayed orders
+ 
+5. **Order Statistics**:
+   - Display total orders count using OrderService.getTotalOrdersCount()
+   - Display total spent using OrderService.getTotalSpent()
+   - Display average order value using OrderService.getAverageOrderValue()
+   - Format using currency pipe
+ 
+---
+ 
+### Component 4: NotificationComponent (Service Consumer)
+ 
+**Purpose**: Display notifications from NotificationService
+ 
+**Services to Inject:**
+- NotificationService
+ 
+**Implementation Requirements:**
+ 
+1. **Display Notifications**:
+   - Call NotificationService.getNotifications() periodically or on events
+   - Display each notification in UI
+   - Use *ngFor to iterate through notifications
+ 
+2. **Notification Styling**:
+   - Apply different CSS classes based on notification type
+   - success: green background
+   - error: red background
+   - warning: orange background
+   - info: blue background
+ 
+3. **Auto-Dismiss**:
+   - Implement setTimeout to auto-remove notifications
+   - Call NotificationService.removeNotification(id) after delay
+ 
+4. **Manual Dismiss**:
+   - Add close button for each notification
+   - Call NotificationService.removeNotification(id) on click
+ 
+**Template Example:**
+```html
+<div class="notifications-container">
+  <div *ngFor="let notification of notifications"
+       [class]="'notification ' + notification.type">
+    <span>{{ notification.message }}</span>
+    <button (click)="dismiss(notification.id)">×</button>
+  </div>
+</div>
+```
+ 
+ 
+# Part 5: Services and Dependency Injection Challenge
+ 
+## Problem Statement - Service Architecture Basics
+ 
+Build a service layer for the Smart Shopping Cart System that demonstrates Angular's Dependency Injection (DI) system, service creation, and how components consume services. You will create multiple services with different scopes and understand how to share data and functionality across components using services.
+ 
+---
+ 
+## Service Architecture Overview
+ 
+```
+Services Layer:
+├── ProductService (Root-level - Singleton)
+├── CartService (Root-level - Singleton)
+├── OrderService (Root-level - Singleton)
+├── NotificationService (Root-level - Singleton)
+├── LocalStorageService (Root-level - Singleton)
+├── LoggerService (Component-level - Multiple instances)
+└── CalculatorService (Root-level - Singleton)
+ 
+Component Service Consumers:
+├── AppComponent → NotificationService
+├── ShoppingCartComponent → CartService, LoggerService, NotificationService
+├── ProductListComponent → ProductService, LoggerService
+├── OrderHistoryComponent → OrderService
+└── ProductItemComponent → CartService
+```
+ 
+---
+ 
+## Service Requirements
+ 
+### Service 1: ProductService
+ 
+**Purpose**: Manage product data and inventory operations.
+ 
+**Provider Level**: `providedIn: 'root'` (Singleton)
+ 
+**Properties:**
+- Private products: Product[] array
+- Private categories: string[] array
+ 
+**Methods to Implement:**
+ 
+1. **getAllProducts(): Product[]**
+   - Returns array of all products
+   - Should return copy of products array to prevent direct mutation
+ 
+2. **getProductById(id: number): Product | undefined**
+   - Returns single product by ID
+   - Returns undefined if not found
+ 
+3. **getProductsByCategory(category: string): Product[]**
+   - Filters products by category
+   - Returns matching products array
+ 
+4. **searchProducts(query: string): Product[]**
+   - Searches products by name or description
+   - Case-insensitive search
+   - Returns matching products
+ 
+5. **updateProductStock(productId: number, quantity: number): boolean**
+   - Updates product stock quantity
+   - Returns true if successful, false if product not found
+   - Logs stock change to console
+ 
+6. **addProduct(product: Product): boolean**
+   - Adds new product to the list
+   - Validates product has all required fields
+   - Returns true if added successfully
+ 
+7. **deleteProduct(productId: number): boolean**
+   - Removes product from list
+   - Returns true if deleted, false if not found
+ 
+8. **getFeaturedProducts(): Product[]**
+   - Returns products with rating > 4.5
+   - Limited to first 5 products
+ 
+9. **getLowStockProducts(): Product[]**
+   - Returns products with stock < 5
+   - Useful for inventory management
+ 
+10. **getCategories(): string[]**
+    - Returns array of unique categories
+    - Extracted from products
+ 
+---
+ 
+### Service 2: CartService
+ 
+**Purpose**: Manage shopping cart state and operations.
+ 
+**Provider Level**: `providedIn: 'root'` (Singleton)
+ 
+**Dependencies**: Inject ProductService, NotificationService
+ 
+**Properties:**
+- Private cartItems: CartItem[] array
+- Private discountPercentage: number (default 0)
+ 
+**Methods to Implement:**
+ 
+1. **addToCart(product: Product, quantity: number = 1): boolean**
+   - Checks product stock availability using ProductService
+   - If item exists in cart, increases quantity
+   - If new item, adds to cart
+   - Updates stock in ProductService
+   - Shows notification via NotificationService
+   - Returns true if successful
+ 
+2. **removeFromCart(productId: number): boolean**
+   - Removes item from cart completely
+   - Restores stock in ProductService
+   - Shows notification
+   - Returns true if item was found and removed
+ 
+3. **updateQuantity(productId: number, quantity: number): boolean**
+   - Updates item quantity in cart
+   - Validates against available stock
+   - Shows error notification if quantity exceeds stock
+   - Returns true if updated successfully
+ 
+4. **clearCart(): void**
+   - Removes all items from cart
+   - Restores all stock quantities to ProductService
+   - Resets discount to 0
+   - Shows confirmation notification
+ 
+5. **getCartItems(): CartItem[]**
+   - Returns copy of cart items array
+ 
+6. **getCartCount(): number**
+   - Returns total number of items in cart (sum of all quantities)
+ 
+7. **getCartItem(productId: number): CartItem | undefined**
+   - Returns specific cart item by product ID
+ 
+8. **isInCart(productId: number): boolean**
+   - Checks if product is already in cart
+ 
+9. **applyDiscount(code: string): boolean**
+   - Validates discount code
+   - Valid codes: "SAVE10" (10%), "SAVE20" (20%), "SAVE25" (25%)
+   - Updates discountPercentage if valid
+   - Returns true if code is valid
+ 
+10. **getDiscount(): number**
+    - Returns current discount percentage
+ 
+11. **calculateSubtotal(): number**
+    - Calculates cart subtotal (sum of all item prices × quantities)
+ 
+12. **calculateTax(): number**
+    - Calculates 8% tax on subtotal
+ 
+13. **calculateTotal(): number**
+    - Calculates final total (subtotal - discount + tax)
+ 
+14. **getCartSummary(): CartSummary**
+    - Returns complete cart summary object with all calculations
+ 
+---
+ 
+### Service 3: OrderService
+ 
+**Purpose**: Manage order creation and history.
+ 
+**Provider Level**: `providedIn: 'root'` (Singleton)
+ 
+**Dependencies**: Inject CartService, NotificationService
+ 
+**Properties:**
+- Private orders: Order[] array
+- Private nextOrderId: number (for generating unique IDs)
+ 
+**Methods to Implement:**
+ 
+1. **createOrder(shippingInfo: ShippingInfo): Order | null**
+   - Gets current cart from CartService
+   - Validates cart is not empty
+   - Creates order object with unique ID and timestamp
+   - Adds order to orders array
+   - Clears cart via CartService
+   - Shows success notification
+   - Returns created order, or null if cart is empty
+ 
+2. **getOrderById(orderId: number): Order | undefined**
+   - Fetches specific order by ID
+ 
+3. **getAllOrders(): Order[]**
+   - Returns all orders
+   - Sorted by date (newest first)
+ 
+4. **cancelOrder(orderId: number): boolean**
+   - Cancels order (only if status is 'pending')
+   - Updates order status to 'cancelled'
+   - Returns true if cancelled, false if order not found or already shipped
+ 
+5. **getOrdersByStatus(status: string): Order[]**
+   - Filters orders by status (pending, processing, shipped, delivered, cancelled)
+ 
+6. **getTotalOrdersCount(): number**
+   - Returns total number of orders
+ 
+7. **getTotalSpent(): number**
+   - Calculates sum of all order totals
+ 
+8. **getAverageOrderValue(): number**
+   - Calculates average order amount
+ 
+---
+ 
+### Service 4: NotificationService
+ 
+**Purpose**: Display notifications and messages to users.
+ 
+**Provider Level**: `providedIn: 'root'` (Singleton)
+ 
+**Properties:**
+- Private notifications: Notification[] array
+- Private nextNotificationId: number
+ 
+**Methods to Implement:**
+ 
+1. **showSuccess(message: string): void**
+   - Creates success notification
+   - Adds to notifications array
+   - Logs to console
+ 
+2. **showError(message: string): void**
+   - Creates error notification
+   - Adds to notifications array
+   - Logs to console with error styling
+ 
+3. **showWarning(message: string): void**
+   - Creates warning notification
+ 
+4. **showInfo(message: string): void**
+   - Creates info notification
+ 
+5. **getNotifications(): Notification[]**
+   - Returns all notifications
+ 
+6. **clearNotifications(): void**
+   - Clears all notifications
+ 
+7. **removeNotification(id: number): void**
+   - Removes specific notification by ID
+ 
+---
+ 
+### Service 5: LocalStorageService
+ 
+**Purpose**: Handle browser LocalStorage operations safely.
+ 
+**Provider Level**: `providedIn: 'root'` (Singleton)
+ 
+**Methods to Implement:**
+ 
+1. **setItem(key: string, value: any): boolean**
+   - Stores data in LocalStorage
+   - Automatically stringifies objects using JSON.stringify
+   - Handles errors gracefully
+   - Returns true if successful
+ 
+2. **getItem<T>(key: string): T | null**
+   - Retrieves and parses data from LocalStorage
+   - Returns typed data or null if not found
+   - Handles JSON parse errors
+ 
+3. **removeItem(key: string): void**
+   - Removes specific item from LocalStorage
+ 
+4. **clear(): void**
+   - Clears all LocalStorage data
+ 
+5. **exists(key: string): boolean**
+   - Checks if key exists in LocalStorage
+ 
+6. **getAllKeys(): string[]**
+   - Returns array of all keys in LocalStorage
+ 
+---
+ 
+### Service 6: LoggerService
+ 
+**Purpose**: Provide logging functionality for debugging (component-level service to demonstrate multiple instances).
+ 
+**Provider Level**: `providedIn: null` (Must be provided in component's providers array)
+ 
+**Properties:**
+- componentName: string
+- Private logs: LogEntry[] array
+ 
+**Methods to Implement:**
+ 
+1. **setComponentName(name: string): void**
+   - Sets the component name for this logger instance
+ 
+2. **log(message: string): void**
+   - Logs info message with timestamp and component name
+   - Stores in logs array
+   - Outputs to console
+ 
+3. **error(message: string): void**
+   - Logs error message with red color in console
+   - Stores in logs array
+ 
+4. **warn(message: string): void**
+   - Logs warning message with yellow color
+   - Stores in logs array
+ 
+5. **getLogs(): LogEntry[]**
+   - Returns all logs for this component instance
+ 
+6. **clearLogs(): void**
+   - Clears all logs for this instance
+ 
+---
+ 
+### Service 7: CalculatorService
+ 
+**Purpose**: Provide calculation utilities for the shopping cart.
+ 
+**Provider Level**: `providedIn: 'root'` (Singleton)
+ 
+**Methods to Implement:**
+ 
+1. **calculatePercentage(amount: number, percentage: number): number**
+   - Calculates percentage of a given amount
+   - Returns rounded to 2 decimal places
+ 
+2. **calculateDiscount(price: number, discountPercent: number): number**
+   - Calculates discounted price
+   - Returns price after discount applied
+ 
+3. **formatCurrency(amount: number): string**
+   - Formats number as currency string ($1,234.56)
+ 
+4. **calculateTax(amount: number, taxRate: number): number**
+   - Calculates tax amount
+   - Default tax rate is 8%
+ 
+5. **roundToTwoDecimals(num: number): number**
+   - Rounds number to 2 decimal places
+ 
+---
+ 
+---
+ 
+## Component Consumer Requirements
+ 
+### Component 1: ProductListComponent (Service Consumer)
+ 
+**Services to Inject:**
+- ProductService
+- CartService
+- LoggerService (component-level - provide in component)
+- NotificationService
+ 
+**Implementation Requirements:**
+ 
+1. **OnInit**:
+   - Call ProductService.getAllProducts() to load products
+   - Store products in component property
+   - Display products in template using *ngFor
+   - Log component initialization via LoggerService
+ 
+2. **Search Functionality**:
+   - Add search input field in template
+   - On input change, call ProductService.searchProducts(query)
+   - Update displayed products with search results
+ 
+3. **Add to Cart**:
+   - Call CartService.addToCart(product, quantity) when button clicked
+   - CartService will show notification automatically
+   - Log action via LoggerService
+   - Update button state based on stock
+ 
+4. **Category Filter**:
+   - Get categories from ProductService.getCategories()
+   - Display as filter buttons
+   - On category click, call ProductService.getProductsByCategory()
+   - Update displayed products
+ 
+5. **Display Featured Products**:
+   - Add button to show featured products
+   - Call ProductService.getFeaturedProducts()
+   - Display in separate section
+ 
+**Component Provider Configuration:**
+```typescript
+@Component({
+  providers: [LoggerService]  // Component-level service
+})
+```
+ 
+---
+ 
+### Component 2: ShoppingCartComponent (Service Consumer)
+ 
+**Services to Inject:**
+- CartService
+- OrderService
+- NotificationService
+- LoggerService (component-level)
+ 
+**Implementation Requirements:**
+ 
+1. **Cart Display**:
+   - Call CartService.getCartItems() to get current cart
+   - Display cart items in template
+   - Show item count using CartService.getCartCount()
+ 
+2. **Cart Summary**:
+   - Display subtotal from CartService.calculateSubtotal()
+   - Display tax from CartService.calculateTax()
+   - Display total from CartService.calculateTotal()
+   - Update summary when cart changes
+ 
+3. **Remove Item**:
+   - Add remove button for each item
+   - Call CartService.removeFromCart(productId)
+   - Refresh cart display
+   - Log removal action via LoggerService
+ 
+4. **Update Quantity**:
+   - Add quantity input for each item
+   - On change, call CartService.updateQuantity(productId, newQuantity)
+   - Handle validation errors (shows notification automatically)
+   - Refresh cart if successful
+ 
+5. **Clear Cart**:
+   - Add "Clear Cart" button
+   - Confirm with user using window.confirm()
+   - Call CartService.clearCart()
+   - Refresh display
+ 
+6. **Checkout**:
+   - Add checkout button
+   - Create form for shipping information
+   - Validate cart is not empty
+   - Call OrderService.createOrder(shippingInfo)
+   - If successful, show order confirmation
+   - Navigate to order history
+ 
+7. **Apply Discount**:
+   - Add input field for discount code
+   - Call CartService.applyDiscount(code)
+   - Show success/error message based on return value
+   - Update cart summary to show discount
+ 
+**Component Provider Configuration:**
+```typescript
+@Component({
+  providers: [LoggerService]
+})
+```
+ 
+---
+ 
+### Component 3: OrderHistoryComponent (Service Consumer)
+ 
+**Services to Inject:**
+- OrderService
+- NotificationService
+ 
+**Implementation Requirements:**
+ 
+1. **Load Orders**:
+   - In OnInit, call OrderService.getAllOrders()
+   - Store orders in component property
+   - Display in template using *ngFor
+   - Show "No orders yet" message if empty
+ 
+2. **Display Order Details**:
+   - Show order ID, date, total, status for each order
+   - Format date using date pipe
+   - Format currency using currency pipe
+ 
+3. **Cancel Order**:
+   - Add "Cancel" button for pending orders
+   - Confirm with user before canceling
+   - Call OrderService.cancelOrder(orderId)
+   - Show success/error notification
+   - Refresh order list
+ 
+4. **Filter by Status**:
+   - Add status filter dropdown
+   - On selection, call OrderService.getOrdersByStatus(status)
+   - Update displayed orders
+ 
+5. **Order Statistics**:
+   - Display total orders count using OrderService.getTotalOrdersCount()
+   - Display total spent using OrderService.getTotalSpent()
+   - Display average order value using OrderService.getAverageOrderValue()
+   - Format using currency pipe
+ 
+---
+ 
+### Component 4: NotificationComponent (Service Consumer)
+ 
+**Purpose**: Display notifications from NotificationService
+ 
+**Services to Inject:**
+- NotificationService
+ 
+**Implementation Requirements:**
+ 
+1. **Display Notifications**:
+   - Call NotificationService.getNotifications() periodically or on events
+   - Display each notification in UI
+   - Use *ngFor to iterate through notifications
+ 
+2. **Notification Styling**:
+   - Apply different CSS classes based on notification type
+   - success: green background
+   - error: red background
+   - warning: orange background
+   - info: blue background
+ 
+3. **Auto-Dismiss**:
+   - Implement setTimeout to auto-remove notifications
+   - Call NotificationService.removeNotification(id) after delay
+ 
+4. **Manual Dismiss**:
+   - Add close button for each notification
+   - Call NotificationService.removeNotification(id) on click
+ 
+**Template Example:**
+```html
+<div class="notifications-container">
+  <div *ngFor="let notification of notifications"
+       [class]="'notification ' + notification.type">
+    <span>{{ notification.message }}</span>
+    <button (click)="dismiss(notification.id)">×</button>
+  </div>
+</div>
+```
+ 
+ 
+### 1. Service Hierarchy and Scope
+- **Singleton Services**: All root-level services (ProductService, CartService, etc.)
+  - Demonstrate that multiple components share the same service instance
+  - Add a counter property to ProductService and increment it in different components
+  - Show that the counter value is shared across all components
+ 
+- **Component-Level Service**: LoggerService
+  - Provide LoggerService in component's providers array
+  - Create two components that both use LoggerService
+  - Demonstrate that each component has its own LoggerService instance
+  - Each logger should have separate logs
+ 
+### 2. Service Dependencies (Dependency Injection)
+- CartService depends on ProductService and NotificationService
+- OrderService depends on CartService and NotificationService
+- Demonstrate proper constructor injection
+- Services should not create their own dependencies (use DI)
+ 
+### 3. Data Sharing Between Components
+- Cart data updated in ProductListComponent should reflect in ShoppingCartComponent
+- This happens because both components inject the same CartService instance
+- Demonstrate by adding item in one component and showing it in another
+ 
+### 4. LocalStorage Persistence
+- Cart should persist in localStorage
+- On app initialization, CartService should:
+  - Check localStorage for saved cart using LocalStorageService
+  - Restore cart if found
+  - Initialize empty cart if not found
+- Implement saveCart() method that runs after every cart change
+- Test by refreshing page - cart should remain
+ 
+### 5. Discount Code Validation
+- Implement complex validation logic in CartService.applyDiscount():
+  - "SAVE10": Always valid, 10% discount
+  - "SAVE20": Only valid if cart subtotal > $100
+  - "SAVE25": Only valid if cart subtotal > $200
+- Return false and show error notification if invalid
+- Return true and apply discount if valid
+ 
+### 6. Stock Synchronization
+- When item added to cart → ProductService stock decreases
+- When item removed from cart → ProductService stock increases
+- Multiple components should see updated stock immediately
+- Implement by having CartService call ProductService methods
+ 
+### 7. Logger Service Multiple Instances
+- Prove that LoggerService creates separate instances per component:
+  - ShoppingCartComponent gets its own logger
+  - ProductListComponent gets its own logger
+  - Logs from one component don't appear in the other's log array
+- Use setComponentName() in each component's ngOnInit
+ 
+### 8. Notification Queue Management
+- NotificationService should maintain array of active notifications
+- Each notification should have unique ID
+- Implement getNotifications() to return copy of array
+- Implement removeNotification(id) to remove specific notification
+- Notifications should be objects with: id, type, message, timestamp
+ 
+---
+ 
+## Data Models for Part 5
+ 
+Create TypeScript interfaces in a `models` folder:
+ 
+**Product Interface:**
+```typescript
+export interface Product {
+  id: number;
+  name: string;
+  description: string;
+  price: number;
+  stock: number;
+  rating: number;
+  category: string;
+  imageUrl?: string;
+}
+```
+ 
+**CartItem Interface:**
+```typescript
+export interface CartItem {
+  productId: number;
+  product: Product;
+  quantity: number;
+}
+```
+ 
+**CartSummary Interface:**
+```typescript
+export interface CartSummary {
+  items: CartItem[];
+  itemCount: number;
+  subtotal: number;
+  discount: number;
+  discountPercentage: number;
+  tax: number;
+  total: number;
+}
+```
+ 
+**Order Interface:**
+```typescript
+export interface Order {
+  orderId: number;
+  orderDate: Date;
+  items: CartItem[];
+  shippingInfo: ShippingInfo;
+  subtotal: number;
+  discount: number;
+  tax: number;
+  total: number;
+  status: string; // 'pending' | 'processing' | 'shipped' | 'delivered' | 'cancelled'
+}
+```
+ 
+**ShippingInfo Interface:**
+```typescript
+export interface ShippingInfo {
+  fullName: string;
+  address: string;
+  city: string;
+  state: string;
+  zipCode: string;
+  phone: string;
+}
+```
+ 
+**Notification Interface:**
+```typescript
+export interface Notification {
+  id: number;
+  type: 'success' | 'error' | 'warning' | 'info';
+  message: string;
+  timestamp: Date;
+}
+```
+ 
+**LogEntry Interface:**
+```typescript
+export interface LogEntry {
+  timestamp: Date;
+  level: 'info' | 'warn' | 'error';
+  message: string;
+  componentName: string;
+}
+```
+ 
+---
+ 
+## Implementation Tasks
+ 
+### Task 1: Create Service Files
+1. Create `services` folder in `src/app`
+2. Generate services using Angular CLI:
+   ```bash
+   ng g service services/Product
+   ng g service services/Cart
+   ng g service services/Order
+   ng g service services/Notification
+   ng g service services/LocalStorage
+   ng g service services/Logger
+   ng g service services/Calculator
+   ```
+ 
+### Task 2: Create Model Interfaces
+1. Create `models` folder in `src/app`
+2. Create interface files:
+   - `product.model.ts`
+   - `cart.model.ts`
+   - `order.model.ts`
+   - `notification.model.ts`
+   - `log-entry.model.ts`
+ 
+### Task 3: Implement Service Logic
+1. Implement ProductService with sample data
+2. Implement CartService with all methods
+3. Implement OrderService
+4. Implement NotificationService
+5. Implement LocalStorageService
+6. Implement LoggerService (providedIn: null)
+7. Implement CalculatorService
+8. Add console logging for debugging
+ 
+### Task 4: Update Components
+1. Update ProductListComponent:
+   - Inject services in constructor
+   - Provide LoggerService in component decorator
+   - Call ProductService methods
+   - Implement add to cart functionality
+2. Update ShoppingCartComponent:
+   - Inject services
+   - Provide LoggerService
+   - Display cart items
+   - Implement cart operations
+3. Create OrderHistoryComponent:
+   - Display orders
+   - Implement order actions
+ 
+### Task 5: Create NotificationComponent
+1. Generate component: `ng g c components/Notification`
+2. Inject NotificationService
+3. Display notifications in template
+4. Implement auto-dismiss logic
+5. Add CSS styling for different notification types
+ 
+### Task 6: Implement Persistence
+1. In CartService, add loadCart() method:
+   - Called in constructor
+   - Loads cart from localStorage via LocalStorageService
+2. Add saveCart() private method:
+   - Called after every cart modification
+   - Saves cart to localStorage
+ 
+### Task 7: Add Sample Data
+1. In ProductService, create sample products array:
+   ```typescript
+   private products: Product[] = [
+     { id: 1, name: 'Laptop', price: 999.99, stock: 5, rating: 4.5, category: 'Electronics', description: 'High-performance laptop' },
+     { id: 2, name: 'Mouse', price: 29.99, stock: 15, rating: 4.2, category: 'Accessories', description: 'Wireless mouse' },
+     // ... add more products
+   ];
+
+ 
+ 

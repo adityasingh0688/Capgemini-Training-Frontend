@@ -1,0 +1,14 @@
+<a routerLink="/">Home</a>
+
+<!-- queryParams: It is used to pass the data in the form of key value pair. It is used to pass the data in the URL. It is used to pass the data in the form of query string. It is used to pass the data in the form of query parameters. -->
+<a routerLink="/profile" [queryParams]="{name:'Aditya',age:22}">
+  Profile</a>
+
+<!-- routerParams: It is used to pass the data in the form of path parameters. It is used to pass the data in the URL. -->
+<a routerLink="/about/101">About id 101</a>
+
+<a [routerLink]="['/about', 102]">About id 102</a>
+
+<a routerLink="/about/103">About id 103</a>
+
+<router-outlet></router-outlet>

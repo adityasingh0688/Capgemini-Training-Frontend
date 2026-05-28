@@ -1,9 +1,11 @@
 import { Component, signal, WritableSignal } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { CustomPipe1Pipe } from './custom-pipe1-pipe';
+import { CustomPipe2Pipe } from './custom-pipe2-pipe';
 
 @Component({
   selector: 'app-root',
-  imports: [CommonModule],
+  imports: [CommonModule,CustomPipe1Pipe,CustomPipe2Pipe],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
@@ -28,4 +30,10 @@ export class App {
   discount:number = 0.25;
 
   message:string = "Welcome To Angular Pipes";
+
+  dataPromise: Promise<string> = new Promise((resolve)=>{
+    setTimeout(()=>{
+    resolve("Data loaded asynchronously!");
+  },2000);
+});
 }

@@ -89,3 +89,48 @@
 <p>{{message | slice:0:5}}</p>
 
 <p>{{cities | slice:0:2}}</p>
+
+<hr>
+
+<h2>Async Pipe</h2>
+
+<p>Data from Promise without async pipe:</p>
+
+<p>{{dataPromise}}</p>
+
+<p>Data from Promise with async pipe:</p>
+
+<p>{{dataPromise | async}}</p>
+
+<hr>
+
+<h2>Custom Pipe 1</h2>
+
+<p>
+Even length city → UPPERCASE
+
+<br>
+
+Odd length city → lowercase
+</p>
+
+<ul>
+
+@for(city of cities; track $index)
+{
+   <li>
+
+      {{city | customPipe1}}
+
+   </li>
+}
+
+</ul>
+
+<hr>
+
+<h2>Custom Pipe 2</h2>
+
+<p>Sorted Cities Based On Length</p>
+
+<p>{{cities | customPipe2}}</p>
