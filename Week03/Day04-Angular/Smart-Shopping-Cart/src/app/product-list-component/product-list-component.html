@@ -1,0 +1,7 @@
+
+@for(product of products; track product.id) {
+  <app-product-item-component 
+  [product]="product"
+  (addToCart)="handleAddToCart($event)">
+</app-product-item-component>
+}

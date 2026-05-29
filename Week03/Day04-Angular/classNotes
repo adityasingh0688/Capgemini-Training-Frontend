@@ -290,4 +290,3 @@ interface CheckoutData {
      - Cart is empty
      - Any cart item quantity exceeds available stock
      - Total is less than $10
- 

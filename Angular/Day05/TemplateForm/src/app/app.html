@@ -1,3 +1,4 @@
+<h1>Registration Page Loaded</h1>
 <form #loginForm="ngForm" (ngSubmit)="onSubmit(loginForm)">
   <p>name: {{name}}</p>
   <label for="name">Name:</label>
@@ -15,3 +16,11 @@
 <br><br>
   <button type="submit" [disabled]="loginForm.invalid">Submit</button>
 </form>
+
+<h3>Form State</h3>
+
+<p>Valid: {{ registrationForm.valid }}</p>
+<p>Touched: {{ registrationForm.touched }}</p>
+<p>Dirty: {{ registrationForm.dirty }}</p>
+<p>Pristine: {{ registrationForm.pristine }}</p>
+<pre>{{ username.errors | json }}</pre>

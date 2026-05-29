@@ -1,0 +1,257 @@
+import { Component, ViewChild } from '@angular/core';
+import { Product } from './Product';
+import { JsonPipe, NgClass } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import {RequiredValidator} from '@angular/forms';
+ 
+@Component({
+  selector: 'app-registration-form1',
+  imports: [FormsModule, JsonPipe],
+  templateUrl: './registration-form1.html',
+  styleUrl: './registration-form1.css',
+})
+export class RegistrationForm1
+{
+name:any;
+price:any;
+description:any;
+stock:any;
+ 
+product:Product = new Product("", 0, "", 0);
+ 
+  onSubmit(data:any)
+  {
+    console.log(data.value);    //ngSubmit will pass the form data as an argument to the onSubmit method, and we can access the form data using the value property of the data object.
+    //console.log(this.product); //without using ngSubmit we can access the form data using the product object which is bound to the form using ngModel.
+ 
+    //to show on Template
+    this.product.name=data.value.name;
+    this.product.price=data.value.price;
+    this.product.description=data.value.description;
+    this.product.stock=data.value.stock;
+  }
+ 
+ 
+ 
+}
+ 
+ 
+<p>registration-form1 works using Template Driven Forms!</p>
+<p>Product Details Form</p>
+<p> #productForm is template reference variable for the ngForm directive, that governs the form</p>
+<!-- <form #productForm="ngForm"  action=""  (ngSubmit)="onSubmit(productForm)">
+    <p>
+        <label for="name">Name:</label>
+        <input type="text" id="name" required name="name" [(ngModel)]="product.name" >        
+    </p>
+    <p>
+        <label for="price">Price:</label>
+        <input type="number" id="price" required name="price" [(ngModel)]="product.price" >
+    </p>
+    <p>
+        <label for="description">Description:</label>
+        <textarea id="description" required name="description" [(ngModel)]="product.description" ></textarea>
+    </p>
+    <p>
+        <label for="stock">Stock:</label>
+        <input type="number" id="stock" required name="stock" [(ngModel)]="product.stock" >
+    </p>
+    <button type="submit" >Submit</button>    
+</form> -->
+<p>Angular contains validation classes </p>
+<ul>
+    <li>.ng-valid: Applied when the form control is valid.</li>
+    <li>.ng-invalid: Applied when the form control is invalid.</li>
+    <li>.ng-touched: Applied when the form control has been touched (focused and then blurred).</li>
+    <li>.ng-untouched: Applied when the form control has not been touched.</li>
+    <li>.ng-dirty: Applied when the form control's value has been changed.</li>
+    <li>.ng-pristine: Applied when the form control's value has not been changed
+</ul>
+ 
+ 
+<p>To include error messages, we can use the following code snippet for each form control:</p>
+<form #productForm="ngForm" novalidate  action=""  (ngSubmit)="onSubmit(productForm)">
+    <p>
+        <label for="name">Name:</label>
+        <input type="text" id="name" required name="name" minlength="3" maxlength="20"  ngModel #name="ngModel" >  
+    @if(name.errors?.['required'] && name.touched)
+    {
+     <span class="error">Name is required.</span>
+    }
+    @if((name.errors?.['minlength'] || name.errors?.['maxlength']) && name.touched)
+    {
+     <span class="error">Name must be between 3 and 20 characters.</span>
+    }
+         
+    </p>
+    <p>
+        <label for="price">Price:</label>
+        <input type="number" id="price" required name="price" min="1000" ngModel #price="ngModel" >
+        @if(price.errors?.['required'] && price.touched)
+        {
+         <span class="error">Price is required.</span>
+        }
+         @if(price.errors?.['min'] && price.touched)
+        {
+         <span class="error">Price must be at least 1000.</span>
+        }
+    </p>
+    <p>
+        <label for="description">Description:</label>
+        <textarea id="description" required name="description" ngModel #description="ngModel" ></textarea>
+            @if(description.errors?.['required'] && description.touched)
+            {
+            <span class="error">Description is required.</span>
+            }
+    </p>
+    <p>
+        <label for="stock">Stock:</label>
+        <input type="number" id="stock" required name="stock" min="5" ngModel #stock="ngModel" >
+        @if(stock.errors?.['required'] && stock.touched)
+        {
+         <span class="error">Stock is required.</span>
+        }
+         @if(stock.errors?.['min'] && stock.touched)
+        {
+         <span class="error">Stock must be at least 5.</span>
+        }
+    </p>
+    <button type="submit" >Submit</button>    
+</form>
+ 
+ 
+<p class="product-details">Product Details: {{ product | json }}</p>
+ 
+ 
+# Template Driven Forms Problem Statement
+ 
+## Objective
+Create an Angular component that demonstrates Template Driven Forms with comprehensive form validation.
+ 
+## Problem Statement: User Registration Form
+ 
+### Requirements
+ 
+Build a **User Registration Form** component with the following specifications:
+ 
+#### Form Fields
+ 
+1. **Username**
+   - Type: Text input
+   - Validations:
+     - Required
+     - Minimum length: 5 characters
+     - Maximum length: 15 characters
+     - Pattern: Only alphanumeric characters (no special characters)
+   - Error Messages:
+     - "Username is required" (if empty and touched)
+     - "Username must be between 5 and 15 characters" (if length invalid)
+     - "Username can only contain letters and numbers" (if pattern invalid)
+ 
+2. **Email**
+   - Type: Email input
+   - Validations:
+     - Required
+     - Valid email format
+   - Error Messages:
+     - "Email is required" (if empty and touched)
+     - "Please enter a valid email address" (if invalid format)
+ 
+3. **Password**
+   - Type: Password input
+   - Validations:
+     - Required
+     - Minimum length: 8 characters
+     - Must contain at least one uppercase, one lowercase, and one number
+   - Error Messages:
+     - "Password is required" (if empty and touched)
+     - "Password must be at least 8 characters" (if too short)
+     - "Password must contain uppercase, lowercase, and number" (if pattern invalid)
+ 
+4. **Confirm Password**
+   - Type: Password input
+   - Validations:
+     - Required
+     - Must match the Password field
+   - Error Messages:
+     - "Please confirm your password" (if empty and touched)
+     - "Passwords do not match" (if doesn't match password field)
+ 
+5. **Age**
+   - Type: Number input
+   - Validations:
+     - Required
+     - Minimum value: 18
+     - Maximum value: 100
+   - Error Messages:
+     - "Age is required" (if empty and touched)
+     - "You must be at least 18 years old" (if less than 18)
+     - "Please enter a valid age" (if greater than 100)
+ 
+6. **Phone Number**
+   - Type: Tel input
+   - Validations:
+     - Required
+     - Pattern: 10 digits (e.g., 1234567890)
+   - Error Messages:
+     - "Phone number is required" (if empty and touched)
+     - "Phone number must be 10 digits" (if pattern invalid)
+ 
+7. **Country**
+   - Type: Select dropdown
+   - Options: USA, Canada, UK, India, Australia, Other
+   - Validations:
+     - Required
+   - Error Messages:
+     - "Please select a country" (if not selected)
+ 
+8. **Terms and Conditions**
+   - Type: Checkbox
+   - Validations:
+     - Required (must be checked)
+   - Error Messages:
+     - "You must accept the terms and conditions" (if not checked)
+ 
+#### Functional Requirements
+ 
+1. **Real-time Validation**
+   - Show validation errors only after the field has been touched
+   - Use Angular's built-in validation classes (ng-valid, ng-invalid, ng-touched, ng-dirty)
+ 
+2. **Visual Feedback**
+   - Apply CSS styles to indicate valid/invalid fields
+   - Red border for invalid fields when touched
+   - Green border for valid fields when dirty
+   - Error messages in red text below each field
+ 
+3. **Form Submission**
+   - Submit button should be disabled until the entire form is valid
+   - On successful submission:
+     - Display all form data in a formatted output (JSON or table format)
+     - Show a success message
+     - Optionally reset the form
+ 
+4. **Form Reset**
+   - Add a "Reset" button to clear all form fields
+   - Reset should also clear all validation states
+ 
+#### Technical Requirements
+ 
+1. **Use Template-Driven Forms Approach**
+   - Use `ngModel` for two-way data binding
+   - Use template reference variables (e.g., `#username="ngModel"`)
+   - Use `ngForm` directive for the form
+ 
+2. **Validation Directives**
+   - Use built-in Angular validators: `required`, `minlength`, `maxlength`, `min`, `max`, `pattern`, `email`
+   - Access validation state through template reference variables
+ 
+3. **Display Form State**
+   - Show form validity status (Form Valid: true/false)
+   - Show form touched status
+   - Show form pristine/dirty status
+   - Display the current form value in JSON format
+ 
+ 
+12th & 15th June
+ 

@@ -1,0 +1,101 @@
+
+<form #registrationForm="ngForm" (ngSubmit)="onSubmit(registrationForm)">
+    
+    <div>
+         <label for="username">Username:</label>
+        <input type="text" id="username"  name="username" [(ngModel)]="user.username" 
+               #username="ngModel" required minlength="3" maxlength="20" pattern="[a-zA-Z1-9]+"/>
+
+        @if(username.invalid && username.touched){
+            @if(username.errors?.['required']){<div>Username is required.</div>}
+            @if(username.errors?.['minlength']){<div>Username must be at least 3 characters long.</div>}
+            @if(username.errors?.['maxlength']){<div>Username cannot exceed 20 characters.</div>}
+            @if(username.errors?.['pattern']){<div>Username can only contain letters and numbers.</div>}
+        }
+    </div>
+    
+    <div>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" [(ngModel)]="user.email" 
+               #email="ngModel" required/>
+        @if(email.invalid && email.touched){
+            @if(email.errors?.['required']){<div>Email is required.</div>}
+            @if(email.errors?.['email']){<div>Please enter a valid email address.</div>}
+        }
+    </div>
+
+    <div>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" [(ngModel)]="user.password" 
+               #password="ngModel" required minlength="8" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$"/>
+        @if(password.invalid && password.touched){
+            @if(password.errors?.['required']){<div>Password is required.</div>}
+            @if(password.errors?.['minlength']){<div>Password must be at least 8 characters long.</div>}
+            @if(password.errors?.['pattern']){<div>Password must contain at least one lowercase letter, one uppercase letter, and one digit.</div>}
+        }
+    </div>
+
+    <div>
+        <label for="confirmPassword">Confirm Password:</label>
+        <input type="password" id="confirmPassword" name="confirmPassword" [(ngModel)]="user.confirmPassword" 
+               #confirmPassword="ngModel" required minlength="8" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$"/>
+        @if(confirmPassword.invalid && confirmPassword.touched){
+            @if(confirmPassword.errors?.['required']){<div>Confirm Password is required.</div>}
+            @if(confirmPassword.errors?.['minlength']){<div>Confirm Password must be at least 8 characters long.</div>}
+            @if(confirmPassword.errors?.['pattern']){<div>Confirm Password must contain at least one lowercase letter, one uppercase letter, and one digit.</div>}
+        }
+    </div>
+
+    <div>
+        <label for="age">Age:</label>
+        <input type="number" id="age" name="age" [(ngModel)]="user.age" #age="ngModel" required min="18" max="100"/>
+            @if(age.invalid && age.touched){
+                @if(age.errors?.['required']){<div>Age is required.</div>}
+                @if(age.errors?.['min']){<div>You must be at least 18 years old.</div>}
+                @if(age.errors?.['max']){<div>Age cannot exceed 100 years.</div>}
+            }
+    </div>
+
+    <div>
+        <label for="phone">Phone Number:</label>
+        <input type="tel" id="phone" name="phone" [(ngModel)]="user.phone" #phone="ngModel" required pattern="^[0-9]{10}$"/>
+        @if(phone.invalid && phone.touched){
+            @if(phone.errors?.['required']){<div>Phone number is required.</div>}
+            @if(phone.errors?.['pattern']){<div>Phone number must be 10 digits.</div>}
+        }
+    </div>
+
+    <div>
+        <label for="country">Country:</label>
+        <select id="country" name="country" [(ngModel)]="user.country" #country="ngModel" required>
+            <option value="">Select Country</option>
+            <option value="USA">USA</option>
+            <option value="Canada">Canada</option> 
+            <option value="UK">UK</option>
+            <option value="Australia">Australia</option>
+            <option value="India">India</option>
+        </select>
+        @if(country.invalid && country.touched){
+            @if(country.errors?.['required']){<div>Country is required.</div>}
+        }
+    </div>
+
+    <div>
+        <label for="terms">Accept Terms and Conditions:</label>
+        <input type="checkbox" id="terms" name="terms" [(ngModel)]="user.terms" #terms="ngModel" required/> 
+        @if(terms.invalid && terms.touched){
+            @if(terms.errors?.['required']){<div>You must accept the terms and conditions.</div>}
+        }
+    </div>
+
+    <button type="submit" [disabled]="!registrationForm.valid">Register</button>
+    <button type="reset" (click)="onReset(registrationForm)">Reset</button>
+</form>
+
+<h3>Form State</h3>
+
+<p>Valid: {{ registrationForm.valid }}</p>
+<p>Touched: {{ registrationForm.touched }}</p>
+<p>Dirty: {{ registrationForm.dirty }}</p>
+<p>Pristine: {{ registrationForm.pristine }}</p>
+<pre>{{ username.errors | json }}</pre>
