@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ProductItemComponent } from '../product-item-component/product-item-component';
-import { Product } from '../models';
+import { CartItem, Product } from '../models';
 
 @Component({
   selector: 'app-product-list-component',
@@ -12,10 +12,17 @@ export class ProductListComponent {
   @Input () products: Product[] = [];
 
   @Output() productSelected = new EventEmitter<Product>();
+  @Output() productRemoved = new EventEmitter<Product>();
 
   handleAddToCart(product:Product){
     console.log("Product List Component");
     console.log(product);
     this.productSelected.emit(product);
+  }
+
+  handleRemoveFromCart(cartItem: CartItem){
+    console.log("Remove Product from Cart");
+    console.log(cartItem);
+    this.productRemoved.emit(cartItem.product);
   }
 }

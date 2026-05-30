@@ -1,9 +1,12 @@
 
 
-<div>
+<div class="product-card">
     <h2>{{product.name}}</h2>
     <p>Price : {{product.price}}</p>
     <p>Stock : {{product.stock}}</p>
     <p>Category : {{product.category}}</p>
-    <button (click)="addProduct()">Add to Cart</button>
+    <button (click)="addProduct()"
+    [disabled]="product.stock === 0">
+    Add to Cart</button>
+    <button (click)="removeProduct()">Remove from Cart</button>
 </div>

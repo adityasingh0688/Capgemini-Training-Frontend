@@ -1,6 +1,12 @@
+<app-product-list-component
+  [products]="products"
+  (productSelected)="addItemToCart($event)">
+</app-product-list-component>
 
-<app-cart-summary-component></app-cart-summary-component>
-<app-product-list-component></app-product-list-component>
-<app-discount-panel-component></app-discount-panel-component>
+<app-cart-summary-component
+  [cartItems]="cartItems"
+  (removeItemFromCart)="removeItemFromCart($event)">
+</app-cart-summary-component>
 
-<app-product-list-component [products]="products"></app-product-list-component>
+<app-discount-panel-component>
+</app-discount-panel-component>

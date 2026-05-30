@@ -1,1 +1,20 @@
+<h2>Cart Summary</h2>
 
+@for(item of cartItems; track item.product.id){
+
+  <div class="container">
+    <h3>{{ item.product.name }}</h3>
+
+    <p>Price: {{ item.product.price }}</p>
+
+    <p>Quantity: {{ item.quantity }}</p>
+
+    <button (click)="removeItem(item)">
+      Remove
+    </button>
+
+  </div>
+
+}
+
+<p>Subtotal: {{ subTotal }}</p>
