@@ -12,7 +12,7 @@ export class ProductListComponent {
   @Input () products: Product[] = [];
 
   @Output() productSelected = new EventEmitter<Product>();
-  @Output() productRemoved = new EventEmitter<Product>();
+
 
   handleAddToCart(product:Product){
     console.log("Product List Component");
@@ -20,9 +20,4 @@ export class ProductListComponent {
     this.productSelected.emit(product);
   }
 
-  handleRemoveFromCart(cartItem: CartItem){
-    console.log("Remove Product from Cart");
-    console.log(cartItem);
-    this.productRemoved.emit(cartItem.product);
-  }
 }

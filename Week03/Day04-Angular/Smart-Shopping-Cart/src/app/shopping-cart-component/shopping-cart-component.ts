@@ -34,9 +34,7 @@ export class ShoppingCartComponent {
     }
   }
 
-  showWarning(message: string) {
-    console.log(message);
-  }
+
 
   removeItemFromCart(item: CartItem) {
     console.log('Removing product from cart:', item.product);
@@ -47,4 +45,26 @@ export class ShoppingCartComponent {
       this.cartItems = this.cartItems.filter(cartItem => cartItem.product.id !== item.product.id);
     }
   }
+  
+  discountPercentage:number = 0;
+  applyDiscount(percent:number){
+  this.discountPercentage = percent;
+}
+ get subTotal(): number {
+  return this.cartItems.reduce(
+    (total, item) =>
+      total + item.product.price * item.quantity,
+    0
+  );
+}
+get finalTotal(): number {
+  return this.subTotal -
+    (this.subTotal * this.discountPercentage / 100);
+}
+
+warningMessage = '';
+
+showWarning(message:string){
+  this.warningMessage = message;
+}
 }

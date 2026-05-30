@@ -8,7 +8,6 @@ import { CartItem } from '../models';
   styleUrl: './cart-summary-component.css',
 })
 export class CartSummaryComponent {
-  subTotal: number = 0;
   @Output() warningEvent = new EventEmitter<string>();
 
   checkTotal() {
@@ -23,13 +22,12 @@ export class CartSummaryComponent {
 removeItem(item: CartItem){
   this.removeItemFromCart.emit(item);
 }
-get subtotal(): number {
-
+get subTotal(): number {
   return this.cartItems.reduce(
     (total, item) =>
       total + item.product.price * item.quantity,
     0
   );
-
 }
+
 }

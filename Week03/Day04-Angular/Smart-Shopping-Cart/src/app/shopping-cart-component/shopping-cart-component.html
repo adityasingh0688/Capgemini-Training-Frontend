@@ -3,10 +3,23 @@
   (productSelected)="addItemToCart($event)">
 </app-product-list-component>
 
+@if(warningMessage){
+  <p>{{ warningMessage }}</p>
+}
+
 <app-cart-summary-component
   [cartItems]="cartItems"
-  (removeItemFromCart)="removeItemFromCart($event)">
+  (removeItemFromCart)="removeItemFromCart($event)"
+  (warningEvent)="showWarning($event)">
 </app-cart-summary-component>
 
-<app-discount-panel-component>
+<app-discount-panel-component
+  [cartTotal]="subTotal"
+  (discountApplied)="applyDiscount($event)">
 </app-discount-panel-component>
+
+<p>Subtotal: {{ subTotal }}</p>
+
+<p>Discount: {{ discountPercentage }}%</p>
+
+<p>Final Total: {{ finalTotal }}</p>
