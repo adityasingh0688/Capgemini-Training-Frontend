@@ -1,0 +1,11 @@
+<h1>Fake Store API Data</h1>
+
+@if (apiData() === null) {
+  <p>Loading...</p>
+} @else {
+  <ul>
+    @for (product of apiData(); track product.id) {
+      <li>{{ product.title }}</li>
+    }
+  </ul>
+}
