@@ -1,0 +1,10 @@
+<h1>Product Data Displaying On the Page, from Service</h1>
+@if(productData()){
+  <ul>
+    @for( product of productData(); track product.id) {
+      <li>
+        {{ product.name }} - ${{ product.price }}
+      </li>
+    }
+  </ul>
+}

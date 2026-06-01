@@ -8,13 +8,28 @@ import { RouterOutlet } from '@angular/router';
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
+
 export class App {
   protected readonly title = signal('Reactive-Forms');
 
-  loginForm =new FormGroup({
-    name: new FormControl(''),
-    email: new FormControl('',[Validators.required,Validators.email]),
-    password: new FormControl('',[Validators.required,Validators.minLength(6)])
+ loginForm = new FormGroup({
+  name: new FormControl(''),
+
+  email: new FormControl('', [
+    Validators.required,
+    Validators.email
+  ]),
+
+  password: new FormControl('', [
+    Validators.required,
+    Validators.minLength(6)
+  ]),
+
+  address: new FormGroup({
+    city: new FormControl(''),
+    state: new FormControl('')
+  })
+
   });
 
   Submit(){

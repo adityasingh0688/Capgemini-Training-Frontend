@@ -180,7 +180,7 @@ AppComponent (Root)
 │   ├── ProductListComponent (Child)
 │   │   └── ProductItemComponent (Grandchild - *ngFor)
 │   └── DiscountPanelComponent (Child)
-```
+``
  
 ### 2. Component Specifications
  

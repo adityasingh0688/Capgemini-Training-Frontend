@@ -11,6 +11,11 @@
   @if(loginForm.get('password')?.invalid && loginForm.get('password')?.touched){
     <div style="color: red;">Password must be at least 6 characters long.</div>
   }
+
+  <div formGroupName="address">
+    <input type="text" placeholder="City" formControlName="city">
+    <input type="text" placeholder="State" formControlName="state">
+  </div>
   
 
   <button type="submit">Submit</button>

@@ -24,6 +24,7 @@ export class ShoppingCartComponent {
     } else {
       console.log('Sorry, this product is out of stock!');
     }
+  
     if(product.stock >= 0){
       const existingCartItem = this.cartItems.find(item => item.product.id === product.id);
       if (existingCartItem) {
@@ -32,6 +33,9 @@ export class ShoppingCartComponent {
         this.cartItems.push({ product: product, quantity: 1 });
       }
     }
+    if(this.subTotal > 500){
+  this.warningMessage = '⚠️ Total exceeds $500!';
+}
   }
 
 
@@ -44,6 +48,9 @@ export class ShoppingCartComponent {
     } else {
       this.cartItems = this.cartItems.filter(cartItem => cartItem.product.id !== item.product.id);
     }
+    if(this.subTotal <= 500){
+  this.warningMessage = '';
+  }
   }
   
   discountPercentage:number = 0;
@@ -67,4 +74,5 @@ warningMessage = '';
 showWarning(message:string){
   this.warningMessage = message;
 }
+
 }
