@@ -1,0 +1,803 @@
+Topics Covered -
+✅ FormControl
+✅ FormGroup
+✅ Validators
+✅ Error Messages
+✅ Nested FormGroup
+✅ FormBuilder
+✅ Custom Validators
+✅ Dynamic Forms
+
+
+<p>employee-form works!</p>
+<!-- <div class="container">
+    <h2>Employee Form using Form control</h2>
+    <form novalidate onSubmit="submitForm()">
+        <p><label for="name">Employee Name:</label>
+        <input type="text" id="name" name="name" [formControl]="name"  required>
+        <button type="button" class="btn btn-secondary mt-3" (click)="updateName()">Set Name to Jane Doe</button>
+        </p>
+        <p><label for="email">Employee Email:</label>
+        <input type="email" id="email" name="email" [formControl]="email" required>
+        </p>
+        <p><label for="department">Employee Department:</label>
+        <input type="text" id="department" name="department" [formControl]="department" required>
+        </p>
+        <p>
+            <label for="city">Select City:</label>
+            <select id="city" name="city" [formControl]="city" required>
+               @for (city of cities; track $index)
+               {
+                <option value="{{city}}">{{city}}</option>
+               }
+            </select>
+        </p>
+        <p>
+            <label for="gender">Select Gender:</label>
+            <input type="radio" id="male" name="gender" value="male" [formControl]="gender" required>
+            <label for="male">Male</label>
+            <input type="radio" id="female" name="gender" value="female" [formControl]="gender" required>
+            <label for="female">Female</label>
+        </p>
+        <button type="submit" class="btn btn-primary mt-3">Submit</button>
+ 
+    </form>
+</div> --->
+ 
+<div class="container">
+    <h2>Employee Form using Form Group</h2>
+    <form [formGroup]="employeeForm" (ngSubmit)="submitForm()">
+        <p><label for="name">Employee Name:</label>
+        <input type="text" id="name" formControlName="name" required>
+        </p>
+        <p><label for="email">Employee Email:</label>
+        <input type="email" id="email" formControlName="email" required>
+        </p>
+        <p><label for="department">Employee Department:</label>
+        <input type="text" id="department" formControlName="department" required>
+        </p>
+        <p>
+            <label for="city">Select City:</label>
+            <select id="city" formControlName="city" required>
+               @for (city of cities; track $index)
+               {
+                <option value="{{city}}">{{city}}</option>
+               }
+            </select>
+        </p>
+        <p>
+            <label for="gender">Select Gender:</label>
+            <input type="radio" id="male" formControlName="gender" value="male" required>
+            <label for="male">Male</label>
+            <input type="radio" id="female" formControlName="gender" value="female" required>
+            <label for="female">Female</label>
+        </p>
+        <button type="submit" class="btn btn-primary mt-3">Submit</button>
+    </form>
+</div>
+ 
+<div class="container mt-4">
+    <h3>Nested Form Group </h3>
+    <form [formGroup]="employeeForm2" (ngSubmit)="submitForm2()">
+        <p>
+            <label for="name">Employee Name:</label>
+            <input type="text" id="name" formControlName="name" required>
+        </p>
+        <p>
+            <label for="email">Employee Email:</label>
+            <input type="email" id="email" formControlName="email" required>
+        </p>
+        <div class="address-form" formGroupName="address">
+            <p>
+                <label for="street">Street:</label>
+                <input type="text" id="street" formControlName="street" required>
+            </p>
+            <p>
+                <label for="city">City:</label>
+                <input type="text" id="city" formControlName="city" required>
+            </p>
+            <p>
+                <label for="state">State:</label>
+                <input type="text" id="state" formControlName="state" required>
+            </p>
+            <p>
+                <label for="zip">Zip:</label>
+                <input type="text" id="zip" formControlName="zip" required>
+            </p>
+           
+        </div>
+        <p>
+            <button type="submit" class="btn btn-primary mt-3">Submit</button>
+            </p>
+    </form>
+</div>
+ 
+.employee-form {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+ 
+.employee-form h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+ 
+.employee-form label {
+  display: block;
+  margin: 5px;
+  font-weight: bold;
+  display: block;
+ 
+ 
+}
+ 
+.employee-form input {
+  width: 100%;
+  padding: 8px;
+  margin: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  display: block;
+}
+ 
+.address-form
+{
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-top: 10px;
+  border-radius: 5px;
+}
+ 
+.container {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin: 10px;
+  border-radius: 5px;
+  align-items: center;
+}
+ 
+import { Component } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
+import {ReactiveFormsModule} from '@angular/forms';
+ 
+@Component({
+  selector: 'app-employee-form',
+  imports: [ReactiveFormsModule],
+  templateUrl: './employee-form.html',
+  styleUrl: './employee-form.css',
+})
+export class EmployeeForm {
+//FormControl is class is added to one single form control element.
+// It tracks the value and validation status of that form control element.
+// It is used to create a form control instance in the component class
+// and bind it to a form control element in the template using the formControl directive.
+ 
+// Here we are creating a form control instance named 'name'
+// and initializing it with the value 'John Doe'.
+// name= new FormControl('John Doe');
+// email= new FormControl('john.doe@example.com');
+// department= new FormControl('Engineering');
+// city= new FormControl('New York');
+// gender= new FormControl('Male');
+// updateName() {
+//   this.name.setValue('Jane Smith');
+// }
+ 
+ 
+cities = ['New York', 'Los Angeles', 'Chicago', 'Houston', 'Phoenix', 'Philadelphia', 'San Antonio', 'San Diego', 'Dallas', 'San Jose'];
+ 
+ 
+//FormGroup is a class that is used to group multiple form controls together.
+employeeForm= new FormGroup({
+  name: new FormControl('John Doe'),
+  email: new FormControl('john.doe@example.com'),
+  department: new FormControl('Engineering'),
+  city: new FormControl('New York'),
+  gender: new FormControl('Male')
+});
+ 
+ 
+submitForm() {
+  console.log('Employee Name:', this.employeeForm.value.name);
+  console.log('Employee Email:', this.employeeForm.value.email);
+  console.log('Employee Department:', this.employeeForm.value.department);
+  console.log('Employee City:', this.employeeForm.value.city);
+  console.log('Employee Gender:', this.employeeForm.value.gender);
+ 
+}
+ 
+ 
+//Nested FormGroup is a class that is used to group multiple form controls together, and it can also contain other FormGroup instances.
+employeeForm2= new FormGroup({
+  name: new FormControl('John Doe'),
+  email: new FormControl('john.doe@example.com'),
+  address: new FormGroup({
+    street: new FormControl('123 Main St'),
+    city: new FormControl('New York'),
+    state: new FormControl('NY'),
+    zip: new FormControl('10001')
+  }),
+});
+ 
+submitForm2() {
+  console.log('Employee Name:', this.employeeForm2.value.name);
+  console.log('Employee Email:', this.employeeForm2.value.email);
+  console.log('Employee Address:', this.employeeForm2.value.address?.city);
+  console.log('Employee State:', this.employeeForm2.value.address?.state);
+  console.log('Employee Zip:', this.employeeForm2.value.address?.zip);
+  console.log('Employee Street:', this.employeeForm2.value.address?.street);
+}
+ 
+}
+ 
+import { Component } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
+import {ReactiveFormsModule} from '@angular/forms';
+import {Validators} from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
+import { AbstractControl, ValidationErrors } from '@angular/forms';
+ 
+ 
+@Component({
+  selector: 'app-employee-form',
+  imports: [ReactiveFormsModule],
+  templateUrl: './employee-form.html',
+  styleUrl: './employee-form.css',
+})
+export class EmployeeForm {
+//FormControl is class is added to one single form control element.
+// It tracks the value and validation status of that form control element.
+// It is used to create a form control instance in the component class
+// and bind it to a form control element in the template using the formControl directive.
+ 
+// Here we are creating a form control instance named 'name'
+// and initializing it with the value 'John Doe'.
+// name= new FormControl('John Doe');
+// email= new FormControl('john.doe@example.com');
+// department= new FormControl('Engineering');
+// city= new FormControl('New York');
+// gender= new FormControl('Male');
+// updateName() {
+//   this.name.setValue('Jane Smith');
+// }
+ 
+ 
+cities = ['New York', 'Los Angeles', 'Chicago', 'Houston', 'Phoenix', 'Philadelphia', 'San Antonio', 'San Diego', 'Dallas', 'San Jose'];
+ 
+ 
+//FormGroup is a class that is used to group multiple form controls together.
+// employeeForm= new FormGroup({
+//   name: new FormControl('John Doe'),
+//   email: new FormControl('john.doe@example.com'),
+//   department: new FormControl('Engineering'),
+//   city: new FormControl('New York'),
+//   gender: new FormControl('Male')
+// });
+ 
+ 
+//FormGroup with validations
+employeeForm= new FormGroup({
+  name: new FormControl('', [Validators.required,Validators.minLength(3), Validators.maxLength(50)]),
+  email: new FormControl('john.doe@example.com', [Validators.required, Validators.email]),
+  department: new FormControl('Engineering', [Validators.required]),
+  city: new FormControl('New York', [Validators.required]),
+  gender: new FormControl('Male', [Validators.required])
+});
+ 
+ 
+submitForm() {
+  console.log('Employee Name:', this.employeeForm.value.name);
+  console.log('Employee Email:', this.employeeForm.value.email);
+  console.log('Employee Department:', this.employeeForm.value.department);
+  console.log('Employee City:', this.employeeForm.value.city);
+  console.log('Employee Gender:', this.employeeForm.value.gender);
+ 
+}
+ 
+ 
+//Nested FormGroup is a class that is used to group multiple form controls together, and it can also contain other FormGroup instances.
+employeeForm2= new FormGroup({
+  name: new FormControl('John Doe', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]),
+  email: new FormControl('john.doe@example.com'),
+  address: new FormGroup({
+    street: new FormControl('123 Main St'),
+    city: new FormControl('New York'),
+    state: new FormControl('NY'),
+    zip: new FormControl('10001')
+  }),
+});
+ 
+submitForm2() {
+  console.log('Employee Name:', this.employeeForm2.value.name);
+  console.log('Employee Email:', this.employeeForm2.value.email);
+  console.log('Employee Address:', this.employeeForm2.value.address?.city);
+  console.log('Employee State:', this.employeeForm2.value.address?.state);
+  console.log('Employee Zip:', this.employeeForm2.value.address?.zip);
+  console.log('Employee Street:', this.employeeForm2.value.address?.street);
+}
+ 
+ 
+ 
+//using FormBuilder to create a form group
+ 
+//custom validator function to check if the name starts with 'J'
+nameStartsWithJ(control: AbstractControl): ValidationErrors | null {
+  const value = control.value;
+  if (!value) {
+    return null;
+  }
+  return value.startsWith('J') ? null : { 'nameStartsWithJ': true };
+}
+ 
+private formBuilder: FormBuilder = new FormBuilder();
+ 
+employeeForm3= this.formBuilder.group({
+  name: ['John Doe', [Validators.required, Validators.minLength(3), Validators.maxLength(50), this.nameStartsWithJ.bind(this)]],
+  email: ['', [Validators.required, Validators.email]],
+  department: ['Engineering', [Validators.required]],
+  address: this.formBuilder.group({
+  street: ['123 Main St'],
+  city: ['New York'],
+  state: ['NY'],
+  zip: ['10001']
+})
+});
+ 
+submitForm3() {
+  console.log('Employee Name:', this.employeeForm3.value.name);
+  console.log('Employee Email:', this.employeeForm3.value.email);
+  console.log('Employee Department:', this.employeeForm3.value.department);
+  console.log('Employee City:', this.employeeForm3.value.address?.city);
+  console.log('Employee State:', this.employeeForm3.value.address?.state);
+  console.log('Employee Zip:', this.employeeForm3.value.address?.zip);
+  console.log('Employee Street:', this.employeeForm3.value.address?.street);
+}
+ 
+}  
+ 
+<p>employee-form works!</p>
+<!-- <div class="container">
+    <h2>Employee Form using Form control</h2>
+    <form novalidate onSubmit="submitForm()">
+        <p><label for="name">Employee Name:</label>
+        <input type="text" id="name" name="name" [formControl]="name"  required>
+        <button type="button" class="btn btn-secondary mt-3" (click)="updateName()">Set Name to Jane Doe</button>
+        </p>
+        <p><label for="email">Employee Email:</label>
+        <input type="email" id="email" name="email" [formControl]="email" required>
+        </p>
+        <p><label for="department">Employee Department:</label>
+        <input type="text" id="department" name="department" [formControl]="department" required>
+        </p>
+        <p>
+            <label for="city">Select City:</label>
+            <select id="city" name="city" [formControl]="city" required>
+               @for (city of cities; track $index)
+               {
+                <option value="{{city}}">{{city}}</option>
+               }
+            </select>
+        </p>
+        <p>
+            <label for="gender">Select Gender:</label>
+            <input type="radio" id="male" name="gender" value="male" [formControl]="gender" required>
+            <label for="male">Male</label>
+            <input type="radio" id="female" name="gender" value="female" [formControl]="gender" required>
+            <label for="female">Female</label>
+        </p>
+        <button type="submit" class="btn btn-primary mt-3">Submit</button>
+ 
+    </form>
+</div> --->
+ 
+<div class="container">
+    <h2>Employee Form using Form Group</h2>
+    <form [formGroup]="employeeForm" (ngSubmit)="submitForm()" novalidate>
+        <p><label for="name">Employee Name:</label>
+        <input type="text" id="name" formControlName="name" >
+        @if (employeeForm.get('name')?.touched && employeeForm.get('name')?.invalid)
+         {
+           @if(employeeForm.get('name')?.errors?.['required'])
+            {
+                <span class="text-danger">Name is required.</span>
+            }
+            @if(employeeForm.get('name')?.errors?.['minlength'])
+            {
+                <span class="text-danger">Name must be at least 3 characters long.</span>
+            }
+            @if(employeeForm.get('name')?.errors?.['maxlength'])
+            {
+                <span class="text-danger">Name cannot exceed 50 characters.</span>
+            }
+        }
+        </p>
+        <p><label for="email">Employee Email:</label>
+        <input type="email" id="email" formControlName="email" >
+        @if(employeeForm.get('email')?.touched && employeeForm.get('email')?.invalid)
+            {
+                @if(employeeForm.get('email')?.errors?.['required'])
+                {
+                    <span class="text-danger">Email is required.</span>
+                }
+                @if(employeeForm.get('email')?.errors?.['email'])
+                {
+                    <span class="text-danger">Please enter a valid email address.</span>
+                }
+            }
+       
+        </p>
+        <p><label for="department">Employee Department:</label>
+        <input type="text" id="department" formControlName="department" >
+        </p>
+        <p>
+            <label for="city">Select City:</label>
+            <select id="city" formControlName="city" >
+               @for (city of cities; track $index)
+               {
+                <option value="{{city}}">{{city}}</option>
+               }
+            </select>
+        </p>
+        <p>
+            <label for="gender">Select Gender:</label>
+            <input type="radio" id="male" formControlName="gender" value="male" >
+            <label for="male">Male</label>
+            <input type="radio" id="female" formControlName="gender" value="female" >
+            <label for="female">Female</label>
+        </p>
+        <button type="submit" class="btn btn-primary mt-3">Submit</button>
+    </form>
+</div>
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+<div class="container mt-4">
+    <h3>Nested Form Group </h3>
+    <form [formGroup]="employeeForm2" (ngSubmit)="submitForm2()">
+        <p>
+            <label for="name">Employee Name:</label>
+            <input type="text" id="name" formControlName="name" required>
+        </p>
+        <p>
+            <label for="email">Employee Email:</label>
+            <input type="email" id="email" formControlName="email" required>
+        </p>
+        <div class="address-form" formGroupName="address">
+            <p>
+                <label for="street">Street:</label>
+                <input type="text" id="street" formControlName="street" required>
+            </p>
+            <p>
+                <label for="city">City:</label>
+                <input type="text" id="city" formControlName="city" required>
+            </p>
+            <p>
+                <label for="state">State:</label>
+                <input type="text" id="state" formControlName="state" required>
+            </p>
+            <p>
+                <label for="zip">Zip:</label>
+                <input type="text" id="zip" formControlName="zip" required>
+            </p>
+           
+        </div>
+        <p>
+            <button type="submit" class="btn btn-primary mt-3">Submit</button>
+            </p>
+    </form>
+ 
+ 
+ 
+    <h3>Form Builder</h3>
+    <form [formGroup]="employeeForm3" (ngSubmit)="submitForm3()">
+        <p>
+            <label for="name">Employee Name:</label>
+            <input type="text" id="name" formControlName="name" >
+            @if(employeeForm3.get('name')?.touched && employeeForm3.get('name')?.invalid)
+            {
+                @if(employeeForm3.get('name')?.errors?.['required'])
+                {
+                    <span class="text-danger">Name is required.</span>
+                }
+                @if(employeeForm3.get('name')?.errors?.['minlength'])
+                {
+                    <span class="text-danger">Name must be at least 3 characters long.</span>
+                }
+                @if(employeeForm3.get('name')?.errors?.['maxlength'])
+                {
+                    <span class="text-danger">Name cannot exceed 50 characters.</span>
+                }
+                @if(employeeForm3.get('name')?.errors?.['nameStartsWithJ'])
+                {
+                    <span class="text-danger">Name must start with 'J'.</span>
+                }
+            }
+        </p>
+        <p>
+            <label for="email">Employee Email:</label>
+            <input type="email" id="email" formControlName="email" >
+            @if(employeeForm3.get('email')?.touched && employeeForm3.get('email')?.invalid)
+            {
+                @if(employeeForm3.get('email')?.errors?.['required'])
+                {
+                    <span class="text-danger">Email is required.</span>
+                }
+                @if(employeeForm3.get('email')?.errors?.['email'])
+                {
+                    <span class="text-danger">Please enter a valid email address.</span>
+                }
+            }
+        </p>
+        <p>
+            <label for="department">Employee Department:</label>
+            <input type="text" id="department" formControlName="department" >
+            @if(employeeForm3.get('department')?.touched && employeeForm3.get('department')?.invalid)
+            {
+                @if(employeeForm3.get('department')?.errors?.['required'])
+                {
+                    <span class="text-danger">Department is required.</span>
+                }
+            }
+        </p>
+        <div class="address-form" formGroupName="address">
+            <p>
+                <label for="street">Street:</label>
+                <input type="text" id="street" formControlName="street" >
+            </p>
+            <p>
+                <label for="city">City:</label>
+                <input type="text" id="city" formControlName="city" required>
+            </p>
+            <p>
+                <label for="state">State:</label>
+                <input type="text" id="state" formControlName="state" required>
+            </p>
+            <p>
+                <label for="zip">Zip:</label>
+                <input type="text" id="zip" formControlName="zip" required>
+            </p>
+        </div>
+        <p>
+            <button type="submit" class="btn btn-primary mt-3">Submit</button>
+        </p>
+ 
+    </form>
+</div>
+ 
+.employee-form {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+ 
+.employee-form h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+ 
+.employee-form label {
+  display: block;
+  margin: 5px;
+  font-weight: bold;
+  display: block;
+ 
+ 
+}
+ 
+.employee-form input {
+  width: 100%;
+  padding: 8px;
+  margin: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  display: block;
+}
+ 
+.address-form
+{
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-top: 10px;
+  border-radius: 5px;
+}
+ 
+.container {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin: 10px;
+  border-radius: 5px;
+  align-items: center;
+}
+ 
+import { Component } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import {ReactiveFormsModule} from '@angular/forms';
+ 
+@Component({
+  selector: 'app-dynamic-form',
+  imports: [ReactiveFormsModule],
+  templateUrl: './dynamic-form.html',
+  styleUrl: './dynamic-form.css',
+})
+export class DynamicForm {
+ 
+  //dynamic form for additing array of ProfileDetails
+//array of profileFormGroups
+ 
+  profiles:string[] = ['Developer', 'Designer', 'Manager', 'Tester'];
+ 
+ 
+  profileFormGroups: FormGroup[] = [];
+ 
+profileForm = new FormGroup({
+  username: new FormControl('', Validators.required),
+  age: new FormControl('', [Validators.required, Validators.min(18)]),
+  city: new FormControl('', Validators.required),
+  profile: new FormControl('', Validators.required)
+});
+ 
+ 
+ngOnInit() {
+  this.profileFormGroups.push(this.profileForm);
+}
+ 
+  addProfile()
+  {  
+    this.profileFormGroups.push(new FormGroup({
+      username: new FormControl('', Validators.required),
+      age: new FormControl('', [Validators.required, Validators.min(18)]),
+      city: new FormControl('', Validators.required),
+      profile: new FormControl('', Validators.required)
+    })) ;
+  }
+ 
+  removeProfile(index: number)
+  {
+    if (index >= 0 && index < this.profileFormGroups.length)
+      {
+      this.profileFormGroups.splice(index, 1);
+    }
+    else
+    {
+      alert('Can not remove profile at index ' + index);
+    }
+  }
+ 
+  submitProfiles() {
+    console.log(this.profileFormGroups.map(group => group.value));
+ 
+  }
+ 
+ 
+ 
+ 
+ 
+}
+ 
+ 
+form
+{
+    border: 1px solid #ccc;
+    padding: 20px;
+    margin: 10px;
+    border-radius: 5px;
+    background-image: linear-gradient(45deg, #192f9e, #7449d9);
+    color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+ 
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #fff;
+}
+input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+ 
+button {
+    padding: 10px;
+    margin: 10px;
+    border: none;
+    border-radius: 4px;
+    background-image: linear-gradient(45deg, #007bff, #00d4ff);
+    color: #fff;
+    cursor: pointer;
+    transition: background-image 0.3s ease;
+    display: inline-block;
+}
+ 
+<div class="container mt-4">
+  <h2>Dynamic Form Example</h2>
+  @for (item of profileFormGroups; track $index)
+  {
+  <form [formGroup]="item" class="mb-4">
+      <div class="form-group">
+        <label for="username-{{$index}}">Username</label>
+        <input id="username-{{$index}}" formControlName="username" class="form-control" />
+        @if (item.get('username')?.touched && item.get('username')?.invalid)
+        {
+            @if(item.get('username')?.errors?.['required'])
+            {
+            <span class="text-danger">Username is required.</span>
+            }
+        }
+      </div>    
+      <div class="form-group">
+        <label for="age-{{$index}}">Age</label>
+        <input id="age-{{$index}}" formControlName="age" class="form-control" type="number" />
+        @if (item.get('age')?.touched && item.get('age')?.invalid)
+        {
+            @if(item.get('age')?.errors?.['required'])
+            {
+            <span class="text-danger">Age is required.</span>
+            }
+            @if(item.get('age')?.errors?.['min'])
+            {
+            <span class="text-danger">Age must be a positive number.</span>
+            }
+        }
+        </div>
+        <div class="form-group">
+        <label for="city-{{$index}}">City</label>
+        <input id="city-{{$index}}" formControlName="city" class="form-control" />
+        @if (profileForm.get('city')?.touched && profileForm.get('city')?.invalid)
+        {
+            @if(profileForm.get('city')?.errors?.['required'])
+            {  
+            <span class="text-danger">City is required.</span>
+            }
+            @if(profileForm.get('city')?.errors?.['minlength'])
+            {
+            <span class="text-danger">City must be at least 3 characters long.</span>
+            }
+        }
+        </div>
+        <div class="form-group">
+        <label for="profile-{{$index}}">Select Profile</label>
+        <select id="profile-{{$index}}" formControlName="profile" class="form-control">
+         @for (profile of profiles; track $index)
+         {
+            <option [value]="profile">{{ profile }}</option>
+         }
+        </select>
+        @if (profileForm.get('profile')?.touched && profileForm.get('profile')?.invalid)
+        {
+            @if(profileForm.get('profile')?.errors?.['required'])
+            {  
+            <span class="text-danger">Profile selection is required.</span>
+            }
+        }
+        </div>
+        <button class="btn btn-danger mt-2" (click)="removeProfile($index)">Remove Profile</button>
+       
+    </form>
+}
+  <button class="btn btn-success" (click)="submitProfiles()">Submit Profiles</button>
+  <button class="btn btn-warning ml-2" (click)="addProfile()" [disabled]="profileFormGroups.length === 0">Add Profile</button>
+  <button class="btn btn-danger ml-2" (click)="removeProfile(profileFormGroups.length - 1)" [disabled]="profileFormGroups.length === 0">Remove Last Profile</button>
+</div>
+ 
+ 

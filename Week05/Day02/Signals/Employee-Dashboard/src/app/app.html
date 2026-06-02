@@ -1,0 +1,9 @@
+<h1>Employee Dashboard</h1>
+<p>Name: {{ employeeName() }}</p>
+<p>Salary: {{ salary() }}</p>
+<p>Bonus Salary: {{ bonousSalary() }}</p>
+<p>Status: {{ status() }}</p>
+
+<button (click)="increaseSalary()">Increase Salary</button>
+<button (click)="changeStatus()">Change Status</button>
+<button (click)="resetSalary()">Reset Salary</button>

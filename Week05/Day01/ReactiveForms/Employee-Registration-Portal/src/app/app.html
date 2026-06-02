@@ -1,0 +1,91 @@
+
+  <h1>Employee Registration Portal</h1>
+  <router-outlet></router-outlet>
+   <div class="container">
+<form [formGroup]="employeeForm"  (ngSubmit)="onSubmit()">
+  <label for="name">Name:</label>
+  <input id="name" formControlName="name" />
+
+  @if(employeeForm.get('name')?.invalid && employeeForm.get('name')?.touched){
+   <p>Name is required and must be at least 3 characters long.</p>
+  }<br><br>
+
+  @if(employeeForm.get('name')?.errors?.['startsWithA'] && employeeForm.get('name')?.touched){
+   <p>Name must start with the letter 'A'.</p>
+  }<br><br>
+
+  <label for="email">Email:</label>
+  <input id="email" formControlName="email" />
+  
+
+  @if(employeeForm.get('email')?.invalid && employeeForm.get('email')?.touched){
+   <p>Email is required and must be a valid email address.</p>
+  }<br><br>
+
+  <label for="age">Age:</label>
+  <input id="age" formControlName="age" type="number" />
+
+  @if(employeeForm.get('age')?.invalid && employeeForm.get('age')?.touched){
+   <p>Age is required and must be between 18 and 65.</p>
+  }<br><br>
+
+  <label for="department">Department:</label>
+  <select id="department" formControlName="department">
+    <option value="">Select Department</option>
+    <option value="HR">HR</option>
+    <option value="IT">IT</option>
+    <option value="Finance">Finance</option>
+  </select><br><br>
+
+
+  @if(employeeForm.get('department')?.invalid && employeeForm.get('department')?.touched){
+   <p>Department is required.</p>
+  }
+
+  <label>Address:</label>
+  <div formGroupName="address">
+
+    <label for="street">Street:</label>
+    <input id="street" formControlName="street" />
+
+    @if(employeeForm.get('address.street')?.invalid && employeeForm.get('address.street')?.touched){
+     <p>Street is required.</p>
+    }<br><br>
+
+    <label for="city">City:</label>
+    <input id="city" formControlName="city" />
+   
+    @if(employeeForm.get('address.city')?.invalid && employeeForm.get('address.city')?.touched){
+     <p>City is required.</p>
+    }<br><br>
+
+    <label for="state">State:</label>
+    <input id="state" formControlName="state" />
+    
+    @if(employeeForm.get('address.state')?.invalid && employeeForm.get('address.state')?.touched){
+     <p>State is required.</p>
+    }<br><br>
+
+    <label for="zip">Zip Code:</label>
+    <input id="zip" formControlName="zip" />
+    
+    @if(employeeForm.get('address.zip')?.invalid && employeeForm.get('address.zip')?.touched){
+     <p>Zip Code is required and must be a valid zip code.</p>
+    }<br><br>
+
+  </div>
+
+  <label>Skills:</label>
+  <div formArrayName="skills">
+    @for(skill of skills.controls; track $index){
+      <div>
+        <input type="text" [formControlName]="$index" />
+        <button type="button" (click)="removeSkill($index)">Remove</button>
+      </div>
+    }
+  </div>
+  <button type="button" (click)="addSkill()">Add Skill</button><br><br>
+
+  <button type="submit" [disabled]="employeeForm.invalid">Submit</button>
+</form>
+</div>
