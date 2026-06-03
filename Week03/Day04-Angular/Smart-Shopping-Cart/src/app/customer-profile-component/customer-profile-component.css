@@ -1,0 +1,27 @@
+.premium-member{
+  color: rgb(106, 92, 12);
+  font-weight: bold;
+}
+
+.progress-bar{
+    width:300px;
+    height:20px;
+    border:1px solid black;
+}
+
+.progress-fill{
+    height:100%;
+    background-color:green;
+}
+
+.vip-customer{
+    border:3px solid gold;
+}
+
+.active-member{
+    background-color:#f5fff5;
+}
+
+.profile-complete{
+  border:3px solid green;
+}

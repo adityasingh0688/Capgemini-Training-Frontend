@@ -1,0 +1,27 @@
+<h3>Product Filters</h3>
+<input
+  type="text"
+  placeholder="Search Products"
+  [(ngModel)]="searchTerm"
+  (input)="applyFilters()"
+/>
+<br><br>
+
+<select [(ngModel)]="activeCategory" (change)="applyFilters()">
+  @for(category of categories; track category){
+    <option [value]="category">
+      {{category}}
+    </option>
+  }
+</select>
+<br><br>
+
+<select [(ngModel)]="selectedSortOrder" (change)="applyFilters()">
+  <option value="">Select Sort</option>
+  <option value="priceLow">Price Low To High</option>
+  <option value="priceHigh">Price High To Low</option>
+</select>
+
+<br><br>
+
+<button (click)="applyFilters()">Apply Filters</button>

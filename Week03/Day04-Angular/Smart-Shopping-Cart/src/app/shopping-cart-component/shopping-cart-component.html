@@ -1,7 +1,12 @@
 <app-product-list-component
-  [products]="products"
+  [products]="filteredProducts"
   (productSelected)="addItemToCart($event)">
 </app-product-list-component>
+
+
+<app-product-filter-component 
+(filterChanged)="onFilterChanged($event)">
+</app-product-filter-component>
 
 @if(warningMessage){
   <p>{{ warningMessage }}</p>
@@ -23,3 +28,5 @@
 <p>Discount: {{ discountPercentage }}%</p>
 
 <p>Final Total: {{ finalTotal }}</p>
+
+

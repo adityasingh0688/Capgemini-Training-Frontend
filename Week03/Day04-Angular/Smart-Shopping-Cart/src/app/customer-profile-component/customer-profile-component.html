@@ -1,0 +1,71 @@
+<div
+[ngClass]="{
+  'vip-customer': customer.loyaltyPoints > 1000,
+  'active-member': customer.isActive
+}"
+
+[ngStyle]="{
+  'padding':'15px',
+  'border':'2px solid '+getMembershipColor()
+}">
+<h2
+[class.premium-member]="customer.membershipLevel === 'Premium'">
+  {{customer.firstName}} {{customer.lastName}}
+</h2>
+
+<p>Email: {{customer.email}}</p>
+
+<p>Membership: {{customer.membershipLevel}}</p>
+
+<p>Points: {{customer.loyaltyPoints}}</p>
+
+<p>Loyalty Points: {{customer.loyaltyPoints}}</p>
+
+<div class="progress-bar">
+  <div
+    class="progress-fill"
+    [style.width.%]="(customer.loyaltyPoints/2000)*100">
+  </div>
+</div>
+
+<p>Orders: {{customer.totalOrders}}</p>
+
+
+<input [(ngModel)]="customer.firstName" [disabled]="!isEditMode"/>
+
+<input [(ngModel)]="customer.lastName" [disabled]="!isEditMode"/>
+
+<input [(ngModel)]="customer.email" [disabled]="!isEditMode"/>
+
+<button (click)="toggleEditMode()">Edit Profile</button>
+
+<button (click)="saveProfile()" [disabled]="!isFormValid()"> Save</button>
+
+<button (click)="cancelEdit()" [disabled]="!isEditMode">Cancel</button>
+
+<p [style.color]="getMembershipColor()">
+  {{customer.membershipLevel}}
+</p>
+
+
+<select [(ngModel)]="customer.preferredCategory">
+
+@for(category of categories; track category){
+<option [value]="category">{{category}}</option>
+}
+
+</select>
+<label>
+ Subscribe Newsletter
+</label>
+
+<input type="checkbox"[(ngModel)]="customer.subscribeNewsletter">
+
+<input type="file" (change)="onPhotoUpload($event)" [disabled]="!isEditMode">
+<img [src]="customer.profileImageUrl || defaultProfileImage"width="150">
+
+<p>Preferred Category: {{customer.preferredCategory}}</p>
+
+<div [class.profile-complete]="isProfileComplete">
+</div>
+

@@ -1,10 +1,11 @@
 import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { ShoppingCartComponent } from './shopping-cart-component/shopping-cart-component';
+import { CustomerProfileComponent } from './customer-profile-component/customer-profile-component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet,ShoppingCartComponent],
+  imports: [RouterOutlet,ShoppingCartComponent,CustomerProfileComponent],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })

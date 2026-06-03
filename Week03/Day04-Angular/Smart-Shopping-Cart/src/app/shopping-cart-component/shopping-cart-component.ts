@@ -5,10 +5,11 @@ import { CartSummaryComponent } from '../cart-summary-component/cart-summary-com
 
 import { DiscountPanelComponent } from '../discount-panel-component/discount-panel-component';
 import { CartItem, Product } from '../models';
+import { ProductFilterComponent } from '../product-filter-component/product-filter-component';
 
 @Component({
   selector: 'app-shopping-cart-component',
-  imports: [ProductListComponent, CartSummaryComponent, DiscountPanelComponent],
+  imports: [ProductListComponent, CartSummaryComponent, DiscountPanelComponent,ProductFilterComponent],
   templateUrl: './shopping-cart-component.html',
   styleUrl: './shopping-cart-component.css',
 })
@@ -75,4 +76,45 @@ showWarning(message:string){
   this.warningMessage = message;
 }
 
+filteredProducts: Product[] = [];
+  ngOnInit() {
+  this.filteredProducts = [...this.products];
+}
+
+onFilterChanged(filter:any)
+{
+ let result = [...this.products];
+
+ result = result.filter(product =>
+  product.name
+  .toLowerCase()
+  .includes(filter.searchTerm.toLowerCase())
+ );
+
+ if(filter.category !== 'All')
+ {
+   result = result.filter(
+     p => p.category === filter.category
+   );
+ }
+
+ result = result.filter(
+   p =>
+   p.price >= filter.minPrice &&
+   p.price <= filter.maxPrice
+ );
+
+ switch(filter.sort)
+ {
+   case 'priceLow':
+     result.sort((a,b)=>a.price-b.price);
+     break;
+
+   case 'priceHigh':
+     result.sort((a,b)=>b.price-a.price);
+     break;
+ }
+
+ this.filteredProducts = result;
+}
 }
