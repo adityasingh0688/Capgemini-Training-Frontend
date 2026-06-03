@@ -126,4 +126,58 @@ export class SignalsConsumer
  
 }
  
+ //ChangeDetectionStrategy default and Onpush
+ import { Component } from '@angular/core';
+import { ChangeDetectionStrategy } from '@angular/core';
+import { ChangeDetection2 } from '../change-detection2/change-detection2';
+ 
+@Component({
+  selector: 'app-change-detection-demo',
+  imports: [ChangeDetection2],
+  templateUrl: './change-detection-demo.html',
+  styleUrl: './change-detection-demo.css',
+  //to optimize performance by only checking for changes when necessary
+  changeDetection: ChangeDetectionStrategy.OnPush })
+ 
+export class ChangeDetectionDemo {
+  public name: string = 'Angular';
+ 
+  public changeName(): void {
+    this.name = 'Angular Change Detection';
+  }
+ 
+  counter=0;
+ 
+  changeCounter(){
+    this.counter++;
+  }
+ 
+}
+ 
+ 
+<p>change-detection-demo works!</p>
+<p>Name: {{ name }}</p>
+<p><button (click)="changeName()">Change Name</button></p>
+<p>Counter: {{ counter }}</p>
+<p><button (click)="changeCounter()">Change Counter</button></p>
+<app-change-detection2 [counter2]="counter"></app-change-detection2>
+ 
+<div>
+<p>change-detection2 works!</p>
+<p>Value received is: {{ counter2 }}</p>
+</div>
+ 
+import { Component, Input } from '@angular/core';
+ 
+@Component({
+  selector: 'app-change-detection2',
+  imports: [],
+  templateUrl: './change-detection2.html',
+  styleUrl: './change-detection2.css',
+})
+export class ChangeDetection2 {
+ 
+  @Input() counter2: number = 0;
+}
+ 
  

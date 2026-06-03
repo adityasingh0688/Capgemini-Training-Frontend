@@ -1,0 +1,5 @@
+<h2>Parent Component</h2>
+<button (click)="changeName()">Change Name</button>
+<button (click)="incrementCoutner()">Increment Counter</button>
+<p>Counter from parent: {{counter}}</p>
+<app-child [employee]="user" [counter]="counter"></app-child>

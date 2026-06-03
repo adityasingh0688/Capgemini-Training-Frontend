@@ -1,0 +1,310 @@
+import { Routes } from '@angular/router';
+import { SignalsDemo } from './signals-demo/signals-demo';
+import { ChangeDetectionDemo } from './change-detection-demo/change-detection-demo';
+import { ChangeDetection2 } from './change-detection2/change-detection2';
+import { Adminpage } from './adminpage/adminpage';
+import { Home } from './home/home';
+import {About} from './about/about';
+import { Contact } from './contact/contact';
+ 
+// export const routes: Routes = [
+//     {path: '', redirectTo: 'app', pathMatch: 'full'},
+//     {path: 'signals-demo', component: SignalsDemo},
+//     {path: 'change-detection-demo', component: ChangeDetectionDemo},
+//     {path: 'change-detection2', component: ChangeDetection2},
+//     {path: 'admin-page', component: Adminpage},
+//     {path: 'home', component: Home},
+//     {path: 'about', component: About},
+//     {path: 'contact', component: Contact}
+// ];
+ 
+ 
+//using Nested Routes fro SignalsDemo and ChangeDetectionDemo
+ 
+export const routes: Routes = [
+    {path: '', redirectTo: 'home', pathMatch: 'full'},
+    {path: 'home', component: Home},
+    {path: 'about', component: About},
+    {path: 'contact', component: Contact},
+    {path: 'admin-page', component: Adminpage},
+    {
+        path: 'signals-demo',
+        component: SignalsDemo,
+        children: [
+            {path: 'CD1', component: ChangeDetectionDemo},
+            {path: 'CD2', component: ChangeDetection2}
+        ]
+    }
+];
+ 
+ 
+ <nav>
+ <a routerLink="CD1"  >Change Detection</a>
+  <a routerLink="CD2" >Change Detection 2</a>
+ </nav>
+ <router-outlet></router-outlet>
+ 
+ 
+
+
+ 
+# Part 6: Angular Routing (Without Guards)
+ 
+## Problem Statement - Navigation & Routing
+ 
+Extend your Smart Shopping Cart application with **multi-page navigation** using Angular Router. Create separate views for different sections of the application and implement navigation without using route guards.
+ 
+---
+ 
+## New Routing Requirements
+ 
+### 1. Application Routes
+ 
+Implement the following route structure:
+ 
+```
+/ (root)
+├── /home (landing page)
+├── /products (product catalog)
+│   └── /products/:id (product details)
+├── /cart (shopping cart view)
+├── /checkout (checkout page)
+├── /orders (order history)
+├── /profile (customer profile)
+├── /about (about us)
+├── /contact (contact page)
+└── /404 (page not found)
+```
+ 
+### 2. Component Creation for Routes
+ 
+Create the following new components:
+ 
+#### **HomeComponent**
+- Display welcome banner
+- Show featured products (3-4 items)
+- Display current promotions/discounts
+- Quick stats (total products, categories available)
+- Call-to-action button to browse products
+ 
+#### **ProductCatalogComponent**
+- Display all products in grid layout
+- Include ProductFilterComponent from Part 2
+- Show category navigation
+- Each product card links to product details
+- Breadcrumb navigation
+ 
+#### **ProductDetailsComponent**
+- Display single product with full details
+- Accept product ID via route parameter (`:id`)
+- Show larger product image
+- Display stock availability
+- Add to cart functionality
+- Related products section
+- Back to products button
+ 
+#### **CartViewComponent**
+- Full-page cart display
+- Use CartSummaryComponent from Part 1
+- Show itemized list with quantities
+- Update quantity functionality
+- Remove items functionality
+- Apply discount codes
+- Proceed to checkout button
+- Continue shopping button
+ 
+#### **CheckoutComponent**
+- Display order summary
+- Customer information form (name, email, address)
+- Payment method selection (mock only)
+- Order notes textarea
+- Place order button
+- Order total with breakdown
+ 
+#### **OrderHistoryComponent**
+- Display list of past orders
+- Each order shows: date, order number, items, total
+- View details button for each order
+- Filter by date range
+- Empty state message if no orders
+ 
+#### **CustomerProfileComponent**
+- Reuse from Part 2 but as standalone page
+- Display and edit customer details
+- View loyalty points
+- View favorite products
+- Change preferences
+ 
+#### **AboutComponent**
+- Company information
+- Mission statement
+- Team information (optional)
+- Static content page
+ 
+#### **ContactComponent**
+- Contact form (name, email, subject, message)
+- Company contact details
+- Social media links
+- Form validation
+ 
+#### **NotFoundComponent**
+- 404 error page
+- "Page not found" message
+- Link back to home
+- Suggested links
+ 
+### 3. Navigation Implementation
+ 
+#### **Navigation Bar Component**
+Create a persistent navigation component with:
+- Logo/brand name
+- Navigation links (Home, Products, Cart, Orders, Profile, About, Contact)
+- Active route highlighting using `routerLinkActive`
+- Cart item count badge
+- Responsive design considerations
+ 
+#### **Breadcrumb Component**
+- Display current navigation path
+- Clickable links to parent routes
+- Dynamic based on current route
+- Example: Home > Products > Product Name
+ 
+### 4. Routing Configuration
+ 
+**In `app.routes.ts`:**
+ 
+```typescript
+export const routes: Routes = [
+  { path: '', redirectTo: '/home', pathMatch: 'full' },
+  { path: 'home', component: HomeComponent },
+  { path: 'products', component: ProductCatalogComponent },
+  { path: 'products/:id', component: ProductDetailsComponent },
+  { path: 'cart', component: CartViewComponent },
+  { path: 'checkout', component: CheckoutComponent },
+  { path: 'orders', component: OrderHistoryComponent },
+  { path: 'profile', component: CustomerProfileComponent },
+  { path: 'about', component: AboutComponent },
+  { path: 'contact', component: ContactComponent },
+  { path: '404', component: NotFoundComponent },
+  { path: '**', redirectTo: '/404' }
+];
+```
+ 
+### 5. Router Features to Implement
+ 
+#### **Route Parameters**
+- Use `:id` parameter in product details route
+- Access parameter using `ActivatedRoute` service
+- Example: `/products/123` displays product with id 123
+ 
+#### **Query Parameters**
+- Implement category filter in products: `/products?category=electronics`
+- Implement search: `/products?search=laptop`
+- Access using `ActivatedRoute.queryParams`
+ 
+#### **Route Navigation Methods**
+ 
+**Template Navigation:**
+```html
+<a routerLink="/products">Products</a>
+<a [routerLink]="['/products', productId]">View Details</a>
+```
+ 
+**Programmatic Navigation:**
+```typescript
+// In component
+constructor(private router: Router) {}
+ 
+navigateToCart() {
+  this.router.navigate(['/cart']);
+}
+ 
+navigateToProduct(id: number) {
+  this.router.navigate(['/products', id]);
+}
+ 
+navigateWithQuery() {
+  this.router.navigate(['/products'], {
+    queryParams: { category: 'electronics' }
+  });
+}
+```
+ 
+#### **Active Route Styling**
+```html
+<a routerLink="/home" routerLinkActive="active-link">Home</a>
+<a routerLink="/products"
+   routerLinkActive="active-link"
+   [routerLinkActiveOptions]="{ exact: false }">Products</a>
+```
+ 
+#### **Router Outlet**
+- Place `<router-outlet></router-outlet>` in AppComponent
+- Renders the component for the active route
+ 
+#### **Nested Routes (Advanced)**
+Create nested routes for product categories:
+```typescript
+{
+  path: 'products',
+  component: ProductCatalogComponent,
+  children: [
+    { path: 'electronics', component: ElectronicsCategoryComponent },
+    { path: 'clothing', component: ClothingCategoryComponent },
+    { path: 'home-goods', component: HomeGoodsCategoryComponent }
+  ]
+}
+```
+ 
+### 6. Routing Best Practices
+ 
+#### **Route State Management**
+- Pass state during navigation:
+```typescript
+this.router.navigate(['/checkout'], {
+  state: { cartItems: this.cartService.getItems() }
+});
+ 
+// Access in target component
+constructor(private router: Router) {
+  const navigation = this.router.getCurrentNavigation();
+  const state = navigation?.extras?.state;
+}
+```
+ 
+#### **Hash vs Path Location Strategy**
+Configure in `app.config.ts`:
+ 
+```typescript
+// Path strategy (default): example.com/products
+export const appConfig: ApplicationConfig = {
+  providers: [
+    provideRouter(routes)
+  ]
+};
+ 
+// Hash strategy: example.com/#/products
+export const appConfig: ApplicationConfig = {
+  providers: [
+    provideRouter(routes, withHashLocation())
+  ]
+};
+```
+ 
+#### **Navigation Events**
+Track navigation events:
+```typescript
+constructor(private router: Router) {
+  this.router.events.subscribe(event => {
+    if (event instanceof NavigationStart) {
+      console.log('Navigation started:', event.url);
+    }
+    if (event instanceof NavigationEnd) {
+      console.log('Navigation ended:', event.url);
+    }
+    if (event instanceof NavigationError) {
+      console.log('Navigation error:', event.error);
+    }
+  });
+}
+ 

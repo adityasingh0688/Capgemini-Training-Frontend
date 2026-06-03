@@ -3,6 +3,8 @@ import { Home } from './home/home';
 import { About } from './about/about';
 import { Contact } from './contact/contact';
 import { PageNotFound } from './page-not-found/page-not-found';
+import { Child2 } from './child2/child2';
+import { Child1 } from './child1/child1';
 
 export const routes: Routes = [
     {
@@ -17,7 +19,17 @@ export const routes: Routes = [
 
   {
     path: 'about',
-    component: About
+    component: About,
+    children: [
+      {
+        path: 'child1',
+        component: Child1,
+      },
+      {
+        path: 'child2',
+        component: Child2,
+      },
+    ],
   },
 
   {

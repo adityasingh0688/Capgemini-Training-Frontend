@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
+import { RouterLink, RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-about',
-  imports: [],
+  imports: [RouterLink, RouterOutlet],
+  standalone: true,
   templateUrl: './about.html',
   styleUrl: './about.css',
 })
