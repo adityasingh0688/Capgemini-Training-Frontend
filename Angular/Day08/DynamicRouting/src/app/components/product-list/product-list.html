@@ -1,0 +1,38 @@
+<h1>THis is Product List</h1>
+<ul>
+  @for (product of apiData(); track product.id) {
+    <li>
+     <a [routerLink]="['/details', product.id]">{{ product.title }}</a>
+    </li>
+    <hr>
+  }
+</ul>
+
+
+User clicks link
+        ↓
+routerLink
+        ↓
+URL becomes /details/5
+        ↓
+Router matches details/:id
+        ↓
+ProductDetails Component loads
+        ↓
+ngOnInit()
+        ↓
+ActivatedRoute gets id = 5
+        ↓
+HttpClient sends GET request
+        ↓
+API returns products
+        ↓
+find() locates product with id=5
+        ↓
+signal.set(product)
+        ↓
+Signal changes
+        ↓
+Angular updates HTML
+        ↓
+Product details displayed
