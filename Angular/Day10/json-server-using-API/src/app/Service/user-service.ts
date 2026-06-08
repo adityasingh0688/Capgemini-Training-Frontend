@@ -16,4 +16,9 @@ export class UserService {
   saveUser(data: users){
     return this.http.post<users>('http://localhost:3000/users',data)
   }//here only one user object
+
+  deleteUser(id: number){
+    return this.http.delete<users>(`http://localhost:3000/users/${id}`);
+  }
+
 }

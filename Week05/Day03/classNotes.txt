@@ -48,263 +48,374 @@ export const routes: Routes = [
 
 
  
-# Part 6: Angular Routing (Without Guards)
+import { CanActivateFn } from '@angular/router';
  
-## Problem Statement - Navigation & Routing
+export const auth2Guard: CanActivateFn = (route, state) =>
+  {
+    console.log('Accessing child route of signals-demo:', state.url);
+    if(state.url.includes('CD1') || state.url.includes('CD2')) {
+      console.log('Access granted to child route of signals-demo:', state.url);
+      return true;
+    }
  
-Extend your Smart Shopping Cart application with **multi-page navigation** using Angular Router. Create separate views for different sections of the application and implement navigation without using route guards.
+    console.log('Access denied to child route of signals-demo:', state.url);
+  return false;
+};
+ 
+ 
+<p>login works!</p>
+<p>Username from route: {{ name }}</p>
+ 
+ 
+<p>home works!</p>
+<p><button (click)="logout()">Logout</button></p>
+ 
+import { Component } from '@angular/core';
+ 
+@Component({
+  selector: 'app-home',
+  imports: [],
+  templateUrl: './home.html',
+  styleUrl: './home.css',
+})
+export class Home {
+ 
+  logout() {
+    console.log('Logging out...');
+    // Simulate a logout action (e.g., clear user session, redirect to login page, etc.)
+    alert('You have been logged out.');
+    // Add actual logout logic here (e.g., clear tokens, redirect to login page, etc.)
+    console.log('User logged out successfully.');
+  }
+}
+ 
+ 
+ 
+    //applying CanDeactivate guard to protect the home page, if the user is not authenticated, they will not be able to access the home page
+    {path: 'home',canDeactivate: [logOutGuard], component: Home},
+ 
+ 
+import { CanActivateFn, CanDeactivateFn } from '@angular/router';
+ 
+export const logOutGuard: CanDeactivateFn<any> = (component, currentRoute, currentState, nextState) => {
+ 
+  // Simulate a logout condition (e.g., check if the user is logged out)
+  const isLoggedOut = true; // Replace with actual logout logic
+ 
+  if (!isLoggedOut) {
+    // If the user is not logged out, prevent access to the route
+    alert('You must log out to access this page.');
+    return false;
+  }
+  return true;
+};
+ 
+ 
+# Part 7: Angular Route Guards - Protecting Your Routes
+ 
+## Problem Statement - Route Protection & Navigation Control
+ 
+Extend your Smart Shopping Cart application with **route guards** to control access to different sections, protect sensitive routes, prevent data loss, and pre-load data before navigation. Implement all major types of Angular route guards without using a full authentication backend (simulate authentication state).
  
 ---
  
-## New Routing Requirements
+You will implement **three critical guard types** that every Angular developer must master:
  
-### 1. Application Routes
+### 1. CanActivate Guard - "Can I Enter This Route?"
  
-Implement the following route structure:
+**Real-World Scenario**: Protect routes that require authentication or specific permissions.
  
+**Your Challenge**: Implement guards to answer these questions:
+- Can a guest user view the shopping cart? **NO** → Redirect to login
+- Can a regular customer access admin panel? **NO** → Redirect to home with error
+- Can a logged-in user view their orders? **YES** → Allow navigation
+- Can anyone checkout with an empty cart? **NO** → Redirect to cart
+ 
+**Guards to Create**:
+1. **AuthGuard** - Verify user is logged in
+2. **AdminGuard** - Verify user has admin role
+3. **CartGuard** - Verify cart is not empty
+4. **RoleGuard** - Verify user has required role (from route data)
+ 
+### 2. CanActivateChild Guard - "Can I Enter These Child Routes?"
+ 
+**Real-World Scenario**: Protect all child routes under a parent route with a single guard.
+ 
+**Your Challenge**: Instead of applying guards to 10 child routes individually, apply ONE guard to the parent.
+ 
+**Example Structure**:
 ```
-/ (root)
-├── /home (landing page)
-├── /products (product catalog)
-│   └── /products/:id (product details)
-├── /cart (shopping cart view)
-├── /checkout (checkout page)
-├── /orders (order history)
-├── /profile (customer profile)
-├── /about (about us)
-├── /contact (contact page)
-└── /404 (page not found)
+/profile (Protected Parent)
+  ├── /profile/overview (Auto-protected)
+  ├── /profile/settings (Auto-protected)
+  ├── /profile/orders (Auto-protected)
+  └── /profile/wishlist (Auto-protected)
+ 
+/admin (Protected Parent)
+  ├── /admin/dashboard (Auto-protected)
+  ├── /admin/products (Auto-protected)
+  ├── /admin/orders (Auto-protected)
+  └── /admin/users (Auto-protected)
 ```
  
-### 2. Component Creation for Routes
+**Guards to Create**:
+1. **ChildRoutesGuard** - Protect all profile child routes
+2. **AdminChildGuard** - Protect all admin child routes
  
-Create the following new components:
+**Key Learning**: Efficiency and DRY principle in route protection.
  
-#### **HomeComponent**
-- Display welcome banner
-- Show featured products (3-4 items)
-- Display current promotions/discounts
-- Quick stats (total products, categories available)
-- Call-to-action button to browse products
+### 3. CanDeactivate Guard - "Can I Leave This Route?"
  
-#### **ProductCatalogComponent**
-- Display all products in grid layout
-- Include ProductFilterComponent from Part 2
-- Show category navigation
-- Each product card links to product details
-- Breadcrumb navigation
+**Real-World Scenario**: Prevent users from accidentally losing unsaved work.
  
-#### **ProductDetailsComponent**
-- Display single product with full details
-- Accept product ID via route parameter (`:id`)
-- Show larger product image
-- Display stock availability
-- Add to cart functionality
-- Related products section
-- Back to products button
+**Your Challenge**: Implement guards to prevent navigation away from:
+- **Checkout form** with unsaved shipping information
+- **Profile settings** with unsaved changes
+- **Contact form** with partially filled message
+- **Product review form** with typed but unsubmitted review
  
-#### **CartViewComponent**
-- Full-page cart display
-- Use CartSummaryComponent from Part 1
-- Show itemized list with quantities
-- Update quantity functionality
-- Remove items functionality
-- Apply discount codes
-- Proceed to checkout button
-- Continue shopping button
+**Guards to Create**:
+1. **UnsavedChangesGuard** - Generic guard for any component with unsaved data
+2. **FormDirtyGuard** - Guard that checks Angular form dirty state
  
-#### **CheckoutComponent**
-- Display order summary
-- Customer information form (name, email, address)
-- Payment method selection (mock only)
-- Order notes textarea
-- Place order button
-- Order total with breakdown
+**User Experience Flow**:
+```
+User fills checkout form → Clicks browser back button
+→ Guard detects unsaved changes
+→ Shows confirmation: "You have unsaved changes. Leave anyway?"
+→ User clicks Cancel → Stays on page
+→ User clicks OK → Navigation proceeds
+```
  
-#### **OrderHistoryComponent**
-- Display list of past orders
-- Each order shows: date, order number, items, total
-- View details button for each order
-- Filter by date range
-- Empty state message if no orders
+---
  
-#### **CustomerProfileComponent**
-- Reuse from Part 2 but as standalone page
-- Display and edit customer details
-- View loyalty points
-- View favorite products
-- Change preferences
+## Detailed Implementation Requirements
  
-#### **AboutComponent**
-- Company information
-- Mission statement
-- Team information (optional)
-- Static content page
+### Part A: CanActivate Guards (4 Guards)
  
-#### **ContactComponent**
-- Contact form (name, email, subject, message)
-- Company contact details
-- Social media links
-- Form validation
+#### Guard 1: AuthGuard
+**Purpose**: Prevent unauthenticated users from accessing protected routes.
  
-#### **NotFoundComponent**
-- 404 error page
-- "Page not found" message
-- Link back to home
-- Suggested links
+**Protected Routes**: `/cart`, `/checkout`, `/orders`, `/profile`
  
-### 3. Navigation Implementation
- 
-#### **Navigation Bar Component**
-Create a persistent navigation component with:
-- Logo/brand name
-- Navigation links (Home, Products, Cart, Orders, Profile, About, Contact)
-- Active route highlighting using `routerLinkActive`
-- Cart item count badge
-- Responsive design considerations
- 
-#### **Breadcrumb Component**
-- Display current navigation path
-- Clickable links to parent routes
-- Dynamic based on current route
-- Example: Home > Products > Product Name
- 
-### 4. Routing Configuration
- 
-**In `app.routes.ts`:**
- 
+**Logic**:
 ```typescript
-export const routes: Routes = [
-  { path: '', redirectTo: '/home', pathMatch: 'full' },
-  { path: 'home', component: HomeComponent },
-  { path: 'products', component: ProductCatalogComponent },
-  { path: 'products/:id', component: ProductDetailsComponent },
-  { path: 'cart', component: CartViewComponent },
-  { path: 'checkout', component: CheckoutComponent },
-  { path: 'orders', component: OrderHistoryComponent },
-  { path: 'profile', component: CustomerProfileComponent },
-  { path: 'about', component: AboutComponent },
-  { path: 'contact', component: ContactComponent },
-  { path: '404', component: NotFoundComponent },
-  { path: '**', redirectTo: '/404' }
-];
+if (user is logged in) {
+  return true; // Allow navigation
+} else {
+  save current URL; // For redirect after login
+  redirect to /login;
+  return false; // Block navigation
+}
 ```
  
-### 5. Router Features to Implement
+**Test Cases**:
+1. Guest tries `/cart` → Redirected to `/login?returnUrl=/cart`
+2. Logged-in user accesses `/cart` → Allowed
+3. After successful login → User redirected to originally requested URL
  
-#### **Route Parameters**
-- Use `:id` parameter in product details route
-- Access parameter using `ActivatedRoute` service
-- Example: `/products/123` displays product with id 123
+---
  
-#### **Query Parameters**
-- Implement category filter in products: `/products?category=electronics`
-- Implement search: `/products?search=laptop`
-- Access using `ActivatedRoute.queryParams`
+#### Guard 2: AdminGuard
+**Purpose**: Ensure only admin users can access admin panel.
  
-#### **Route Navigation Methods**
+**Protected Routes**: `/admin/*`
  
-**Template Navigation:**
-```html
-<a routerLink="/products">Products</a>
-<a [routerLink]="['/products', productId]">View Details</a>
-```
- 
-**Programmatic Navigation:**
+**Logic**:
 ```typescript
-// In component
-constructor(private router: Router) {}
- 
-navigateToCart() {
-  this.router.navigate(['/cart']);
+if (user is NOT logged in) {
+  redirect to /login;
+  return false;
 }
- 
-navigateToProduct(id: number) {
-  this.router.navigate(['/products', id]);
-}
- 
-navigateWithQuery() {
-  this.router.navigate(['/products'], {
-    queryParams: { category: 'electronics' }
-  });
+if (user role === 'admin') {
+  return true; // Allow navigation
+} else {
+  show error notification: "Admin access required";
+  redirect to /home;
+  return false;
 }
 ```
  
-#### **Active Route Styling**
-```html
-<a routerLink="/home" routerLinkActive="active-link">Home</a>
-<a routerLink="/products"
-   routerLinkActive="active-link"
-   [routerLinkActiveOptions]="{ exact: false }">Products</a>
+**Test Cases**:
+1. Guest tries `/admin` → Redirected to `/login`
+2. Customer tries `/admin` → Error message + redirect to `/home`
+3. Admin accesses `/admin` → Allowed
+ 
+---
+ 
+#### Guard 3: CartGuard
+**Purpose**: Prevent checkout with empty cart.
+ 
+**Protected Routes**: `/checkout`
+ 
+**Logic**:
+```typescript
+if (cart has items) {
+  return true; // Allow navigation to checkout
+} else {
+  show warning: "Your cart is empty";
+  redirect to /cart;
+  return false;
+}
 ```
  
-#### **Router Outlet**
-- Place `<router-outlet></router-outlet>` in AppComponent
-- Renders the component for the active route
+**Test Cases**:
+1. User with empty cart clicks "Checkout" → Warning + redirected to `/cart`
+2. User with items in cart clicks "Checkout" → Allowed to proceed
  
-#### **Nested Routes (Advanced)**
-Create nested routes for product categories:
+---
+ 
+#### Guard 4: RoleGuard (Generic with Route Data)
+**Purpose**: Flexible guard that checks for roles specified in route configuration.
+ 
+**Usage in Routes**:
 ```typescript
 {
-  path: 'products',
-  component: ProductCatalogComponent,
+  path: 'orders',
+  component: OrderHistoryComponent,
+  canActivate: [roleGuard],
+  data: { roles: ['customer', 'admin'] } // <-- Roles defined here
+}
+```
+ 
+**Logic**:
+```typescript
+const requiredRoles = route.data['roles']; // Read from route config
+const userRole = authService.getUserRole();
+ 
+if (requiredRoles.includes(userRole)) {
+  return true;
+} else {
+  show error + redirect;
+  return false;
+}
+```
+ 
+**Test Cases**:
+1. Guest tries route requiring 'customer' role → Blocked
+2. Customer tries route requiring 'admin' role → Blocked
+3. Admin tries route requiring 'customer' or 'admin' → Allowed
+ 
+---
+ 
+### Part B: CanActivateChild Guard (1 Guard)
+ 
+#### Guard 5: ChildRoutesGuard
+**Purpose**: Protect all children of a parent route with one guard.
+ 
+**Route Configuration**:
+```typescript
+{
+  path: 'profile',
+  component: ProfileLayoutComponent,
+  canActivateChild: [childRoutesGuard], // <-- Applied to parent
   children: [
-    { path: 'electronics', component: ElectronicsCategoryComponent },
-    { path: 'clothing', component: ClothingCategoryComponent },
-    { path: 'home-goods', component: HomeGoodsCategoryComponent }
+    { path: '', component: ProfileOverviewComponent },     // Protected
+    { path: 'settings', component: ProfileSettingsComponent }, // Protected
+    { path: 'orders', component: ProfileOrdersComponent },    // Protected
+    { path: 'wishlist', component: ProfileWishlistComponent }  // Protected
   ]
 }
 ```
  
-### 6. Routing Best Practices
- 
-#### **Route State Management**
-- Pass state during navigation:
+**Logic**:
 ```typescript
-this.router.navigate(['/checkout'], {
-  state: { cartItems: this.cartService.getItems() }
-});
- 
-// Access in target component
-constructor(private router: Router) {
-  const navigation = this.router.getCurrentNavigation();
-  const state = navigation?.extras?.state;
+// This guard runs for EVERY child route navigation
+if (user is logged in) {
+  return true; // Allow access to any child
+} else {
+  redirect to /login;
+  return false; // Block all children
 }
 ```
  
-#### **Hash vs Path Location Strategy**
-Configure in `app.config.ts`:
+**Why Use This?**:
+- Apply ONE guard instead of repeating `canActivate: [authGuard]` on 4 child routes
+- Cleaner, more maintainable code
+- Enforces consistent protection across entire section
  
+**Test Cases**:
+1. Guest tries `/profile` → Blocked
+2. Guest tries `/profile/settings` → Blocked
+3. Guest tries `/profile/orders` → Blocked
+4. Logged-in user tries any `/profile/*` route → Allowed
+ 
+---
+ 
+### Part C: CanDeactivate Guard (1 Guard + Interface)
+ 
+#### Guard 6: UnsavedChangesGuard
+**Purpose**: Prevent users from losing unsaved form data.
+ 
+**Step 1: Create Interface**
 ```typescript
-// Path strategy (default): example.com/products
-export const appConfig: ApplicationConfig = {
-  providers: [
-    provideRouter(routes)
-  ]
-};
- 
-// Hash strategy: example.com/#/products
-export const appConfig: ApplicationConfig = {
-  providers: [
-    provideRouter(routes, withHashLocation())
-  ]
-};
+export interface CanComponentDeactivate {
+  canDeactivate: () => boolean | Observable<boolean>;
+}
 ```
  
-#### **Navigation Events**
-Track navigation events:
+**Step 2: Implement Guard**
 ```typescript
-constructor(private router: Router) {
-  this.router.events.subscribe(event => {
-    if (event instanceof NavigationStart) {
-      console.log('Navigation started:', event.url);
+export const unsavedChangesGuard: CanDeactivateFn<CanComponentDeactivate> =
+  (component) => {
+    if (component.canDeactivate) {
+      return component.canDeactivate(); // Ask component if it's safe to leave
     }
-    if (event instanceof NavigationEnd) {
-      console.log('Navigation ended:', event.url);
-    }
-    if (event instanceof NavigationError) {
-      console.log('Navigation error:', event.error);
-    }
-  });
-}
+    return true; // No interface implemented, allow navigation
+  };
+```
  
+**Step 3: Implement in Components**
+ 
+**CheckoutComponent Example**:
+```typescript
+export class CheckoutComponent implements CanComponentDeactivate {
+  hasUnsavedChanges = false; // Track form state
+ 
+  @ViewChild('checkoutForm') form!: NgForm;
+ 
+  onFormChange() {
+    this.hasUnsavedChanges = true; // User modified form
+  }
+ 
+  canDeactivate(): boolean {
+    if (this.hasUnsavedChanges) {
+      return confirm('You have unsaved changes. Do you really want to leave?');
+    }
+    return true; // No changes, safe to navigate away
+  }
+ 
+  onSubmit() {
+    // After successful form submission
+    this.hasUnsavedChanges = false; // Clear flag
+    this.orderService.createOrder(...);
+    this.router.navigate(['/orders']);
+  }
+}
+```
+ 
+**Step 4: Apply to Routes**
+```typescript
+{
+  path: 'checkout',
+  component: CheckoutComponent,
+  canActivate: [authGuard, cartGuard],
+  canDeactivate: [unsavedChangesGuard] // <-- Applied here
+}
+```
+ 
+**User Flow**:
+1. User starts filling checkout form
+2. `hasUnsavedChanges = true`
+3. User clicks browser back button
+4. Guard calls `component.canDeactivate()`
+5. Confirmation dialog appears
+6. User clicks "Cancel" → Stays on page
+7. User clicks "OK" → Navigation proceeds
+ 
+**Test Cases**:
+1. User fills form but doesn't submit → Tries to navigate → Confirmation appears
+2. User submits form successfully → Tries to navigate → No confirmation (form clean)
+3. User doesn't touch form → Tries to navigate → No confirmation (no changes)
+ 
+---

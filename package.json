@@ -1,0 +1,5 @@
+{
+  "devDependencies": {
+    "ripgrep": "^0.3.1"
+  }
+}

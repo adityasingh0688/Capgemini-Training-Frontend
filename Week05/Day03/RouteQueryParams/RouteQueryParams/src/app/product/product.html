@@ -1,0 +1,11 @@
+@if(selectedProduct)
+{
+  <h2>{{ selectedProduct.name }}</h2>
+
+  <p>Price: ₹{{ selectedProduct.price }}</p>
+
+  @if(showDetails)
+  {
+    <p>Description: {{ selectedProduct.description }}</p>
+  }
+}

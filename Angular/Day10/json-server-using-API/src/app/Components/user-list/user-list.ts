@@ -12,9 +12,18 @@ export class UserList {
   constructor(private userService: UserService) {}
   userData=signal<users[] | null>(null);
   ngOnInit() {
+    this.getUser();
+  }
+  getUser(){
     this.userService.getUsers().subscribe((data) => {
       this.userData.set(data);
     });
   }
-
+  DeleteUser(id:any){
+    this.userService.deleteUser(id).subscribe((resp)=>{
+      if(resp){
+        this.getUser();
+      }
+    })
+  }
 }

@@ -6,5 +6,5 @@ import { Abpout } from './abpout/abpout';
 export const routes: Routes = [
     {path: '', component: Home},
     {path: 'profile', component: Profile},
-    {path: 'about/:id', component: Abpout}
+    {path: 'product/:id', component: Abpout }
 ];

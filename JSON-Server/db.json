@@ -1,0 +1,89 @@
+{
+  "users": [
+    {
+      "id": "2",
+      "name": "Snehal Waghmare",
+      "age": 28,
+      "email": "snehalCapgemini@gmail.com"
+    },
+    {
+      "id": "3",
+      "name": "Aditya Singh",
+      "age": 22,
+      "email": "useradityasingh8@gmail.com"
+    },
+    {
+      "id": "4",
+      "name": "Disha Tomar",
+      "age": 21,
+      "email": "tomar.disha@gmail.com"
+    },
+    {
+      "id": "5",
+      "name": "Amit Kumar",
+      "age": 32,
+      "email": "amit.kumar@gmail.com"
+    },
+    {
+      "id": "6",
+      "name": "Sneha Gupta",
+      "age": 27,
+      "email": "sneha.gupta@gmail.com"
+    },
+    {
+      "id": "7",
+      "name": "Vikas Yadav",
+      "age": 29,
+      "email": "vikas.yadav@gmail.com"
+    },
+    {
+      "id": "8",
+      "name": "Neha Singh",
+      "age": 26,
+      "email": "neha.singh@gmail.com"
+    },
+    {
+      "id": "9",
+      "name": "Rohit Mehta",
+      "age": 31,
+      "email": "rohit.@gmail.com"
+    },
+    {
+      "id": "10",
+      "name": "Anjali Kapoor",
+      "age": 23,
+      "email": "anjali.kapoor@gmail.com"
+    },
+    {
+      "id": "11",
+      "name": "Karan Malhotra",
+      "age": 35,
+      "email": "karan.malhotra@gmail.com"
+    },
+    {
+      "id": "12",
+      "name": "Pooja Mishra",
+      "age": 28,
+      "email": "pooja.mishra@example.com"
+    },
+    {
+      "id": "lBHbaWje48Y",
+      "name": "Snehil Waghmare",
+      "age": 29,
+      "email": "waghmereSnehil@example.com"
+    },
+    {
+      "id": "voFHtHTh4NQ",
+      "name": "Snehil Waghmare",
+      "age": 29,
+      "email": "waghmereSnehil@example.com"
+    },
+    {
+      "name": "Aditya Singh",
+      "age": 28,
+      "email": "useradityasingh8@gmail.com",
+      "id": "L67SCrLUT-s"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}

@@ -1,0 +1,16 @@
+<h2>Products</h2>
+
+@for(product of products; track product.id)
+{
+  <p>
+    <a
+      [routerLink]="['/product', product.id]"
+      [queryParams]="{ showDetails: true }">
+
+      {{ product.name }}
+
+    </a>
+  </p>
+}
+
+<router-outlet></router-outlet>
