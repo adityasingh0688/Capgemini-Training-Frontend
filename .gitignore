@@ -1,0 +1,70 @@
+# =========================
+# OS Files
+# =========================
+.DS_Store
+Thumbs.db
+
+# =========================
+# Node.js
+# =========================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# =========================
+# Angular
+# =========================
+.angular/
+dist/
+coverage/
+.tmp/
+out-tsc/
+
+# Build info
+*.tsbuildinfo
+
+# Environment files
+src/environments/*.local.ts
+
+# =========================
+# IDE Files
+# =========================
+.vscode/
+.idea/
+*.iml
+
+# =========================
+# Logs
+# =========================
+logs/
+*.log
+
+# =========================
+# Java / Spring Boot
+# =========================
+target/
+*.class
+*.jar
+*.war
+*.ear
+
+# Maven
+.mvn/wrapper/maven-wrapper.jar
+
+# Gradle
+.gradle/
+build/
+
+# =========================
+# Temporary Files
+# =========================
+temp/
+tmp/
+*.tmp
+
+# =========================
+# Mac Specific
+# =========================
+.AppleDouble
+.LSOverride
